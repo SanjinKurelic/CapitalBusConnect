@@ -1,0 +1,101 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+$navigation-height: 64px;
+
+%navigation-buttons {
+    display: inline-block;    
+    padding: 0 20px;
+    min-width: 100px;
+    text-align: center;
+    line-height: $navigation-height;
+    cursor: pointer;
+    color: color(dark);
+}
+
+%navigation-buttons:hover, %navigation-buttons-hovered {
+    background: color(light);    
+}
+
+%navigation-backButton{
+    margin: 10px;
+    line-height: 42px;
+    border: 1px solid color(dark);
+    border-radius: 5px;
+}
+
+.navigation {
+    margin-bottom: 10px;
+    background: color(dark-shadow);
+
+    > div.center {
+        display: flex;
+        flex-wrap: wrap;
+        @include cbc_mobile {
+            justify-content: center;
+        }
+    }
+
+    &-simple {
+        &-buttons {
+            min-width: 120px;
+        }
+        
+        &-button {
+            @extend %navigation-buttons;
+            @extend %navigation-backButton;
+            background: color(primary);            
+
+            &:hover {
+                background: color(secondary);
+                color: color(light);
+            }
+        }
+
+        &-title {
+            display: inline-block;
+            margin: 0 auto;
+            text-transform: capitalize;
+            @include cbc_mobile {
+                order: -1;
+                flex: 1 0 100%;
+                text-align: center;
+            }
+        }
+
+        &-backButton {
+            @extend %navigation-buttons;
+            @extend %navigation-backButton;
+        }
+    }
+
+    &-tabular-based {
+        &-button {
+            @extend %navigation-buttons;
+
+            &:hover, &.active{
+                color: color(secondary);
+                background: color(dark-shadow);
+                box-shadow: 0px -4px 0px 0px color(secondary) inset;
+            }
+        }
+
+        &-backButton {
+            @extend %navigation-buttons;
+            @extend %navigation-backButton;
+        }
+    }
+
+    &-link-based {
+        &-button {
+            @extend %navigation-buttons;
+
+            &.active {
+                @extend %navigation-buttons-hovered;
+            }
+        }
+
+        &-backButton {
+            @extend %navigation-buttons;
+        }
+    }
+}

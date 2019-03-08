@@ -1,0 +1,33 @@
+<%--
+  Created by Sanjin Kurelic.
+  Date: 2018-10-15
+--%>
+<%@ include file="head.jspf"%>
+<%@ page pageEncoding="UTF-8"%>
+<%@ page import="java.util.Locale" %>
+
+<c:set var="sessionLocale" value="${ cbcf:getCurrentLocale() }" />
+
+<header class="header">
+	<div class="center">
+		<a href="<spring:url value='/'/>"> <img class="header-logo"
+			src="<spring:url value='/resources/images/logoBig.png' />" height="100%"
+			alt="Capital Bus Connect" />
+		</a>
+		<nav class="header-buttons">
+			<c:if test='${ !pageContext.request.requestURL.toString().contains("/admin/") }'>
+				<a title="Cart" class="icon" href="<spring:url value='cart'/>">&#xf0f2;</a>
+			</c:if>
+			<a title="User" class="icon" href="<spring:url value='user/travels'/>">&#xf007;</a>
+			<form:form method="get">
+				<label for="language" style="display:none">${sessionLocale}</label>
+				<select data-size="select-tiny" id="language" name="language" onchange="submit()">
+					<option value="hr" ${sessionLocale.equals(Locale.forLanguageTag("hr-HR")) ? 'selected' : ''}>HR</option>
+					<option value="en" ${sessionLocale.equals(Locale.ENGLISH) ? 'selected' : ''}>EN</option>
+					<option value="de" ${sessionLocale.equals(Locale.GERMAN) ? 'selected' : ''}>DE</option>
+					<option value="it" ${sessionLocale.equals(Locale.ITALIAN) ? 'selected' : ''}>IT</option>
+				</select>
+			</form:form>
+		</nav>
+	</div>
+</header>

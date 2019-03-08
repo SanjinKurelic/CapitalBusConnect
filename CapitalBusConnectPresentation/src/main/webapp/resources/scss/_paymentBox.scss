@@ -1,0 +1,45 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.paymentBox {
+    
+    &-content {
+        background: color(dark-shadow);
+        padding: 20px;
+
+        &-values {
+            display: none;
+        }
+
+        &-title {
+            padding: 0;
+            margin: 0 0 30px;
+        }
+
+        &-container {
+            width: 100%;
+            border-collapse: collapse;
+
+            &-item {
+                cursor: pointer;
+                user-select: none;
+
+                td {
+                    padding: 10px;
+                }
+
+                .icon {
+                    font-size: 1.8em;
+                }
+
+                &.active {
+                    background: color(primary);
+                }
+            }
+        }
+    }
+    
+    &-button {
+        text-align: right;
+        padding: 20px 10px;
+    }
+}

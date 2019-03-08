@@ -1,0 +1,108 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.dialog {
+    display: none;
+    $dialog-parent: &;
+    @include cbc_absolute(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.7);
+    border: 0;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+    text-align: center;
+
+    &-box {
+        margin: 0 auto;
+        display: inline-block;
+        width: 300px;
+        background: color(light);
+        position: relative;
+        text-align: left;
+        top: 30%;
+        padding: 10px;
+        border-radius: 5px;
+
+        &-title {
+            padding:10px;
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: color(primary);
+            color: color(dark);
+
+            h4 {
+                margin:0;
+                display: none;
+                margin-left: 10px;
+            }
+
+            .notice &-notice {
+                display: inline-block;
+            }
+
+            .warning & {
+                color: color(secondary);
+                border-color: color(secondary);
+
+                &-warning{
+                    display: inline-block;
+                }
+            }
+            .error & {
+                color: color(error);
+                border-color: color(error);
+
+                &-error{
+                    display: inline-block;
+                }
+            }            
+        }
+
+        &-content {
+            font-size: 0.9em;
+            padding: 0 10px;
+        }
+
+        &-buttons {
+            padding-top: 10px;
+            text-align: right;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+
+            &-button {
+                display: inline-block;
+                padding: 10px 20px;
+                cursor: pointer;
+
+                &.negative{
+                    color: color(error);
+                }
+
+                &:hover {
+                    color: color(secondary);
+                }                
+            }
+        }
+    }
+}
+
+.toast {
+    display: none;
+    @include cbc_absolute(-1, -1, 0, -1);
+    border: 0;
+    margin: 0 auto 30px;
+    width: 300px;
+    padding: 20px 15px;
+    background: color(dark);
+    color: color(light);
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 color(dark);
+
+    &.error {
+        color: color(error);
+    }
+    
+    &.warning {
+        color: color(warning);
+    }
+}

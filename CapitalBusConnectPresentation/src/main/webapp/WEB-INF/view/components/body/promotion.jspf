@@ -1,0 +1,12 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="cbc" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ page pageEncoding="UTF-8" %>
+<section class="promotionBox center">
+    <h2 class="article-title"><spring:message code="promotionBox.title.text" /></h2>
+    <%--@elvariable id="promotionItems" type="java.util.List"--%>
+    <c:forEach var="promotionItem" items="${promotionItems}">
+        <cbc:promotionItem promotionItem="${promotionItem}"/>
+    </c:forEach>
+</section>

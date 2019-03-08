@@ -1,0 +1,46 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+%cityInfo-inline{
+    display:inline-block;
+    vertical-align:top;
+}
+
+@include cbc_mobile {
+    %cityInfo-inline{
+        display:block;
+        width:100%;
+    }
+}
+
+.cityInfoBox{
+    padding:10px 10px 30px;
+
+    &-description {
+        @extend %cityInfo-inline;
+        width:69%;
+
+        p {
+            padding-left:40px;
+            margin:15px 0;
+            @include cbc_mobile {
+                padding:0;
+                padding-top:20px;
+            }
+        }
+    }
+
+    &-image {
+        @extend %cityInfo-inline;
+        width:30%;
+        margin-top:15px;
+    }
+
+    &-buttons {
+        text-align:right;
+        margin-top:30px;
+        
+        button {
+            color: color(dark);
+        }
+    }
+}

@@ -1,0 +1,45 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.switchBox {
+  $parent: &;
+  position: relative;
+  width: 60px;
+  height: 36px; 
+
+  &-layer {
+    @include cbc_absolute(0,0,0,0);
+    background: color(dark-shadow);
+    border-radius: 100px;
+  }
+
+  &-knobs {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    z-index: 2;
+    transition: 0.3s ease all;
+    height: 30px;
+    width: 30px;
+    background: color(light-shadow);
+    border-radius: 50%;
+  }
+
+  &-checkbox {
+    @include cbc_absolute(0,0,0,0);
+    width: 100%;
+    height: 100%;    
+    cursor: pointer;
+    background: color(light); // IE 8
+    opacity: 0;
+    z-index: 3;
+
+    &:checked + #{$parent}-knobs {
+      left: 26px;
+      background: color(primary);
+    }
+
+    &:checked ~ #{$parent}-layer {
+      background: lighten(color(primary), 20%);
+    }
+  }
+}

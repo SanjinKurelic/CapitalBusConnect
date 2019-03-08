@@ -1,0 +1,96 @@
+//Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.scheduleBox {
+    margin:25px 0;
+    width:100%;
+    padding:0 10px;
+    border-collapse:collapse;
+
+    &-item {
+        @include cbc_tablet {
+            display:block;
+            border-style:solid;
+            margin:10px 0;
+            padding:10px;
+            border-width:1px 0;
+            border-color:color(light-shadow);
+        }
+
+        &.active, &.active .select-selected{
+            background: color(light-shadow);
+        }
+
+        &:not(.active):hover, &:not(.active):hover .select-selected {
+            background: color(dark-shadow);
+        }
+
+        td{
+            padding:10px 0;
+            border-bottom:1px solid color(dark-shadow);
+            @include cbc_tablet {
+                border:0;
+                display:block;
+            }
+
+            &:first-of-type, &:last-of-type {
+                padding:10px;
+            }
+        }
+
+        &-title {
+            &-main{
+                text-transform:capitalize;
+                font-size:1.3em;
+                margin-bottom:5px;
+
+                .icon {
+                    font-size:0.8em;
+                    vertical-align:middle;
+                    margin:0 5px;
+                    padding-bottom:5px;
+                }
+            }
+            &-description {
+                font-size:0.7em;
+                font-style:italic;
+            }
+        }
+
+        &-adults select, &-children select {
+            margin-left:10px;
+        }
+
+        &-price {
+            font-weight:bold;
+            font-size:1.1em;
+
+            &-payingMethod {
+                color: color(secondary);
+                font-weight: 100;
+            }
+        }
+
+        &-buttons {
+            text-align:right;
+            
+            .mobile {
+                display:none;
+            }
+            
+            .button {
+                min-width: 0;
+            }
+            
+            @include cbc_tablet {
+                text-align:center;
+                
+                .desktop-tablet {
+                    display:none;
+                }
+                .mobile {
+                    display:inline;
+                }
+            }
+        }
+    }
+}

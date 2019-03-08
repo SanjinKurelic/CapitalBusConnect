@@ -1,0 +1,78 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.userBox {
+  margin: 40px 0;
+
+  &-content {
+    width: 100%;
+
+    &-item {
+      &-error {
+        background: lighten(color(error), 5%);
+        color: color(light);
+        padding: 20px;
+        border-radius: 5px;
+      }
+      td {
+        padding: 10px;
+
+        & label {
+          text-align: right;
+          display: block;
+        }
+
+        & input {
+          min-width: 280px;
+
+          @include cbc_mobile {
+            min-width: 0;
+          }
+        }
+      }
+    }
+
+    &-title {
+
+      td {
+        text-align: center;
+        position: relative;
+      }
+
+      &-content {
+        padding: 0;
+        margin: 40px auto;
+        text-align: center;
+        text-transform: uppercase;
+        display: inline-block;
+        width: 100px;
+        background: color(light);
+        z-index: 3;
+        position: relative;
+        font-style: italic;
+      }
+
+      &-decoration {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        border: 1px solid black;
+        height: 1px;
+        width: 100%;
+        top: 50%;
+        z-index: 1;
+      }
+    }
+
+    &-socialNetworks {
+      text-align: center;
+    }
+
+    &-buttons {
+      text-align: right;
+
+      td {
+        padding-right: 40px;
+      }
+    }
+  }
+}

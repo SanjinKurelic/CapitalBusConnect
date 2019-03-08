@@ -1,0 +1,65 @@
+<%-- 
+    Document   : search
+    Created on : Oct 16, 2018, 1:46:44 PM
+    Author     : Sanjin Kurelic
+--%>
+<%@ page pageEncoding="UTF-8" %>
+<c:set var="searchCityIcon" value='<span class="icon">&#xf041</span>' />
+<c:set var="searchArrowIcon" value='<span class="icon">&#xf061</span>'/>
+<c:set var="searchDateIcon" value='<span class="icon">&#xf073</span>'/>
+<c:set var="searchButtonIcon" value='<span class="icon">&#xf002</span>'/>
+
+<div class="search">
+    <div class="center">
+        <div class="search-box">
+            <form:form>
+                <div class="search-box-full">
+                    <table>
+                        <tr>
+                            <td>${searchCityIcon}</td>
+                            <td>
+                                <input name="fromCityParam" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
+                            </td>
+                            <td>${searchArrowIcon}</td>
+                            <td>${searchCityIcon}</td>
+                            <td>
+                                <input name="toCityParam" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
+                            </td>
+                            <td>${searchDateIcon}</td>
+                            <td>
+                                <input data-type="date" required name="dateParam" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
+                            </td>
+                            <td>
+                                <button type="submit">${searchButtonIcon}</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="search-box-compact">
+                    <table>
+                        <tr>
+                            <td>${searchCityIcon}</td>
+                            <td>
+                                <input name="fromCityParam" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
+                            </td>
+                            <td>${searchCityIcon}</td>
+                            <td>
+                                <input name="toCityParam" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>${searchDateIcon}</td>
+                            <td>
+                                <input data-type="date" required name="dateParam" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
+                            </td>
+                            <td>${searchButtonIcon}</td>
+                            <td>
+                                <button type="submit"><spring:message code='searchBox.button.text' /></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form:form>
+        </div>
+    </div>
+</div>

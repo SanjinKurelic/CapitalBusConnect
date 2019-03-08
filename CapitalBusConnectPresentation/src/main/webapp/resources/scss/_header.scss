@@ -1,0 +1,47 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.header{
+    height:70px;
+    background:color(primary);
+    @include cbc_mobile {
+        height:50px;
+    }
+
+    .center {
+        height:100%;
+    }
+
+    &-logo {
+        object-fit:contain; // fix for Webkit/Blink
+    }
+
+    &-buttons {
+        @include cbc_absolute(18px, 20px, -1, -1);
+        @include cbc_mobile {
+            top:6px;
+        }
+
+        .icon {
+            font-size:1.6em;
+            vertical-align:middle;
+            color:color(dark);
+        }
+
+        a {
+            margin:0 5px;
+        }
+
+        form {
+            display:inline;
+
+            .select {
+                vertical-align:middle;
+                background:color(primary);
+            }
+
+            .select-selected {
+                border-bottom:0;
+            }
+        }
+    }
+}

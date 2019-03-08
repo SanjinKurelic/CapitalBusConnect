@@ -1,0 +1,3 @@
+<%@ page pageEncoding="UTF-8" %>
+<jsp:useBean id="footerYear" class="java.util.Date" />
+<p class="footer-copyright">Capital Bus Connect &COPY; <fmt:formatDate value="${footerYear}" pattern="yyyy" /></p>

@@ -1,0 +1,41 @@
+package eu.sanjin.kurelic.cbc.repo.entity;
+
+import eu.sanjin.kurelic.cbc.repo.entity.composite.LanguagePrimaryKey;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "country_description")
+public class CountryDescription {
+
+    @EmbeddedId
+    private LanguagePrimaryKey id;
+    private String title;
+    @OneToOne
+    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Country country;
+
+    public LanguagePrimaryKey getId() {
+        return id;
+    }
+
+    public void setId(LanguagePrimaryKey id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+}

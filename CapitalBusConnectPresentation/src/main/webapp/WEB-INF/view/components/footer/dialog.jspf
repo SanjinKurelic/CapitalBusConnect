@@ -1,0 +1,25 @@
+<%@ page pageEncoding="UTF-8" %>
+<dialog closed id="dialog" class="dialog">
+    <div class="dialog-box">
+        <div class="dialog-box-title">
+            <span class="icon">&#xf06a;</span>
+            <h4 class="dialog-box-title-error"><spring:message code="dialog.title.error.text"/></h4>
+            <h4 class="dialog-box-title-warning"><spring:message code="dialog.title.warning.text"/></h4>
+            <h4 class="dialog-box-title-notice"><spring:message code="dialog.title.notice.text"/></h4>
+        </div>
+        <div class="dialog-box-content">
+            <p id="dialog-content"></p>
+        </div>
+        <div class="dialog-box-buttons">
+            <div class="dialog-box-buttons-button negative" id="dialog-cancel"><spring:message code="dialog.button.cancel.text"/></div>
+            <div class="dialog-box-buttons-button" id="dialog-ok"><spring:message code="dialog.button.ok.text"/></div>
+        </div>
+    </div>
+</dialog>
+<dialog closed id="toast" class="toast">
+    <span id="toast-content" class="toast-text"></span>
+</dialog>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBX8R6WIoUPDrKlNCVrl7EkB0hV2ttSuQ&callback=initMap" async defer></script>
+<script src="<spring:url value='${cbcf:getJavaScriptUrl(\'script.js\')}' />"></script>

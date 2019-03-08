@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+    <tlib-version>1.0</tlib-version>
+    <short-name>cbcf</short-name>
+    <uri>/WEB-INF/tlds/functions</uri>
+    <function>
+        <name>getCityImageResourceUrl</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String getCityImageResourceUrl(java.lang.String)
+        </function-signature>
+    </function>
+    <function>
+        <name>getFaviconImageResourceUrl</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String getFaviconImageResourceUrl(java.lang.String)
+        </function-signature>
+    </function>
+    <function>
+        <name>getImageResourceUrl</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String getImageResourceUrl(java.lang.String)
+        </function-signature>
+    </function>
+    <function>
+        <name>getFontResourceUrl</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String getFontResourceUrl(java.lang.String)
+        </function-signature>
+    </function>
+    <function>
+        <name>getJavaScriptUrl</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String getJavaScriptUrl(java.lang.String)
+        </function-signature>
+    </function>
+    <function>
+        <name>getStylesheetUrl</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String getStylesheetUrl(java.lang.String)
+        </function-signature>
+    </function>
+    <function>
+        <name>getCurrentLocale</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>java.util.Locale getCurrentLocale()</function-signature>
+    </function>
+    <function>
+        <name>formatDate</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String formatDate(java.time.LocalDate)
+        </function-signature>
+    </function>
+    <function>
+        <name>formatTime</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String formatTime(java.time.LocalTime)
+        </function-signature>
+    </function>
+    <function>
+        <name>formatDateTime</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String formatDateTime(java.time.LocalDateTime)
+        </function-signature>
+    </function>
+</taglib>

@@ -1,0 +1,32 @@
+{
+  "name": "capital-bus-connect",
+  "version": "1.0.0",
+  "keywords": [
+    "util",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "author": "Sanjin Kurelic",
+  "contributors": [],
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^9.3.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.1"
+  },
+  "browserslist": [
+    "ie >= 8",
+    "Android >= 2.3",
+    "chrome >= 15",
+    "edge >= 12",
+    "firefox >= 6",
+    "ios_saf >= 5.1",
+    "opera >= 12",
+    "safari >= 5.1"
+  ]
+}

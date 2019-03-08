@@ -1,0 +1,13 @@
+// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.errorPage {
+    text-align: center;
+
+    &-content {
+        font-style: italic;
+    }
+
+    &-buttons {
+        padding-top:20px;
+    }
+}
