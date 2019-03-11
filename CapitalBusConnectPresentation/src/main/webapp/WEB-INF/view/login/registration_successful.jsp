@@ -1,16 +1,14 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Sanjin
-  Date: 1.3.2019.
-  Time: 15:22
-  To change this template use File | Settings | File Templates.
---%>
+<%-- Created by Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
 
 <article>
-    <div class="center">
-        Registered Successfully
-    </div>
+    <section class="successPage center">
+        <h2 class="successPage-title"><spring:message code="successPage.registrationSuccessful.title.text" /></h2>
+        <p class="successPage-content"><spring:message code="successPage.registrationSuccessful.content.text" /></p>
+        <div class="successPage-buttons">
+            <a class="button" href="<spring:url value="/login" />"><spring:message code="navigation.loginButton.text" /></a>
+        </div>
+    </section>
 </article>
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>

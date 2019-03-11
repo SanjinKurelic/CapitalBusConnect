@@ -8,6 +8,7 @@
 <%-- Local Variables: --%>
 <c:set var="maxDOB" value="${LocalDate.now().minus(18, ChronoUnit.YEARS)}"/>
 <c:set var="minDOB" value="${LocalDate.now().minus(18 + 120, ChronoUnit.YEARS)}"/>
+<spring:message code='userData.password.placeholder' var="passwordPlaceholder" />
 
 <%--@elvariable id="user" type="eu.sanjin.kurelic.cbc.business.viewmodel.user.RegistrationUserForm"--%>
 <form:form action="register" method="post" modelAttribute="user">
@@ -26,7 +27,15 @@
         </tr>
         <tr class="userBox-content-item">
             <td colspan="2">
-                <form:errors path="*" cssClass="userBox-content-item-error" element="p"/>
+                    <%--@elvariable id="regErrors" type="java.util.List"--%>
+                <c:if test="${not empty regErrors && regErrors.size() > 0}">
+                    <p class="userBox-content-item-error">
+                            <%--@elvariable id="regError" type="org.springframework.validation.ObjectError"--%>
+                        <c:forEach items="${regErrors}" var="regError">
+                            <spring:message code="${regError.defaultMessage}" text="${regError.defaultMessage}"/><br/>
+                        </c:forEach>
+                    </p>
+                </c:if>
             </td>
         </tr>
         <tr class="userBox-content-item">
@@ -68,7 +77,7 @@
                 <form:label path="identification"><spring:message code="userData.password.text"/></form:label>
             </td>
             <td>
-                <form:password path="identification" required="required"/>
+                <form:password path="identification" required="required" placeholder="${passwordPlaceholder}"/>
             </td>
         </tr>
         <tr class="userBox-content-item">
@@ -76,7 +85,8 @@
                 <form:label path="newsletter"><spring:message code="userData.newsletter.text"/></form:label>
             </td>
             <td>
-                <cbc:switchElement checked="${not empty user.newsletter and user.newsletter eq true}" name="newsletter"/>
+                <cbc:switchElement checked="${not empty user.newsletter and user.newsletter eq true}"
+                                   name="newsletter"/>
             </td>
         </tr>
         <tr class="userBox-content-buttons">

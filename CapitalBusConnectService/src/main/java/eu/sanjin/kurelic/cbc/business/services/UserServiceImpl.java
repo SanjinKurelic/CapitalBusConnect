@@ -17,6 +17,9 @@ import java.time.LocalDate;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final String PASSWORD_APPENDER = "{bcrypt}";
+
     private final UserInfoDao userDao;
     private final UserLoginInfoDao loginHistory;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -92,9 +95,10 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userForm.getEmail());
         user.setName(userForm.getName());
         user.setSurname(userForm.getSurname());
-        user.setPassword(passwordEncoder.encode(userForm.getIdentification()));
+        user.setPassword(PASSWORD_APPENDER + passwordEncoder.encode(userForm.getIdentification()));
         user.setDateOfBirth(userForm.getDateOfBirth());
         user.setReceiveNewsletter(userForm.getNewsletter());
+        //TODO Should be enabled by confirming an email
         user.setEnabled(true);
         return user;
     }

@@ -92,10 +92,19 @@ $navigation-height: 64px;
             &.active {
                 @extend %navigation-buttons-hovered;
             }
+
+            @include cbc_mobile {
+                font-size: 0.95em;
+                min-width: 0;
+            }
         }
 
         &-backButton {
             @extend %navigation-buttons;
+
+            @include cbc_mobile {
+                display: none;
+            }
         }
     }
 }

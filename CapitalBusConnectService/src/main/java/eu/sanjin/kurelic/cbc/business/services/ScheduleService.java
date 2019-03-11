@@ -3,11 +3,14 @@ package eu.sanjin.kurelic.cbc.business.services;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItems;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Locale;
 
+@Service
 public interface ScheduleService {
 
     ScheduleItems getBusLineSchedules(Integer fromCityId, Integer toCityId, LocalDate date);
@@ -20,6 +23,7 @@ public interface ScheduleService {
 
     double getTripPrice(LocalTime fromTime, LocalTime toTime, LocalDate fromDate);
 
+    @Transactional
     default ScheduleItems getTravelHistory(User user, Locale language) {
         return getTravelHistory(user.getUsername(), language);
     }

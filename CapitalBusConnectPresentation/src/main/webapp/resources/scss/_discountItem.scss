@@ -1,0 +1,44 @@
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
+
+.discount {
+  display: flex;
+
+  &-item {
+    width: 180px;
+    height: 120px;
+    background: color(dark-shadow);
+    position: relative;
+    margin: 20px 5px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      border-bottom: 35px solid color(light);
+      border-left: 35px solid transparent;
+      width: 0;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: color(primary);
+    }
+
+    &-description {
+      padding: 20px;
+      font-weight: bold;
+      font-size: 0.9em;
+      text-transform: uppercase;
+    }
+
+    &-discount {
+      color: color(error);
+      font-size: 2em;
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      font-weight: bold;
+    }
+  }
+}

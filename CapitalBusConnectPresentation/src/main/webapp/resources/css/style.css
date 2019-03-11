@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .cityInfoBox-description, .cityInfoBox-image {
   display: inline-block;
   vertical-align: top; }
@@ -255,6 +256,43 @@
   .toast.warning {
     color: #FFC107; }
 
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
+.discount {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex; }
+  .discount-item {
+    width: 180px;
+    height: 120px;
+    background: #DEDEDE;
+    position: relative;
+    margin: 20px 5px; }
+    .discount-item:before {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      border-bottom: 35px solid #F0F0F0;
+      border-left: 35px solid transparent;
+      width: 0; }
+    .discount-item:hover {
+      cursor: pointer;
+      background-color: #FFC107; }
+    .discount-item-description {
+      padding: 20px;
+      font-weight: bold;
+      font-size: 0.9em;
+      text-transform: uppercase; }
+    .discount-item-discount {
+      color: #DC3545;
+      font-size: 2em;
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      font-weight: bold; }
+
 input {
   padding: 10px;
   border: 1px solid #424242;
@@ -352,6 +390,7 @@ h2 {
   .select.disabled {
     cursor: default; }
 
+/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 .errorPage {
   text-align: center; }
   .errorPage-content {
@@ -556,6 +595,13 @@ body {
     background: #DEDEDE;
     -webkit-box-shadow: 0px -4px 0px 0px #FF6F00 inset;
             box-shadow: 0px -4px 0px 0px #FF6F00 inset; }
+  @media (max-width: 500px) {
+    .navigation-link-based-button {
+      font-size: 0.95em;
+      min-width: 0; } }
+  @media (max-width: 500px) {
+    .navigation-link-based-backButton {
+      display: none; } }
 
 .paymentBox-content {
   background: #DEDEDE;
@@ -740,6 +786,14 @@ body {
         .search-box-full {
           display: none; } }
 
+/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+.successPage {
+  text-align: center; }
+  .successPage-content {
+    font-style: italic; }
+  .successPage-buttons {
+    padding-top: 20px; }
+
 .switchBox {
   position: relative;
   width: 60px;
@@ -852,7 +906,7 @@ body {
       text-align: center;
       text-transform: uppercase;
       display: inline-block;
-      width: 100px;
+      width: 200px;
       background: #F0F0F0;
       z-index: 3;
       position: relative;

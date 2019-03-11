@@ -19,14 +19,14 @@ public class TextValidator implements ConstraintValidator<Text, String> {
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         // Validation
         // Use other validations for null
-        if(s == null) {
+        if(s == null || s.trim().isEmpty()) {
             return true;
         }
         for(int i = 0; i < s.length(); i++){
-            if(!Character.isLetterOrDigit(s.charAt(i))){
+            if(!Character.isLetter(s.charAt(i))){
                 return false;
             }
         }
-        return false;
+        return true;
     }
 }

@@ -77,7 +77,7 @@ var Cart = {
             fetch.onSuccess = function () {
                 var parent = itemElement.parentNode;
                 parent.removeChild(itemElement);
-                if(parent.children.length <= 0){ // hasChildNodes also return non Element nodes!!!
+                if (parent.children.length <= 0){ // hasChildNodes also return non Element nodes!!!
                     window.location.reload();
                 }
             };

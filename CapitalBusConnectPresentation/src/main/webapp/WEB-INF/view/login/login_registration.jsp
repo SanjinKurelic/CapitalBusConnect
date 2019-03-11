@@ -22,4 +22,5 @@
         </section>
     </div>
 </article>
+
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>

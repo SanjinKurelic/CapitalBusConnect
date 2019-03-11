@@ -9,27 +9,26 @@ import java.time.LocalDate;
 
 public abstract class UserForm {
 
-    @NotNull(message = "{errorMessage.name.required.text}")
-    @Size(min = 2, message = "{errorMessage.name.size.text}")
-    @Text(message = "{errorMessage.name.invalid.text}")
+    @NotNull(message = "errorMessage.name.required.text")
+    @Size(min = 2, message = "errorMessage.name.size.text")
+    @Text(message = "errorMessage.name.invalid.text")
     private String name;
 
     // Can be null
-    @Text(message = "{errorMessage.surname.invalid.text}")
+    @Text(message = "errorMessage.surname.invalid.text")
     private String surname;
 
-    @NotNull(message = "{errorMessage.dateOfBirth.required.text}")
-    @Past(message = "{errorMessage.dateOfBirth.invalid.text}")
-    @DateOfBirth(message = "{errorMessage.dateOfBirth.invalid.text}")
+    @NotNull(message = "errorMessage.dateOfBirth.required.text")
+    @Past(message = "errorMessage.dateOfBirth.invalid.text")
+    @DateOfBirth(message = "errorMessage.dateOfBirth.invalid.text")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateOfBirth;
 
-    @NotBlank(message = "{errorMessage.email.required.text}")
-    @Email(message = "{errorMessage.email.invalid.text}")
+    @NotBlank(message = "errorMessage.email.required.text")
+    @Email(message = "errorMessage.email.invalid.text")
     private String email;
 
-    @NotNull(message = "{errorMessage.newsletter.required.text}")
-    private Boolean newsletter;
+    private Boolean newsletter = Boolean.FALSE;
 
 
     public String getName() {

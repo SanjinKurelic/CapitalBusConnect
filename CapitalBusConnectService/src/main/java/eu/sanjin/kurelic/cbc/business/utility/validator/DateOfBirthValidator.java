@@ -29,7 +29,7 @@ public class DateOfBirthValidator implements ConstraintValidator<DateOfBirth, Lo
             return true;
         }
         long yearsOld = ChronoUnit.YEARS.between(date, LocalDate.now());
-        return (yearsOld < youngestPerson || yearsOld > oldestPerson);
+        return (yearsOld >= youngestPerson || yearsOld <= oldestPerson);
     }
 
 }

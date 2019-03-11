@@ -12,7 +12,7 @@
 <%-- Content: --%>
 <div class="switchBox">
     <%--suppress HtmlFormInputWithoutLabel --%>
-    <input id="${name}" type="checkbox" ${((not empty checked) and (checked eq true)) ? 'checked' : ''} class="switchBox-checkbox">
+    <input id="${name}" name="${name}" type="checkbox" ${((not empty checked) and (checked eq true)) ? 'checked' : ''} class="switchBox-checkbox">
     <div class="switchBox-knobs"></div>
     <div class="switchBox-layer"></div>
 </div>

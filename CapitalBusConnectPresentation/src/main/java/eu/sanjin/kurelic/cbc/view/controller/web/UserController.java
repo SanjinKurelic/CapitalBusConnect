@@ -7,20 +7,20 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
-import org.apache.commons.beanutils.BeanUtils;
+import eu.sanjin.kurelic.cbc.view.components.ErrorMessagesOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
 
 @Controller
 @RequestMapping("/user")
@@ -58,22 +58,36 @@ public class UserController {
         return viewModel;
     }
 
-    @GetMapping("settings")
+    @GetMapping("/settings")
     public ModelAndView settingsPage() {
         var viewModel = new ModelAndView("user/settings");
         // Menu
         viewModel.addObject("menuItem", getUserMenu());
         // User info
         var userInfo = userService.getUserInformation(SecurityContextHolder.getContext().getAuthentication().getName());
-        viewModel.addObject("userData", userInfo);
+        viewModel.addObject("user", userInfo);
 
         return viewModel;
     }
 
-    @PostMapping("settings")
-    public ModelAndView saveSettings(@Valid @RequestBody SettingsUserForm user) {
-        var viewModel = settingsPage();
+    @PostMapping("/settings")
+    public ModelAndView saveSettings(@Valid @ModelAttribute("user") SettingsUserForm user, BindingResult result) {
+        var viewModel = new ModelAndView("user/settings");
+        viewModel.addObject("user", user);
+        // Menu
+        viewModel.addObject("menuItem", getUserMenu());
+
         // Add errors if not valid
+        if(result.hasErrors()) {
+            viewModel.addObject("saveErrors", ErrorMessagesOrder.sortErrorsInSettingsForm(result.getAllErrors()));
+            return viewModel;
+        }
+        // All ok ...
+        // Use real email
+        user.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        // Update user info
+        Boolean successfully = userService.updateUser(user);
+        viewModel.addObject("successfully", successfully);
         return viewModel;
     }
 

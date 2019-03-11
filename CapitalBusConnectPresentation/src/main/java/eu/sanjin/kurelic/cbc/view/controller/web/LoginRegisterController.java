@@ -7,6 +7,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.RegistrationUserForm;
 import eu.sanjin.kurelic.cbc.view.components.ActiveTabItem;
+import eu.sanjin.kurelic.cbc.view.components.ErrorMessagesOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,7 @@ public class LoginRegisterController {
         // Menu and active tab item
         viewModel.addObject("menuItem", getLoginPageMenu(ActiveTabItem.LOGIN_PAGE));
         viewModel.addObject("activeTabItem", ActiveTabItem.LOGIN_PAGE);
+        viewModel.addObject("user", new RegistrationUserForm());
 
         return viewModel;
     }
@@ -61,9 +63,14 @@ public class LoginRegisterController {
             viewModel.addObject("menuItem", getLoginPageMenu(ActiveTabItem.REGISTER_PAGE));
             viewModel.addObject("activeTabItem", ActiveTabItem.REGISTER_PAGE);
 
-            if(userService.hasUser(user)) {
-                result.rejectValue("username", "errorMessage.email.exists.text", "User already exists.");
+            // Database access optimization, if result does not have errors, than user already exists
+            // If we introduce another error, change used statement whit commented one !
+            //if(userService.hasUser(user)) {
+            if(!result.hasErrors()) {
+                result.rejectValue("email", "errorMessage.email.exists.text", "User already exists.");
             }
+
+            viewModel.addObject("regErrors", ErrorMessagesOrder.sortErrorsInRegistrationForm(result.getAllErrors()));
             return viewModel;
         }
         // Store user
