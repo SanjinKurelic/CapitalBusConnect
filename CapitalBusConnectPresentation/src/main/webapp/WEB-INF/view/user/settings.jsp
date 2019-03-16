@@ -106,10 +106,10 @@
 <c:if test="${not empty successfully}">
     <c:choose>
         <c:when test="${successfully eq true}">
-            <spring:message code="dialog.content.userSaved.text" var="dialogText" />
+            <spring:message code="dialog.content.userSave.success.text" var="dialogText" />
         </c:when>
         <c:otherwise>
-            <spring:message code="dialog.content.userWasNotSaved.text" var="dialogText" />
+            <spring:message code="dialog.content.userSave.error.text" var="dialogText" />
         </c:otherwise>
     </c:choose>
     <script>

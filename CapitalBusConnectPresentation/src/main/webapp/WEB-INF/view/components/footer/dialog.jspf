@@ -1,5 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
-<dialog closed id="dialog" class="dialog">
+<dialog id="dialog" class="dialog">
     <div class="dialog-box">
         <div class="dialog-box-title">
             <span class="icon">&#xf06a;</span>
@@ -7,8 +7,14 @@
             <h4 class="dialog-box-title-warning"><spring:message code="dialog.title.warning.text"/></h4>
             <h4 class="dialog-box-title-notice"><spring:message code="dialog.title.notice.text"/></h4>
         </div>
-        <div class="dialog-box-content">
-            <p id="dialog-content"></p>
+        <%-- Do not add any HTML comments to dialog-content children. IE 6,7 and 8 have inconsistent return using JS children --%>
+        <div id="dialog-content" class="dialog-box-content">
+            <p id="dialog-content-userSave-success"><spring:message code="dialog.content.userSave.success.text" /></p>
+            <p id="dialog-content-userSave-error"><spring:message code="dialog.content.userSave.error.text" /></p>
+            <p id="dialog-content-cartAdd-error"><spring:message code="dialog.content.cartAdd.error.text" /></p>
+            <p id="dialog-content-cartDelete-confirm"><spring:message code="dialog.content.cartDelete.confirm.text" /></p>
+            <p id="dialog-content-cartDelete-error"><spring:message code="dialog.content.cartDelete.error.text" /></p>
+            <p id="dialog-content-cartUpdate-error"><spring:message code="dialog.content.cartUpdate.error.text" /></p>
         </div>
         <div class="dialog-box-buttons">
             <div class="dialog-box-buttons-button negative" id="dialog-cancel"><spring:message code="dialog.button.cancel.text"/></div>
@@ -16,7 +22,7 @@
         </div>
     </div>
 </dialog>
-<dialog closed id="toast" class="toast">
+<dialog id="toast" class="toast">
     <span id="toast-content" class="toast-text"></span>
 </dialog>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>

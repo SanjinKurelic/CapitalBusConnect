@@ -12,6 +12,10 @@
     <artifactId>CapitalBusConnectPresentation</artifactId>
     <packaging>war</packaging>
 
+    <properties>
+        <cbc.version.htmlcompressor>1.5.2</cbc.version.htmlcompressor>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>eu.sanjin.kurelic.cbc</groupId>
@@ -24,6 +28,13 @@
             <version>16.0.2</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.htmlcompressor</groupId>
+            <artifactId>htmlcompressor</artifactId>
+            <version>${cbc.version.htmlcompressor}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

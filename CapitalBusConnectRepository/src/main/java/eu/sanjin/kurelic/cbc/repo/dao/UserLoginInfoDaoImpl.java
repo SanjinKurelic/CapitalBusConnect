@@ -23,7 +23,7 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getUserLoginHistory(String username) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE username = :username ORDER BY dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.username = :username ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setParameter("username", username);
@@ -45,7 +45,7 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getAllUserLoginHistory(LocalDate fromDate) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE dateTime >= :fromDate ORDER BY dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.dateTime >= :fromDate ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setParameter("fromDate", fromDate);

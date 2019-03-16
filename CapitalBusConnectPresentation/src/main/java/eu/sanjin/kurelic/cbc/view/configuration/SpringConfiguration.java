@@ -26,7 +26,7 @@ public class SpringConfiguration implements WebMvcConfigurer {
     private static final String JSP_FOLDER = "/WEB-INF/view/";
     private static final String JSP_SUFFIX = ".jsp";
     private static final String RESOURCES_HANDLER = "/resources/**";
-    private static final String RESOURCES_LOCATION = "/resources/";
+    public static final String RESOURCES_LOCATION = "/resources/";
     // Translation
     private static final String LANGUAGE_PARAMETER = "language";
     private static final String BUNDLE_FILE_BASENAME = "text";

@@ -13,6 +13,15 @@ var DialogMessageType = cbc_enum({
     NOTICE: "notice"
 });
 
+var DialogMessage = cbc_enum({
+    CART_ADD_ERROR: "dialog-content-cartAdd-error",
+    CART_DELETE_CONFIRM: "dialog-content-cartDelete-confirm",
+    CART_DELETE_ERROR: "dialog-content-cartDelete-error",
+    CART_UPDATE_ERROR: "dialog-content-cartUpdate-error",
+    USER_SAVE_SUCCESS: "dialog-content-userSave-success",
+    USER_SAVE_ERROR: "dialog-content-userSave-error"
+});
+
 var DialogButtonType = cbc_enum({
     OK: "ok",
     OK_CANCEL: "ok_cancel"
@@ -28,6 +37,19 @@ var Dialog = function (dialogType, text, messageType) {
     this.onCancel = cbc_voidFunction();
 };
 
+Dialog.prototype.setDialogMessage = function () {
+    "use strict";
+    var messages, i;
+    messages = $("dialog-content").children; // do not use comments inside dialog messages for IE6-8 error
+    for (i = 0; i < messages.size(); i += 1) {
+        if (messages[i].id === this.text) {
+            messages[i].style.display = "block";
+        } else {
+            messages[i].style.display = "none";
+        }
+    }
+};
+
 Dialog.prototype.show = function () {
     "use strict";
     var element, ok, cancel, onOk, onCancel, close, dialog, id;
@@ -36,6 +58,7 @@ Dialog.prototype.show = function () {
     element.style.display = "block";
     cbc_addClass(element, this.messageType);
     $(this.dialogType + "-content").innerHTML = this.text;
+    this.setDialogMessage();
 
     if (this.dialogType === DialogType.DIALOG) {
         // Block scroll

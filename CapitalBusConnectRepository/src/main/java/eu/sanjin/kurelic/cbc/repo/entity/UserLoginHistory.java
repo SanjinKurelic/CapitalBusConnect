@@ -1,45 +1,33 @@
 package eu.sanjin.kurelic.cbc.repo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import eu.sanjin.kurelic.cbc.repo.entity.composite.LoginHistoryPrimaryKey;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_login_history")
 public class UserLoginHistory {
 
-    @Id
-    private String username;
-    @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    @EmbeddedId
+    private LoginHistoryPrimaryKey id;
     @Column(name = "ip_address")
     private String ipAddress;
 
     public UserLoginHistory() {
     }
 
-    public UserLoginHistory(String username, LocalDateTime dateTime, String ipAddress) {
-        this.username = username;
-        this.dateTime = dateTime;
+    public UserLoginHistory(LoginHistoryPrimaryKey id, String ipAddress) {
+        this.id = id;
         this.ipAddress = ipAddress;
     }
 
-    public String getUsername() {
-        return username;
+    public LoginHistoryPrimaryKey getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setId(LoginHistoryPrimaryKey id) {
+        this.id = id;
     }
 
     public String getIpAddress() {
@@ -48,5 +36,14 @@ public class UserLoginHistory {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "UserLoginHistory{" +
+                "username='" + id.getUsername() + '\'' +
+                ", dateTime=" + id.getDateTime() +
+                ", ipAddress='" + ipAddress + '\'' +
+                '}';
     }
 }

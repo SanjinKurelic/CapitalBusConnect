@@ -2,15 +2,20 @@ package eu.sanjin.kurelic.cbc.business.services;
 
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
+import eu.sanjin.kurelic.cbc.repo.entity.User;
+import eu.sanjin.kurelic.cbc.repo.entity.UserLoginHistory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public interface UserService {
 
     SettingsUserForm getUserInformation(String username);
+
+    User getUser(String username);
 
     boolean addUser(UserForm user);
 
@@ -30,15 +35,18 @@ public interface UserService {
 
     boolean hasUser(String username);
 
-    //TODO
-    void getUserLoginHistory(String username);
+    List<UserLoginHistory> getUserLoginHistory(String username);
 
-    void addUserLoginHistory();
+    boolean addUserLoginHistory(UserLoginHistory userLoginHistory);
 
-    default void getAllUserLoginHistory() {
-        getAllUserLoginHistory(LocalDate.MIN);
+    @Transactional
+    default List<UserLoginHistory> getAllUserLoginHistory() {
+        return getAllUserLoginHistory(LocalDate.MIN);
     }
 
-    void getAllUserLoginHistory(LocalDate fromDate);
+    List<UserLoginHistory> getAllUserLoginHistory(LocalDate fromDate);
+
+    // Utility
+    User convertUserFormToUser(UserForm userForm);
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public SettingsUserForm getUserInformation(String username) {
         SettingsUserForm userForm = new SettingsUserForm();
-        User user = userDao.getUserInformation(username);
+        User user = getUser(username);
 
         userForm.setEmail(user.getUsername());
         userForm.setName(user.getName());
@@ -48,14 +49,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public User getUser(String username) {
+        return userDao.getUserInformation(username);
+    }
+
+    @Override
+    @Transactional
     public boolean addUser(UserForm user) {
-        return userDao.addUserInformation(userToUserForm(user));
+        return userDao.addUserInformation(convertUserFormToUser(user));
     }
 
     @Override
     @Transactional
     public boolean updateUser(UserForm user) {
-        return userDao.updateUserInformation(userToUserForm(user));
+        return userDao.updateUserInformation(convertUserFormToUser(user));
     }
 
     @Override
@@ -72,25 +79,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void getUserLoginHistory(String username) {
-        loginHistory.getUserLoginHistory(username);
+    public List<UserLoginHistory> getUserLoginHistory(String username) {
+        return loginHistory.getUserLoginHistory(username);
     }
 
     @Override
     @Transactional
-    public void addUserLoginHistory() {
-        UserLoginHistory lh = new UserLoginHistory();
-        loginHistory.addUserLoginHistory(lh);
+    public boolean addUserLoginHistory(UserLoginHistory userLoginHistory) {
+        return loginHistory.addUserLoginHistory(userLoginHistory);
     }
 
     @Override
     @Transactional
-    public void getAllUserLoginHistory(LocalDate fromDate) {
-        loginHistory.getAllUserLoginHistory();
+    public List<UserLoginHistory> getAllUserLoginHistory(LocalDate fromDate) {
+        return loginHistory.getAllUserLoginHistory();
     }
 
     // Utility
-    private User userToUserForm(UserForm userForm){
+    public User convertUserFormToUser(UserForm userForm){
         User user = new User();
         user.setUsername(userForm.getEmail());
         user.setName(userForm.getName());
