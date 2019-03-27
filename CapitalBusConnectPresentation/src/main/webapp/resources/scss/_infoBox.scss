@@ -1,0 +1,35 @@
+//Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+.infoBox {
+  margin: 25px 0;
+  width: 100%;
+  padding: 0 10px;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  &-item {
+
+    &:hover {
+      background: color(light-shadow);
+    }
+
+    td {
+      padding: 10px 0;
+      border-bottom: 1px solid color(dark-shadow);
+      text-align: center;
+
+      &:first-of-type, &:last-of-type {
+        padding: 10px;
+      }
+    }
+
+    @at-root td#{&}-button {
+      text-align: right;
+
+      & .button {
+        min-width: 0;
+      }
+    }
+
+  }
+}
