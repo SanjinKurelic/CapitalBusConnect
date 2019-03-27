@@ -25,11 +25,11 @@ public interface ScheduleService {
 
     // Travel history
     @Transactional
-    default ScheduleItems getUserTravelHistory(String username, int pageNumber, Locale language) {
-        return getUserTravelHistory(username, null, pageNumber, language);
+    default ScheduleItems getUserTravelHistory(String username, int pageNumber, int limit, Locale language) {
+        return getUserTravelHistory(username, null, pageNumber, limit, language);
     }
 
-    ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, Locale language);
+    ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language);
 
     int getUserTravelHistoryCount(String username);
 

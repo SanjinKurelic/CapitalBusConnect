@@ -38,9 +38,9 @@ public interface UserService {
     // Login history
     boolean addUserLoginHistory(UserLoginHistory userLoginHistory);
 
-    InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber);
+    InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit);
 
-    InfoItems getAllLoginHistory(LocalDate date, int pageNumber);
+    InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit);
 
     int getAllLoginHistoryCount();
 

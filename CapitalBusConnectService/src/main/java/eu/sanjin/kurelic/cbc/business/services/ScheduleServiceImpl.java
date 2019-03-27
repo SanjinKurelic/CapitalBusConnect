@@ -8,7 +8,6 @@ import eu.sanjin.kurelic.cbc.repo.dao.DestinationInfoDao;
 import eu.sanjin.kurelic.cbc.repo.dao.ScheduleDao;
 import eu.sanjin.kurelic.cbc.repo.dao.TravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
-import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private static final int TRAVEL_HISTORY_ITEM_LIMIT = 10;
     private final TravelHistoryDao historyDao;
     private final ScheduleDao scheduleDao;
     private final DestinationInfoDao destinationDao;
@@ -137,15 +135,18 @@ public class ScheduleServiceImpl implements ScheduleService {
     // Travel history
     @Override
     @Transactional
-    public ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, Locale language) {
+    public ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language) {
         List<UserTravelHistory> travelItems;
         ScheduleItems items = new ScheduleItems();
         ScheduleBuilder sb = new ScheduleBuilder();
+
         sb.setDisabled(true).setButtonType(ScheduleButtonType.VIEW_TICKET);
+        pageNumber -= 1; // Starting from 0
+
         if(date == null) {
-            travelItems = historyDao.getUserTravelHistory(username, pageNumber, TRAVEL_HISTORY_ITEM_LIMIT);
+            travelItems = historyDao.getUserTravelHistory(username, pageNumber, limit);
         } else {
-            travelItems = historyDao.getUserTravelHistory(username, date, pageNumber, TRAVEL_HISTORY_ITEM_LIMIT);
+            travelItems = historyDao.getUserTravelHistory(username, date, pageNumber, limit);
         }
         // Database access optimization
         ArrayList<Integer> ids = new ArrayList<>();

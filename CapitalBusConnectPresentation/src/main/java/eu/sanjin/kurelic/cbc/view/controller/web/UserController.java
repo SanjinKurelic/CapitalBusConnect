@@ -8,6 +8,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.view.components.ErrorMessagesOrder;
+import eu.sanjin.kurelic.cbc.view.components.VisibleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -57,9 +58,14 @@ public class UserController {
         viewModel.addObject("menuItem", getUserMenu());
         // Schedule items
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        viewModel.addObject("scheduleItems", scheduleService.getUserTravelHistory(username, pageNumber.orElse(0), LocaleContextHolder.getLocale()));
+        viewModel.addObject("scheduleItems", scheduleService.getUserTravelHistory(
+                username,
+                pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
+                VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS,
+                LocaleContextHolder.getLocale())
+        );
         // Pagination
-        viewModel.addObject("currentPage", pageNumber.orElse(1));
+        viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         viewModel.addObject("numberOfPages", scheduleService.getUserTravelHistoryCount(username));
         return viewModel;
     }
@@ -84,7 +90,7 @@ public class UserController {
         viewModel.addObject("menuItem", getUserMenu());
 
         // Add errors if not valid
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             viewModel.addObject("saveErrors", ErrorMessagesOrder.sortErrorsInSettingsForm(result.getAllErrors()));
             return viewModel;
         }

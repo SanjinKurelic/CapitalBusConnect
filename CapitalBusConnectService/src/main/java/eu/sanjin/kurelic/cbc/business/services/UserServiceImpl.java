@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String PASSWORD_APPENDER = "{bcrypt}";
-    private static final int USER_ITEMS_LIMIT = 10;
 
     private final UserInfoDao userDao;
     private final UserLoginInfoDao loginHistory;
@@ -121,13 +120,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber) {
+    public InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit) {
         List<UserLoginHistory> loginHistories;
+        pageNumber -= 1; // Starting from 0
         // Get login history
         if(date == null) {
-            loginHistories = loginHistory.getUserLoginHistory(username, pageNumber, USER_ITEMS_LIMIT);
+            loginHistories = loginHistory.getUserLoginHistory(username, pageNumber, limit);
         } else {
-            loginHistories = loginHistory.getUserLoginHistory(username, date, pageNumber, USER_ITEMS_LIMIT);
+            loginHistories = loginHistory.getUserLoginHistory(username, date, pageNumber, limit);
         }
         // Convert to info items
         return convertHistoryToInfoItems(loginHistories);
@@ -135,13 +135,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public InfoItems getAllLoginHistory(LocalDate date, int pageNumber) {
+    public InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit) {
         List<UserLoginHistory> loginHistories;
+        pageNumber -= 1; // Starting from 0
         // Get login history
         if(date == null) {
-            loginHistories = loginHistory.getAllLoginHistory(pageNumber, USER_ITEMS_LIMIT);
+            loginHistories = loginHistory.getAllLoginHistory(pageNumber, limit);
         } else {
-            loginHistories = loginHistory.getAllLoginHistory(date, pageNumber, USER_ITEMS_LIMIT);
+            loginHistories = loginHistory.getAllLoginHistory(date, pageNumber, limit);
         }
         // Convert to info items
         return convertHistoryToInfoItems(loginHistories);

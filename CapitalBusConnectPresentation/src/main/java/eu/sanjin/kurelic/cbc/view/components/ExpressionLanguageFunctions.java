@@ -27,7 +27,6 @@ public class ExpressionLanguageFunctions {
     private static final String STYLESHEET_PATH = RESOURCES_PATH + "css/";
     // Pagination
     public static final String INVALID_NUMBER_OF_PAGES = "Total number of pages in pagination is less than 1";
-    private static final int VISIBLE_PAGES = 9;
 
     public static String getImageResourceUrl(String file){
         return IMAGE_PATH  + file;
@@ -79,8 +78,10 @@ public class ExpressionLanguageFunctions {
         return time.format(getFormatter(null, FormatStyle.SHORT));
     }
 
-    public static Integer[] getPageList(int currentPageNumber, int numberOfPages) {
-        int rangeStart, rangeEnd;
+    public static Integer[] getPageList(int currentPageNumber, int numberOfItems) {
+        int rangeStart, rangeEnd, numberOfPages;
+        // Bottom statement is more faster and precise than: (int) Math.ceil(numberOfItems / (float) VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS)
+        numberOfPages = (numberOfItems + VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS - 1) / VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS;
         // Error, no pages
         if(numberOfPages < 1) {
             throw new RuntimeException(INVALID_NUMBER_OF_PAGES);
@@ -93,13 +94,13 @@ public class ExpressionLanguageFunctions {
         }
         // Define range
         rangeStart = rangeEnd = currentPageNumber;
-        for(int i = 1; i <= VISIBLE_PAGES;) {
+        for(int i = 1; i <= VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS;) {
             if (rangeStart > 1 || rangeEnd <= numberOfPages) {
                 if(rangeStart > 1) {
                     rangeStart--;
                     i++;
                 }
-                if(i <= VISIBLE_PAGES && rangeEnd <= numberOfPages) {
+                if(i <= VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS && rangeEnd <= numberOfPages) {
                     rangeEnd++;
                     i++;
                 }

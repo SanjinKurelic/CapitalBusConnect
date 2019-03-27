@@ -8,6 +8,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.menu.Menu;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
+import eu.sanjin.kurelic.cbc.view.components.VisibleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -82,16 +83,25 @@ public class AdminController {
         InfoItems loginItems;
         int numberOfPages;
         if (username.isPresent()) {
-            loginItems = user.getUserLoginHistory(username.get(), date.orElse(null), pageNumber.orElse(0));
+            loginItems = user.getUserLoginHistory(
+                    username.get(),
+                    date.orElse(null),
+                    pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
+                    VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS
+            );
             numberOfPages = user.getUserLoginHistoryCount(username.get());
         } else {
-            loginItems = user.getAllLoginHistory(date.orElse(null), pageNumber.orElse(0));
+            loginItems = user.getAllLoginHistory(
+                    date.orElse(null),
+                    pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
+                    VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS
+            );
             numberOfPages = user.getAllLoginHistoryCount();
         }
         viewModel.addObject("loginItems", loginItems);
         // Pagination
         viewModel.addObject("numberOfPages", numberOfPages);
-        viewModel.addObject("currentPage", pageNumber.orElse(1));
+        viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         return viewModel;
     }
 
@@ -112,16 +122,26 @@ public class AdminController {
         // Search bar
         viewModel.addObject("date", date);
         // Login history items
-        var loginItems = user.getUserLoginHistory(username, date.orElse(null), loginPageNumber.orElse(0));
+        var loginItems = user.getUserLoginHistory(
+                username,
+                date.orElse(null),
+                loginPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
+                VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS
+        );
         viewModel.addObject("loginItems", loginItems);
         // Travel history items
-        var travelItems = scheduleService.getUserTravelHistory(username, date.orElse(null), travelPageNumber.orElse(0), LocaleContextHolder.getLocale());
+        var travelItems = scheduleService.getUserTravelHistory(
+                username,
+                date.orElse(null),
+                travelPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
+                VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS,
+                LocaleContextHolder.getLocale());
         viewModel.addObject("travelItems", travelItems);
         // Pagination
         viewModel.addObject("numberOfLoginPages", user.getUserLoginHistoryCount(username));
-        viewModel.addObject("currentLoginPage", loginPageNumber.orElse(1));
+        viewModel.addObject("currentLoginPage", loginPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         viewModel.addObject("numberOfTravelPages", scheduleService.getUserTravelHistoryCount(username));
-        viewModel.addObject("currentTravelPage", travelPageNumber.orElse(1));
+        viewModel.addObject("currentTravelPage", travelPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         return viewModel;
     }
 
@@ -135,12 +155,16 @@ public class AdminController {
         // Menu
         viewModel.addObject("menuItem", getAdminMenu());
         // Route Items
-        var routeItems = cityInfo.getCityLines(pageNumber.orElse(1), LocaleContextHolder.getLocale());
+        var routeItems = cityInfo.getCityLines(
+                pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
+                VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS,
+                LocaleContextHolder.getLocale()
+        );
         viewModel.addObject("routeItems", routeItems);
         // Pagination
         var numberOfPages = cityInfo.getNumberOfCityLines();
         viewModel.addObject("numberOfPages", numberOfPages);
-        viewModel.addObject("currentPageNumber", pageNumber.orElse(1));
+        viewModel.addObject("currentPageNumber", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
 
         return viewModel;
     }

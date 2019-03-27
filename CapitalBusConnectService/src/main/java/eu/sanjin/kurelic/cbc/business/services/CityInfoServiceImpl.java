@@ -23,7 +23,6 @@ import java.util.Locale;
 @Service
 public class CityInfoServiceImpl implements CityInfoService {
 
-    private static final int ROUTE_ITEMS_LIMIT = 10;
     private final DestinationInfoDao destinationDao;
 
     @Autowired
@@ -51,11 +50,12 @@ public class CityInfoServiceImpl implements CityInfoService {
 
     @Override
     @Transactional
-    public InfoItems getCityLines(int pageNumber, Locale language) {
+    public InfoItems getCityLines(int pageNumber, int limit, Locale language) {
         InfoItems items = new InfoItems();
         InfoItem item;
+        pageNumber -= 1; // Starting from 0
         // Get all lines
-        var lines = destinationDao.getCityLines(pageNumber, ROUTE_ITEMS_LIMIT);
+        var lines = destinationDao.getCityLines(pageNumber, limit);
         // Database optimization
         HashSet<Integer> ids = new HashSet<>();
         for(BusLine line : lines) {
@@ -83,9 +83,7 @@ public class CityInfoServiceImpl implements CityInfoService {
     @Override
     @Transactional
     public int getNumberOfCityLines() {
-        var busLines = destinationDao.getNumberOfCityLines();
-        // down expression is same, but more faster and precise than: (int) Math.ceil(busLines / (double) ROUTE_ITEMS_LIMIT)
-        return (busLines + ROUTE_ITEMS_LIMIT - 1) / ROUTE_ITEMS_LIMIT;
+        return destinationDao.getNumberOfCityLines();
     }
 
     // Utility

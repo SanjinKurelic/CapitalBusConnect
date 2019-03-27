@@ -13,7 +13,7 @@ public interface CityInfoService {
 
     String[] getAllCityNames(Locale language);
 
-    InfoItems getCityLines(int pageNumber, Locale language);
+    InfoItems getCityLines(int pageNumber, int limit, Locale language);
 
     int getNumberOfCityLines();
 
