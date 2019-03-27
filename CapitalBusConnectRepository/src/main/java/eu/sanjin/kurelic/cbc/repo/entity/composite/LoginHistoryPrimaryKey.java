@@ -4,23 +4,25 @@ import eu.sanjin.kurelic.cbc.repo.entity.User;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Embeddable
 public class LoginHistoryPrimaryKey implements Serializable {
 
     @ManyToOne
+    @JoinColumn(name = "username")
     private User username;
     @Column(name = "date_time")
-    private LocalDate dateTime;
+    private LocalDateTime dateTime;
 
     public LoginHistoryPrimaryKey() {
     }
 
-    public LoginHistoryPrimaryKey(User username, LocalDate dateTime) {
+    public LoginHistoryPrimaryKey(User username, LocalDateTime dateTime) {
         this.username = username;
         this.dateTime = dateTime;
     }
@@ -33,11 +35,11 @@ public class LoginHistoryPrimaryKey implements Serializable {
         this.username = username;
     }
 
-    public LocalDate getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDate dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 

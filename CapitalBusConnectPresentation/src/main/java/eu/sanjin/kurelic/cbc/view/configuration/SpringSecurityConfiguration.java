@@ -1,12 +1,14 @@
 package eu.sanjin.kurelic.cbc.view.configuration;
 
-import eu.sanjin.kurelic.cbc.repo.values.UserRolesValues;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -15,10 +17,12 @@ import javax.sql.DataSource;
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final DataSource dataSource;
+    private final AuthenticationSuccessHandler successHandler;
 
     @Autowired
-    public SpringSecurityConfiguration(DataSource dataSource) {
+    public SpringSecurityConfiguration(DataSource dataSource, @Qualifier("springSecurityHandler") AuthenticationSuccessHandler successHandler) {
         this.dataSource = dataSource;
+        this.successHandler = successHandler;
     }
 
     @Override
@@ -30,8 +34,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/user/**").hasRole(UserRolesValues.USER.name())
-                .antMatchers("/admin/**").hasRole(UserRolesValues.ADMIN.name())
+                .antMatchers("/user/**").hasRole(AuthoritiesValues.USER.name())
+                .antMatchers("/admin/**").hasRole(AuthoritiesValues.ADMIN.name())
                 .and()
                 .csrf().disable()//DEVELOPMENT ONLY
                 .exceptionHandling()
@@ -40,6 +44,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .formLogin()
                     .loginPage("/login")
                     .loginProcessingUrl("/authenticate")
+                    .successHandler(successHandler)
                     .permitAll()
                 .and()
                     .logout().permitAll(); // url = logout

@@ -1,6 +1,4 @@
-/* 
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
+/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 
 /*jslint browser: true */
 /*global $$, cbc_addClass, cbc_removeClass, cbc_hasClass, cbc_addClickEventListener */
@@ -15,6 +13,10 @@ var SelectItem = {
         // Copy attributes from select tag to class list of wrapper
         cbc_addClass(wrapElement, (selectTag.hasAttribute("data-size") ? selectTag.getAttribute("data-size") : "select-normal"));
         cbc_addClass(wrapElement, "select");
+        // Also copy disabled attribute
+        if (selectTag.hasAttribute("disabled")) {
+            cbc_addClass(wrapElement, "disabled");
+        }
         // Do the wrapping
         parentElement.replaceChild(wrapElement, selectTag);
         wrapElement.appendChild(selectTag);

@@ -16,6 +16,7 @@ public class ScheduleBuilder {
     private LocalTime toTime;
     private LocalDateTime date;
     private double price;
+    private double basePrice;
     private int numberOfAdults;
     private int numberOfChildren;
     private ScheduleButtonType button;
@@ -30,7 +31,7 @@ public class ScheduleBuilder {
         fromTime = null;
         toTime = null;
         date = null;
-        price = 0;
+        basePrice = price = 0;
         numberOfAdults = 0;
         numberOfChildren = 0;
         onUpdate = ScheduleUpdateType.NONE;
@@ -65,6 +66,10 @@ public class ScheduleBuilder {
 
     double getPrice() {
         return price;
+    }
+
+    double getBasePrice() {
+        return basePrice;
     }
 
     int getNumberOfAdults() {
@@ -123,6 +128,11 @@ public class ScheduleBuilder {
 
     public ScheduleBuilder setPrice(double price) {
         this.price = price;
+        return this;
+    }
+
+    public ScheduleBuilder setBasePrice(double basePrice) {
+        this.basePrice = basePrice;
         return this;
     }
 

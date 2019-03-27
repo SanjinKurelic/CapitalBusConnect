@@ -7,6 +7,8 @@ public interface CartService {
 
     void loadCartItems(CartItems items);
 
+    boolean hasCartItem(CartItem cartItem);
+
     boolean addCartItem(CartItem cartItem);
 
     boolean updateCartItem(CartItem cartItem);

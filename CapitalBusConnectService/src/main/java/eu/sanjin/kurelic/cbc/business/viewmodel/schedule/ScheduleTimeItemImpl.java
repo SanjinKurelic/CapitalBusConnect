@@ -15,12 +15,13 @@ class ScheduleTimeItemImpl implements ScheduleItem {
     private final LocalTime fromTime;
     private final LocalTime toTime;
     private final double price;
+    private final double basePrice;
     private final int numberOfAdults;
     private final int numberOfChildren;
     private final ScheduleButtonType scheduleButton;
     private final ScheduleUpdateType onUpdate;
     private final SchedulePayingMethod payingMethod;
-    private final boolean disabled;
+    private boolean disabled;
 
     ScheduleTimeItemImpl(ScheduleBuilder sb){
         scheduleId = sb.getScheduleId();
@@ -28,6 +29,7 @@ class ScheduleTimeItemImpl implements ScheduleItem {
         fromTime = sb.getFromTime();
         toTime = sb.getToTime();
         price = sb.getPrice();
+        basePrice = sb.getBasePrice();
         numberOfAdults = sb.getNumberOfAdults();
         numberOfChildren = sb.getNumberOfChildren();
         scheduleButton = sb.getButtonType();
@@ -46,6 +48,7 @@ class ScheduleTimeItemImpl implements ScheduleItem {
         return toTime.withNano(0).toString();
     }
 
+    // Not in Locale format for given hour, business decision :)
     @Override
     public String getDescription() {
         Duration duration = Duration.between(fromTime, toTime);
@@ -65,6 +68,14 @@ class ScheduleTimeItemImpl implements ScheduleItem {
     @Override
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public double getBasePrice() {
+        if(basePrice == 0){
+            return price;
+        }
+        return basePrice;
     }
 
     @Override
@@ -100,6 +111,11 @@ class ScheduleTimeItemImpl implements ScheduleItem {
     @Override
     public boolean disabled() {
         return disabled;
+    }
+
+    @Override
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
 }

@@ -1,18 +1,27 @@
 package eu.sanjin.kurelic.cbc.business.services;
 
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItem;
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemButtonType;
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemColumnType;
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
+import eu.sanjin.kurelic.cbc.repo.dao.AuthoritiesDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserInfoDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserLoginInfoDao;
+import eu.sanjin.kurelic.cbc.repo.entity.Authorities;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.entity.UserLoginHistory;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -20,16 +29,19 @@ public class UserServiceImpl implements UserService {
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String PASSWORD_APPENDER = "{bcrypt}";
+    private static final int USER_ITEMS_LIMIT = 10;
 
     private final UserInfoDao userDao;
     private final UserLoginInfoDao loginHistory;
+    private final AuthoritiesDao authorities;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(@Qualifier("userInfoDaoImpl") UserInfoDao userDao, @Qualifier("userLoginInfoDaoImpl") UserLoginInfoDao loginHistory) {
+    public UserServiceImpl(@Qualifier("userInfoDaoImpl") UserInfoDao userDao, @Qualifier("userLoginInfoDaoImpl") UserLoginInfoDao loginHistory, @Qualifier("authoritiesDaoImpl") AuthoritiesDao authorities) {
         this.userDao = userDao;
         this.loginHistory = loginHistory;
         this.passwordEncoder = new BCryptPasswordEncoder(); // Spring security problem if BCryptPasswordEncoder is defined as bean
+        this.authorities = authorities;
     }
 
     @Override
@@ -56,13 +68,36 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean addUser(UserForm user) {
-        return userDao.addUserInformation(convertUserFormToUser(user));
+        boolean returnValue;
+        var u = convertUserFormToUser(user);
+
+        // Store user information
+        returnValue = userDao.addUserInformation(u);
+
+        // Build user authority
+        Authorities authority = new Authorities();
+        authority.setUsername(u);
+        authority.setAuthority(AuthoritiesValues.USER.getValue());
+        // Store user authority - we use AND because both operations must yield true
+        returnValue = returnValue & authorities.addAuthorityToUser(authority);
+
+        // Reject transaction if something went wrong
+        if (!returnValue) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return returnValue;
     }
 
     @Override
     @Transactional
     public boolean updateUser(UserForm user) {
-        return userDao.updateUserInformation(convertUserFormToUser(user));
+        boolean returnValue;
+        if (user.getIdentification() == null || user.getIdentification().trim().isEmpty()) {
+            returnValue = userDao.updateUserInformationWithoutPassword(convertUserFormToUser(user));
+        } else {
+            returnValue = userDao.updateUserInformation(convertUserFormToUser(user));
+        }
+        return returnValue;
     }
 
     @Override
@@ -77,12 +112,7 @@ public class UserServiceImpl implements UserService {
         return userDao.hasUserInformation(username);
     }
 
-    @Override
-    @Transactional
-    public List<UserLoginHistory> getUserLoginHistory(String username) {
-        return loginHistory.getUserLoginHistory(username);
-    }
-
+    // Login history
     @Override
     @Transactional
     public boolean addUserLoginHistory(UserLoginHistory userLoginHistory) {
@@ -91,12 +121,46 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<UserLoginHistory> getAllUserLoginHistory(LocalDate fromDate) {
-        return loginHistory.getAllUserLoginHistory();
+    public InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber) {
+        List<UserLoginHistory> loginHistories;
+        // Get login history
+        if(date == null) {
+            loginHistories = loginHistory.getUserLoginHistory(username, pageNumber, USER_ITEMS_LIMIT);
+        } else {
+            loginHistories = loginHistory.getUserLoginHistory(username, date, pageNumber, USER_ITEMS_LIMIT);
+        }
+        // Convert to info items
+        return convertHistoryToInfoItems(loginHistories);
+    }
+
+    @Override
+    @Transactional
+    public InfoItems getAllLoginHistory(LocalDate date, int pageNumber) {
+        List<UserLoginHistory> loginHistories;
+        // Get login history
+        if(date == null) {
+            loginHistories = loginHistory.getAllLoginHistory(pageNumber, USER_ITEMS_LIMIT);
+        } else {
+            loginHistories = loginHistory.getAllLoginHistory(date, pageNumber, USER_ITEMS_LIMIT);
+        }
+        // Convert to info items
+        return convertHistoryToInfoItems(loginHistories);
+    }
+
+    @Override
+    @Transactional
+    public int getAllLoginHistoryCount() {
+        return loginHistory.getAllLoginHistoryCount();
+    }
+
+    @Override
+    @Transactional
+    public int getUserLoginHistoryCount(String username) {
+        return loginHistory.getUserLoginHistoryCount(username);
     }
 
     // Utility
-    public User convertUserFormToUser(UserForm userForm){
+    public User convertUserFormToUser(UserForm userForm) {
         User user = new User();
         user.setUsername(userForm.getEmail());
         user.setName(userForm.getName());
@@ -107,5 +171,23 @@ public class UserServiceImpl implements UserService {
         //TODO Should be enabled by confirming an email
         user.setEnabled(true);
         return user;
+    }
+
+    private InfoItems convertHistoryToInfoItems(List<UserLoginHistory> loginHistories) {
+        InfoItems items = new InfoItems();
+        InfoItem item;
+        for(UserLoginHistory loginHistory : loginHistories) {
+            item = new InfoItem();
+            item.setColumnType1(InfoItemColumnType.TEXT);
+            item.setColumn1(loginHistory.getId().getUsername().getUsername());
+            item.setColumnType2(InfoItemColumnType.TEXT);
+            item.setColumn2(loginHistory.getId().getDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            item.setColumnType3(InfoItemColumnType.TEXT);
+            item.setColumn3(loginHistory.getIpAddress());
+            item.setButtonType(InfoItemButtonType.BUY_INFO);
+            // Add to items
+            items.add(item);
+        }
+        return items;
     }
 }

@@ -1,6 +1,6 @@
 /* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 
-/*global window, cbc_addClass, $$, cbc_findUpTag, cbc_addClickEventListener, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage */
+/*global window, cbc_addClass, $$, cbc_findUpTag, cbc_addClickEventListener, cbc_blockEvents, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage */
 
 var CartItem = function () {
     "use strict";
@@ -35,26 +35,20 @@ var Cart = {
         var itemElement, fetch, selectItems, i;
         itemElement = cbc_findUpTag(buttonElement, "tr");
         // fetch
-        fetch = new Fetch(this.url);
+        fetch = new Fetch(Cart.url);
         fetch.method = FetchHttpMethods.POST;
-        fetch.bodyParameters = this.getItem(itemElement);
+        fetch.bodyParameters = Cart.getItem(itemElement);
         fetch.onSuccess = function () {
             // disable
             cbc_addClass(buttonElement, "disabled");
-            cbc_addClass(itemElement, "active");
+            cbc_addClass(itemElement, "disabled");
             // disable all select items
             selectItems = $$(".select", itemElement);
             for (i = 0; i < selectItems.length; i += 1) {
                 cbc_addClass(selectItems[i], "disabled");
             }
             // cancel event propagation
-            cbc_addClickEventListener(itemElement, function (e) {
-                e.cancelBubble = true;
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
-                return false;
-            });
+            cbc_addClickEventListener(itemElement, cbc_blockEvents);
         };
         fetch.onError = function () {
             var dialog = new Dialog(DialogType.TOAST, DialogMessage.CART_ADD_ERROR, DialogMessageType.ERROR);
@@ -71,9 +65,9 @@ var Cart = {
             var itemElement, fetch;
             itemElement = cbc_findUpTag(buttonElement, "tr");
             // fetch
-            fetch = new Fetch(this.url);
+            fetch = new Fetch(Cart.url);
             fetch.method = FetchHttpMethods.DELETE;
-            fetch.bodyParameters = this.getItem(itemElement);
+            fetch.bodyParameters = Cart.getItem(itemElement);
             fetch.onSuccess = function () {
                 var parent = itemElement.parentNode;
                 parent.removeChild(itemElement);
@@ -95,13 +89,26 @@ var Cart = {
         var itemElement, fetch;
         itemElement = cbc_findUpTag(updatedValue, "tr");
         // fetch
-        fetch = new Fetch(this.url);
+        fetch = new Fetch(Cart.url);
         fetch.method = FetchHttpMethods.PUT;
-        fetch.bodyParameters = this.getItem(itemElement);
+        fetch.bodyParameters = Cart.getItem(itemElement);
         // no onSuccess
         fetch.onError = function () {
             var dialog = new Dialog(DialogType.TOAST, DialogMessage.CART_UPDATE_ERROR, DialogMessageType.ERROR);
             dialog.show();
+        };
+        fetch.onSuccess = function () {
+            var priceBox, basePrice, item, price, priceElements, currency;
+            // Get price box
+            priceBox = $$(".scheduleBox-item-price", itemElement)[0];
+            // Get item data
+            item = Cart.getItem(itemElement);
+            basePrice = priceBox.getAttribute("data-base-price");
+            // Set price and currency
+            price = item.numberOfAdults * basePrice + item.numberOfChildren * basePrice;
+            priceElements = priceBox.innerHTML.trim().split(" ");
+            currency = priceElements[priceElements.length - 1];
+            priceBox.innerHTML = price.toFixed(2) + " " + currency;
         };
         fetch.fetch();
     }
@@ -218,7 +225,7 @@ Dialog.prototype.setDialogMessage = function () {
     "use strict";
     var messages, i;
     messages = $("dialog-content").children; // do not use comments inside dialog messages for IE6-8 error
-    for (i = 0; i < messages.size(); i += 1) {
+    for (i = 0; i < messages.length; i += 1) {
         if (messages[i].id === this.text) {
             messages[i].style.display = "block";
         } else {
@@ -234,7 +241,6 @@ Dialog.prototype.show = function () {
     element.open = true;
     element.style.display = "block";
     cbc_addClass(element, this.messageType);
-    $(this.dialogType + "-content").innerHTML = this.text;
     this.setDialogMessage();
 
     if (this.dialogType === DialogType.DIALOG) {
@@ -509,9 +515,7 @@ var RadioBox = {
         cbc_addClass(element, 'active');
     }
 };
-/* 
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
+/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 
 /*jslint browser: true */
 /*global $$, cbc_addClass, cbc_removeClass, cbc_hasClass, cbc_addClickEventListener */
@@ -526,6 +530,10 @@ var SelectItem = {
         // Copy attributes from select tag to class list of wrapper
         cbc_addClass(wrapElement, (selectTag.hasAttribute("data-size") ? selectTag.getAttribute("data-size") : "select-normal"));
         cbc_addClass(wrapElement, "select");
+        // Also copy disabled attribute
+        if (selectTag.hasAttribute("disabled")) {
+            cbc_addClass(wrapElement, "disabled");
+        }
         // Do the wrapping
         parentElement.replaceChild(wrapElement, selectTag);
         wrapElement.appendChild(selectTag);
@@ -776,6 +784,19 @@ function cbc_addClickEventListener(element, func) {
 }
 
 /**
+ * Add event listener to element that blocks all clicks
+ * @param {Event} e
+ */
+function cbc_blockEvents(e) {
+    "use strict";
+    e.cancelBubble = true;
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+    return false;
+}
+
+/**
  * If browser support ECMAScript 5, freez the object
  * @param {Object} object
  * @returns {Object}
@@ -795,7 +816,7 @@ function cbc_enum(object) {
 function cbc_voidFunction() {
     "use strict";
     return function () {
-        return;
+        return undefined;
     };
 }
 
@@ -807,17 +828,17 @@ if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
         "use strict"; //for jslint
         var aArgs, fToBind, FNOP, fBound;
-        if (typeof this !== 'function') {
-            throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+        if (typeof this !== "function") {
+            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
         }
         aArgs = Array.prototype.slice.call(arguments, 1);
         fToBind = this;
         FNOP = cbc_voidFunction();
         fBound = function () {
             return fToBind.apply(this instanceof FNOP
-                    ? this
-                    : oThis,
-                    aArgs.concat(Array.prototype.slice.call(arguments)));
+                ? this
+                : oThis,
+                aArgs.concat(Array.prototype.slice.call(arguments)));
         };
         if (this.prototype) {
             FNOP.prototype = this.prototype;

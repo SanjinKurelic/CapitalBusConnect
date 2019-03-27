@@ -17,7 +17,7 @@
 <%-- Content --%>
 <article>
     <cbc:menuComponent menu="${menuItem}" />
-    <div class="center">
+    <div class="center" style="padding-bottom: 20px;">
         <%--@elvariable id="user" type="eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm"--%>
         <form:form action="user/settings" method="post" modelAttribute="user">
             <%-- Only for validation, this field is not used in code behind! --%>
@@ -25,11 +25,11 @@
             <table class="userBox-content">
                 <tr class="userBox-content-item">
                     <td colspan="2">
-                            <%--@elvariable id="regErrors" type="java.util.List"--%>
-                        <c:if test="${not empty regErrors && regErrors.size() > 0}">
+                            <%--@elvariable id="saveErrors" type="java.util.List"--%>
+                        <c:if test="${not empty saveErrors && saveErrors.size() > 0}">
                             <p class="userBox-content-item-error">
                                     <%--@elvariable id="saveError" type="org.springframework.validation.ObjectError"--%>
-                                <c:forEach items="${regErrors}" var="saveError">
+                                <c:forEach items="${saveErrors}" var="saveError">
                                     <spring:message code="${saveError.defaultMessage}" text="${saveError.defaultMessage}"/><br/>
                                 </c:forEach>
                             </p>
@@ -95,7 +95,7 @@
                 <tr class="userBox-content-buttons">
                     <td></td>
                     <td>
-                        <input class="button" type="submit" value="<spring:message code='navigation.registerButton.text' />"/>
+                        <input class="button" type="submit" value="<spring:message code='navigation.saveButton.text' />"/>
                     </td>
                 </tr>
             </table>
@@ -106,10 +106,10 @@
 <c:if test="${not empty successfully}">
     <c:choose>
         <c:when test="${successfully eq true}">
-            <spring:message code="dialog.content.userSave.success.text" var="dialogText" />
+            <c:set var="dialogText" value="DialogMessage.USER_SAVE_SUCCESS" />
         </c:when>
         <c:otherwise>
-            <spring:message code="dialog.content.userSave.error.text" var="dialogText" />
+            <c:set var="dialogText" value="DialogMessage.USER_SAVE_ERROR" />
         </c:otherwise>
     </c:choose>
     <script>

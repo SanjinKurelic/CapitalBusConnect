@@ -94,8 +94,7 @@ $navigation-height: 64px;
             }
 
             @include cbc_mobile {
-                font-size: 0.8em;
-                min-width: 0;
+                min-width: 50%;
             }
         }
 

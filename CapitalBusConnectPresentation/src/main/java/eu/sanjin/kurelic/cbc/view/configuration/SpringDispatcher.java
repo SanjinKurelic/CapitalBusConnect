@@ -16,10 +16,10 @@ public class SpringDispatcher extends AbstractAnnotationConfigDispatcherServletI
         return new Class[]{SpringConfiguration.class};
     }
 
-    @Override
+    /*@Override
     protected Filter[] getServletFilters() {
         return new Filter[]{new CompressResponseFilter()};
-    }
+    }*/
 
     @Override
     protected String[] getServletMappings() {

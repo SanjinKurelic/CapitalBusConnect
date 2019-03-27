@@ -14,8 +14,16 @@
                 <cbc:scheduleItem scheduleItem="${scheduleItem}"/>
             </c:forEach>
         </table>
+        <c:choose>
+            <c:when test="${empty scheduleItems}">
+                <p><spring:message code="empty.travel.text"/></p>
+            </c:when>
+            <c:otherwise>
+                <cbc:paginationItem numberOfPages="${numberOfPages}" currentPageNumber="${currentPage}"/>
+            </c:otherwise>
+        </c:choose>
         <c:if test="${empty scheduleItems}">
-            <p><spring:message code="empty.schedule.text"/></p>
+            <p><spring:message code="empty.travel.text"/></p>
         </c:if>
     </div>
 </article>

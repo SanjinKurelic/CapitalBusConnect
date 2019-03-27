@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -29,6 +30,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public List<BusSchedule> getSchedules(Integer... ids) {
+        // If there is no ID-s supplied
+        if(ids.length < 1){
+            return new ArrayList<>();
+        }
         var session = sessionFactory.getCurrentSession();
         var hql = "FROM BusSchedule WHERE id IN (:ids)";
         Query<BusSchedule> schedules = session.createQuery(hql, BusSchedule.class);
@@ -38,6 +43,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public List<BusSchedule> getBusLineSchedules(Integer fromCityId, Integer toCityId) {
+        // If there are no cities supplied
+        if(fromCityId == null | toCityId == null) {
+            return new ArrayList<>();
+        }
         var session = sessionFactory.getCurrentSession();
         var hql = "FROM BusSchedule WHERE " +
                 // AB trip

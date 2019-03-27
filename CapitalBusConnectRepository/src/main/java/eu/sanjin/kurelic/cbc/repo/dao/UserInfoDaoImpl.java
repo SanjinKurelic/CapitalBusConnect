@@ -1,10 +1,12 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.User;
-import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class UserInfoDaoImpl implements UserInfoDao {
@@ -24,6 +26,9 @@ public class UserInfoDaoImpl implements UserInfoDao {
 
     @Override
     public boolean hasUserInformation(User user) {
+        if(user == null) {
+            return false;
+        }
         var session = sessionFactory.getCurrentSession();
         return session.contains(user);
     }
@@ -34,7 +39,7 @@ public class UserInfoDaoImpl implements UserInfoDao {
         var session = sessionFactory.getCurrentSession();
         try {
             session.save(user);
-        } catch (HibernateException e){
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -45,10 +50,25 @@ public class UserInfoDaoImpl implements UserInfoDao {
         var session = sessionFactory.getCurrentSession();
         try {
             session.update(user);
-        } catch (HibernateException e){
+        } catch (Exception e) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean updateUserInformationWithoutPassword(User user) {
+        var session = sessionFactory.getCurrentSession();
+        var hql = "UPDATE User SET name = :name, surname = :surname, dateOfBirth = :dateOfBirth, receiveNewsletter = :receiveNewsletter WHERE username = :username";
+
+        Query query = session.createQuery(hql);
+        query.setParameter("name", user.getName());
+        query.setParameter("surname", user.getSurname());
+        query.setParameter("dateOfBirth", user.getDateOfBirth());
+        query.setParameter("receiveNewsletter", user.isReceiveNewsletter());
+        query.setParameter("username", user.getUsername());
+
+        return query.executeUpdate() == 1;
     }
 
     @Override
@@ -56,7 +76,7 @@ public class UserInfoDaoImpl implements UserInfoDao {
         var session = sessionFactory.getCurrentSession();
         try {
             session.remove(user);
-        } catch (HibernateException e){
+        } catch (Exception e) {
             return false;
         }
         return true;

@@ -16,11 +16,11 @@
             border-color:color(light-shadow);
         }
 
-        &.active, &.active .select-selected{
+        &.disabled, &.disabled .select-selected{
             background: color(light-shadow);
         }
 
-        &:not(.active):hover, &:not(.active):hover .select-selected {
+        &:not(.disabled):hover, &:not(.disabled):hover .select-selected {
             background: color(dark-shadow);
         }
 

@@ -13,9 +13,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.Locale;
+import java.util.TreeSet;
 
 public class ExpressionLanguageFunctions {
 
+    // Resources
     private static final String RESOURCES_PATH = "/resources/";
     private static final String IMAGE_PATH = RESOURCES_PATH + "images/";
     private static final String CITIES_PATH = IMAGE_PATH + "cities/";
@@ -23,6 +25,9 @@ public class ExpressionLanguageFunctions {
     private static final String FONT_PATH = RESOURCES_PATH + "fonts/";
     private static final String SCRIPT_PATH = RESOURCES_PATH + "js/";
     private static final String STYLESHEET_PATH = RESOURCES_PATH + "css/";
+    // Pagination
+    public static final String INVALID_NUMBER_OF_PAGES = "Total number of pages in pagination is less than 1";
+    private static final int VISIBLE_PAGES = 9;
 
     public static String getImageResourceUrl(String file){
         return IMAGE_PATH  + file;
@@ -72,6 +77,43 @@ public class ExpressionLanguageFunctions {
 
     public static String formatTime(LocalTime time) {
         return time.format(getFormatter(null, FormatStyle.SHORT));
+    }
+
+    public static Integer[] getPageList(int currentPageNumber, int numberOfPages) {
+        int rangeStart, rangeEnd;
+        // Error, no pages
+        if(numberOfPages < 1) {
+            throw new RuntimeException(INVALID_NUMBER_OF_PAGES);
+        }
+        // Check currentPage
+        if(currentPageNumber > numberOfPages) {
+            currentPageNumber = numberOfPages;
+        } else if(currentPageNumber < 1) {
+            currentPageNumber = 1;
+        }
+        // Define range
+        rangeStart = rangeEnd = currentPageNumber;
+        for(int i = 1; i <= VISIBLE_PAGES;) {
+            if (rangeStart > 1 || rangeEnd <= numberOfPages) {
+                if(rangeStart > 1) {
+                    rangeStart--;
+                    i++;
+                }
+                if(i <= VISIBLE_PAGES && rangeEnd <= numberOfPages) {
+                    rangeEnd++;
+                    i++;
+                }
+            }
+            else {
+                break;
+            }
+        }
+        // Fill range
+        TreeSet<Integer> pages = new TreeSet<>();
+        for(int i = rangeStart; i < rangeEnd; i++) {
+            pages.add(i);
+        }
+        return pages.toArray(Integer[]::new);
     }
 
 }

@@ -38,12 +38,4 @@ public class UserLoginHistory {
         this.ipAddress = ipAddress;
     }
 
-    @Override
-    public String toString() {
-        return "UserLoginHistory{" +
-                "username='" + id.getUsername() + '\'' +
-                ", dateTime=" + id.getDateTime() +
-                ", ipAddress='" + ipAddress + '\'' +
-                '}';
-    }
 }

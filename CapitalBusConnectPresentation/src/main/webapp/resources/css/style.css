@@ -477,6 +477,25 @@ h2 {
       .header-buttons form .select-selected {
         border-bottom: 0; }
 
+.infoBox {
+  margin: 25px 0;
+  width: 100%;
+  padding: 0 10px;
+  border-collapse: collapse;
+  table-layout: fixed; }
+  .infoBox-item:hover {
+    background: #BEBEBE; }
+  .infoBox-item td {
+    padding: 10px 0;
+    border-bottom: 1px solid #DEDEDE;
+    text-align: center; }
+    .infoBox-item td:first-of-type, .infoBox-item td:last-of-type {
+      padding: 10px; }
+  td.infoBox-item-button {
+    text-align: right; }
+    td.infoBox-item-button .button {
+      min-width: 0; }
+
 @font-face {
   font-family: "icon";
   src: url("../fonts/iconFont.eot");
@@ -597,11 +616,53 @@ body {
             box-shadow: 0px -4px 0px 0px #FF6F00 inset; }
   @media (max-width: 500px) {
     .navigation-link-based-button {
-      font-size: 0.8em;
-      min-width: 0; } }
+      min-width: 50%; } }
   @media (max-width: 500px) {
     .navigation-link-based-backButton {
       display: none; } }
+
+.paginationBox-button:not(.disabled):hover, .paginationBox-numbers-items-item:hover {
+  background: #F0F0F0;
+  cursor: pointer; }
+
+.paginationBox {
+  margin: 10px;
+  background: #DEDEDE;
+  border-radius: 5px;
+  padding: 10px; }
+  .paginationBox-button {
+    display: inline-block;
+    width: 20%;
+    padding: 10px;
+    text-align: center; }
+    .paginationBox-button.disabled {
+      color: #BEBEBE;
+      pointer-events: none; }
+    .paginationBox-button:not(.disabled):hover {
+      border-radius: 10px; }
+    .paginationBox-button-icon {
+      vertical-align: middle;
+      margin: 0 5px; }
+    .paginationBox-button-text {
+      vertical-align: middle; }
+  .paginationBox-numbers {
+    display: inline-block;
+    width: 59%;
+    vertical-align: middle; }
+    .paginationBox-numbers-items {
+      table-layout: fixed;
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto; }
+      .paginationBox-numbers-items a {
+        display: block;
+        height: 45px;
+        line-height: 45px; }
+      .paginationBox-numbers-items-item {
+        text-align: center;
+        border-radius: 10px; }
+        .paginationBox-numbers-items-item.active {
+          background: #FFC107; }
 
 .paymentBox-content {
   background: #DEDEDE;
@@ -681,9 +742,9 @@ body {
       padding: 10px;
       border-width: 1px 0;
       border-color: #BEBEBE; } }
-  .scheduleBox-item.active, .scheduleBox-item.active .select-selected {
+  .scheduleBox-item.disabled, .scheduleBox-item.disabled .select-selected {
     background: #BEBEBE; }
-  .scheduleBox-item:not(.active):hover, .scheduleBox-item:not(.active):hover .select-selected {
+  .scheduleBox-item:not(.disabled):hover, .scheduleBox-item:not(.disabled):hover .select-selected {
     background: #DEDEDE; }
   .scheduleBox-item td {
     padding: 10px 0;

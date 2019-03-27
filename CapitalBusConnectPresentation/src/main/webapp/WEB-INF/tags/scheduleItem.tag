@@ -22,7 +22,7 @@
 <c:set var="disabled" value="${scheduleItem.disabled() ? 'disabled' : ''}" />
 
 <%-- Content: --%>
-<tr class="scheduleBox-item" data-id-param="${scheduleItem.scheduleId}" data-date-param="${scheduleItem.date}">
+<tr class="scheduleBox-item ${disabled}" data-id-param="${scheduleItem.scheduleId}" data-date-param="${scheduleItem.date}">
     <td class="scheduleBox-item-title">
         <div class="scheduleBox-item-title-main">
             ${scheduleItem.leftTitle}
@@ -67,7 +67,7 @@
             </c:forEach>
         </select>
     </td>
-    <td class="scheduleBox-item-price">
+    <td class="scheduleBox-item-price" data-base-price="${scheduleItem.basePrice}">
         <c:choose>
             <c:when test="${scheduleItem.payingMethod eq SchedulePayingMethod.PAY_PAL}">
                 <span title="<spring:message code='schedule.payingMethod.payPal.tooltip'/>" class="scheduleBox-item-price-payingMethod icon">&#xf1ed;</span>
@@ -108,7 +108,11 @@
             </c:otherwise>
         </c:choose>
         <c:if test="${hasButton eq true}">
-            <div class="button ${buttonCss}" onclick="${buttonOnClick}">
+            <%-- If disabled remove onClick --%>
+            <c:if test="${not empty disabled}">
+                <c:set var="buttonOnClick" value="" />
+            </c:if>
+            <div class="button ${buttonCss} ${disabled}" onclick="${buttonOnClick}">
                 <span class="icon desktop-tablet">${buttonIcon}</span>
                 <span class="mobile"><spring:message code="${buttonText}"/></span>
             </div>

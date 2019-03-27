@@ -13,12 +13,13 @@ public class SchedulePlaceItemImpl implements ScheduleItem {
     private final String toPlace;
     private final LocalDateTime fromDate;
     private final double price;
+    private final double basePrice;
     private final int numberOfAdults;
     private final int numberOfChildren;
     private final ScheduleButtonType scheduleButton;
     private final ScheduleUpdateType onUpdate;
     private final SchedulePayingMethod payingMethod;
-    private final boolean disabled;
+    private boolean disabled;
     
     SchedulePlaceItemImpl(ScheduleBuilder sb){
         scheduleId = sb.getScheduleId();
@@ -26,6 +27,7 @@ public class SchedulePlaceItemImpl implements ScheduleItem {
         toPlace = sb.getToPlace();
         fromDate = sb.getDate();
         price = sb.getPrice();
+        basePrice = sb.getBasePrice();
         numberOfAdults = sb.getNumberOfAdults();
         numberOfChildren = sb.getNumberOfChildren();
         scheduleButton = sb.getButtonType();
@@ -70,6 +72,14 @@ public class SchedulePlaceItemImpl implements ScheduleItem {
     }
 
     @Override
+    public double getBasePrice() {
+        if(basePrice == 0){
+            return price;
+        }
+        return basePrice;
+    }
+
+    @Override
     public ScheduleItemType getType() {
         return ScheduleItemType.PLACE;
     }
@@ -97,6 +107,11 @@ public class SchedulePlaceItemImpl implements ScheduleItem {
     @Override
     public boolean disabled() {
         return disabled;
+    }
+
+    @Override
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
 }

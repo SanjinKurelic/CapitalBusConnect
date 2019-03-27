@@ -9,7 +9,7 @@ import java.util.Objects;
 public class CartItem implements Serializable {
 
     private int scheduleId;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-ddThh:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime date;
     private int numberOfAdults;
     private int numberOfChildren;

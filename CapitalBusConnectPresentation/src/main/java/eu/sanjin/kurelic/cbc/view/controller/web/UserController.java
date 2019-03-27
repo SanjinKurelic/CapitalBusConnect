@@ -14,13 +14,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -42,19 +40,27 @@ public class UserController {
         menuItems.add(new MenuItem("navigation.settingsButton.text", "user/settings"));
         menuItems.add(new MenuItem("navigation.travelsButton.text", "user/travels"));
         menuItems.add(new MenuItem("navigation.discountsButton.text", "user/discounts"));
+        menuItems.add(new MenuItem("navigation.logoutButton.text", "/logout"));
 
         menu.setMenuItems(menuItems);
         return menu;
     }
 
-    @GetMapping("/travels")
-    public ModelAndView travelsPage() {
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    @GetMapping(value = {
+            "/travels",
+            "/travels/{pageNumber}"
+    })
+    public ModelAndView travelsPage(@PathVariable Optional<Integer> pageNumber) {
         var viewModel = new ModelAndView("user/travels");
         // Menu
         viewModel.addObject("menuItem", getUserMenu());
         // Schedule items
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        viewModel.addObject("scheduleItems", scheduleService.getTravelHistory(username, LocaleContextHolder.getLocale()));
+        viewModel.addObject("scheduleItems", scheduleService.getUserTravelHistory(username, pageNumber.orElse(0), LocaleContextHolder.getLocale()));
+        // Pagination
+        viewModel.addObject("currentPage", pageNumber.orElse(1));
+        viewModel.addObject("numberOfPages", scheduleService.getUserTravelHistoryCount(username));
         return viewModel;
     }
 

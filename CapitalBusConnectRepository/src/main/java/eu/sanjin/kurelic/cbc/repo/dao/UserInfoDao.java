@@ -16,6 +16,8 @@ public interface UserInfoDao {
 
     boolean updateUserInformation(User user);
 
+    boolean updateUserInformationWithoutPassword(User user);
+
     boolean removeUserInformation(User user);
 
     default boolean removeUserInformation(String username) {

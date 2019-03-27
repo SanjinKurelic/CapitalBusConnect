@@ -1,5 +1,6 @@
 package eu.sanjin.kurelic.cbc.business.services;
 
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public interface UserService {
@@ -35,16 +35,16 @@ public interface UserService {
 
     boolean hasUser(String username);
 
-    List<UserLoginHistory> getUserLoginHistory(String username);
-
+    // Login history
     boolean addUserLoginHistory(UserLoginHistory userLoginHistory);
 
-    @Transactional
-    default List<UserLoginHistory> getAllUserLoginHistory() {
-        return getAllUserLoginHistory(LocalDate.MIN);
-    }
+    InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber);
 
-    List<UserLoginHistory> getAllUserLoginHistory(LocalDate fromDate);
+    InfoItems getAllLoginHistory(LocalDate date, int pageNumber);
+
+    int getAllLoginHistoryCount();
+
+    int getUserLoginHistoryCount(String username);
 
     // Utility
     User convertUserFormToUser(UserForm userForm);

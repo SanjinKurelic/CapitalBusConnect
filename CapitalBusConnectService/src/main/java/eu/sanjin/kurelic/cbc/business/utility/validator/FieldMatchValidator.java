@@ -21,14 +21,14 @@ public class FieldMatchValidator  implements ConstraintValidator<FieldMatch, Obj
     }
 
     @Override
-    public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
         // Set custom message
         constraintValidatorContext.disableDefaultConstraintViolation();
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         // Validation
         try {
-            var firstObject = BeanUtils.getProperty(constraintValidatorContext, firstField);
-            var secondObject = BeanUtils.getProperty(constraintValidatorContext, secondField);
+            var firstObject = BeanUtils.getProperty(value, firstField);
+            var secondObject = BeanUtils.getProperty(value, secondField);
             // Return
             return Objects.equals(firstObject, secondObject);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

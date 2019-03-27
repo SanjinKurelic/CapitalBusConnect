@@ -20,7 +20,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <cbc.version.surefire>3.0.0-M3</cbc.version.surefire>
         <cbc.version.depedency>3.1.1</cbc.version.depedency>
-        <cbc.version.junit>4.12</cbc.version.junit>
+        <cbc.version.junit>5.4.0</cbc.version.junit>
         <cbc.version.log4j>1.7.25</cbc.version.log4j>
         <cbc.version.jstl>1.2</cbc.version.jstl>
         <cbc.version.servlet>4.0.1</cbc.version.servlet>
@@ -162,8 +162,8 @@
 
         <!-- Test -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <version>${cbc.version.junit}</version>
             <scope>test</scope>
         </dependency>
@@ -177,7 +177,6 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>${cbc.version.log4j}</version>
         </dependency>
-
     </dependencies>
 
     <build>

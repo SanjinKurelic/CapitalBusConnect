@@ -1,0 +1,74 @@
+//Created by Sanjin Kurelic (kurelic@sanjin.eu)
+
+%pagination-hover {
+  background: color(light);
+  cursor: pointer;
+}
+
+.paginationBox {
+  margin: 10px;
+  background: color(dark-shadow);
+  border-radius: 5px;
+  padding: 10px;
+
+  &-button {
+    display: inline-block;
+    width: 20%;
+    padding: 10px;
+    text-align: center;
+
+    &.disabled {
+      color: color(light-shadow);
+      pointer-events: none;
+    }
+
+    &:not(.disabled):hover {
+      @extend %pagination-hover;
+      border-radius: 10px;
+    }
+
+    &-icon {
+      vertical-align: middle;
+      margin: 0 5px;
+    }
+
+    &-text {
+      vertical-align: middle;
+    }
+
+  }
+
+  &-numbers {
+    display: inline-block;
+    width: 59%;
+    vertical-align: middle;
+
+    &-items {
+      table-layout: fixed;
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+
+      & a{
+        display: block;
+        height: 45px;
+        line-height: 45px;
+      }
+
+      &-item {
+        text-align: center;
+        border-radius: 10px;
+
+        &:hover {
+          @extend %pagination-hover;
+        }
+
+        &.active {
+          background: color(primary);
+        }
+      }
+    }
+
+  }
+
+}

@@ -1,11 +1,13 @@
 package eu.sanjin.kurelic.cbc.view.controller.web;
 
 import eu.sanjin.kurelic.cbc.business.services.*;
+import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.city.CityInfoItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.Menu;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
+import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItem;
 import eu.sanjin.kurelic.cbc.view.aspect.ReadFromSession;
 import eu.sanjin.kurelic.cbc.view.components.SessionKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,15 +75,20 @@ public class WebController {
     }
 
     @GetMapping("/schedule/{fromCity}/{toCity}/{date}")
+    @ReadFromSession(sessionKey = SessionKey.CART_ID)
     public ModelAndView schedulePage(@PathVariable String fromCity, @PathVariable String toCity,
                                      @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         var viewModel = new ModelAndView("web/schedule");
         // Schedule items
         var scheduleItems = schedule.getBusLineSchedules(fromCity, toCity, date, LocaleContextHolder.getLocale());
-        // Is item in cart, mark it as selected
-        // ... code ...
+        // If item is in the cart, mark it as disabled
+        for(ScheduleItem scheduleItem : scheduleItems) {
+            var cartItem = new CartItem(scheduleItem.getScheduleId(), scheduleItem.getDate(), 0, 0);
+            if (cart.hasCartItem(cartItem)) {
+                scheduleItem.setDisabled(true);
+            }
+        }
         viewModel.addObject("scheduleItems", scheduleItems);
-        // Search
         // Search
         viewModel.addObject("searchFromCity", fromCity);
         viewModel.addObject("searchToCity", toCity);

@@ -72,4 +72,11 @@
             java.lang.String formatDateTime(java.time.LocalDateTime)
         </function-signature>
     </function>
+    <function>
+        <name>getPageList</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.Integer[] getPageList(int,int)
+        </function-signature>
+    </function>
 </taglib>

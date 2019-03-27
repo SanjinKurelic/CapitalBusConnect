@@ -23,13 +23,14 @@ public interface ScheduleService {
 
     double getTripPrice(LocalTime fromTime, LocalTime toTime, LocalDate fromDate);
 
+    // Travel history
     @Transactional
-    default ScheduleItems getTravelHistory(User user, Locale language) {
-        return getTravelHistory(user.getUsername(), language);
+    default ScheduleItems getUserTravelHistory(String username, int pageNumber, Locale language) {
+        return getUserTravelHistory(username, null, pageNumber, language);
     }
 
-    ScheduleItems getTravelHistory(String username, Locale language);
+    ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, Locale language);
 
-    ScheduleItems getTravelHistory(Locale language);
+    int getUserTravelHistoryCount(String username);
 
 }

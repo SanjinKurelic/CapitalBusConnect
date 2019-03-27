@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 // Classic servlet filter for compressing HTML output
-@WebFilter(urlPatterns = "/*")
+//@WebFilter(urlPatterns = "/*")
 public class CompressResponseFilter implements Filter {
 
     private static final String HTML_ELEMENTS_WITHOUT_SURROUNDING_SPACES = "a,div";
@@ -38,7 +39,7 @@ public class CompressResponseFilter implements Filter {
         // Trim HTML
         String html = response.getOutput();
         if(!url.contains(SpringConfiguration.RESOURCES_LOCATION)) {
-            html = htmlCompressor.compress(html);
+            html = new String(htmlCompressor.compress(html).getBytes(), StandardCharsets.UTF_8);
         }
         // Output HTML
         PrintWriter out = new PrintWriter(response.getOutputStream());

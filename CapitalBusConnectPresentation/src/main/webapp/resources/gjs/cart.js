@@ -1,6 +1,6 @@
 /* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 
-/*global window, cbc_addClass, $$, cbc_findUpTag, cbc_addClickEventListener, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage */
+/*global window, cbc_addClass, $$, cbc_findUpTag, cbc_addClickEventListener, cbc_blockEvents, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage */
 
 var CartItem = function () {
     "use strict";
@@ -35,26 +35,20 @@ var Cart = {
         var itemElement, fetch, selectItems, i;
         itemElement = cbc_findUpTag(buttonElement, "tr");
         // fetch
-        fetch = new Fetch(this.url);
+        fetch = new Fetch(Cart.url);
         fetch.method = FetchHttpMethods.POST;
-        fetch.bodyParameters = this.getItem(itemElement);
+        fetch.bodyParameters = Cart.getItem(itemElement);
         fetch.onSuccess = function () {
             // disable
             cbc_addClass(buttonElement, "disabled");
-            cbc_addClass(itemElement, "active");
+            cbc_addClass(itemElement, "disabled");
             // disable all select items
             selectItems = $$(".select", itemElement);
             for (i = 0; i < selectItems.length; i += 1) {
                 cbc_addClass(selectItems[i], "disabled");
             }
             // cancel event propagation
-            cbc_addClickEventListener(itemElement, function (e) {
-                e.cancelBubble = true;
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
-                return false;
-            });
+            cbc_addClickEventListener(itemElement, cbc_blockEvents);
         };
         fetch.onError = function () {
             var dialog = new Dialog(DialogType.TOAST, DialogMessage.CART_ADD_ERROR, DialogMessageType.ERROR);
@@ -71,9 +65,9 @@ var Cart = {
             var itemElement, fetch;
             itemElement = cbc_findUpTag(buttonElement, "tr");
             // fetch
-            fetch = new Fetch(this.url);
+            fetch = new Fetch(Cart.url);
             fetch.method = FetchHttpMethods.DELETE;
-            fetch.bodyParameters = this.getItem(itemElement);
+            fetch.bodyParameters = Cart.getItem(itemElement);
             fetch.onSuccess = function () {
                 var parent = itemElement.parentNode;
                 parent.removeChild(itemElement);
@@ -95,13 +89,26 @@ var Cart = {
         var itemElement, fetch;
         itemElement = cbc_findUpTag(updatedValue, "tr");
         // fetch
-        fetch = new Fetch(this.url);
+        fetch = new Fetch(Cart.url);
         fetch.method = FetchHttpMethods.PUT;
-        fetch.bodyParameters = this.getItem(itemElement);
+        fetch.bodyParameters = Cart.getItem(itemElement);
         // no onSuccess
         fetch.onError = function () {
             var dialog = new Dialog(DialogType.TOAST, DialogMessage.CART_UPDATE_ERROR, DialogMessageType.ERROR);
             dialog.show();
+        };
+        fetch.onSuccess = function () {
+            var priceBox, basePrice, item, price, priceElements, currency;
+            // Get price box
+            priceBox = $$(".scheduleBox-item-price", itemElement)[0];
+            // Get item data
+            item = Cart.getItem(itemElement);
+            basePrice = priceBox.getAttribute("data-base-price");
+            // Set price and currency
+            price = item.numberOfAdults * basePrice + item.numberOfChildren * basePrice;
+            priceElements = priceBox.innerHTML.trim().split(" ");
+            currency = priceElements[priceElements.length - 1];
+            priceBox.innerHTML = price.toFixed(2) + " " + currency;
         };
         fetch.fetch();
     }

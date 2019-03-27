@@ -10,12 +10,10 @@ import java.util.List;
 
 public interface TravelHistoryDao {
 
-    List<UserTravelHistory> getUserTravelHistory(String username);
+    List<UserTravelHistory> getUserTravelHistory(String username, LocalDate date, int offset, int limit);
 
-    default List<UserTravelHistory> getUserTravelHistory(User user) {
-        return getUserTravelHistory(user.getUsername());
-    }
+    List<UserTravelHistory> getUserTravelHistory(String username, int offset, int limit);
 
-    List<TripHistory> getTravelHistory();
+    int getUserTravelHistoryCount(String username);
 
 }

@@ -41,7 +41,7 @@ Dialog.prototype.setDialogMessage = function () {
     "use strict";
     var messages, i;
     messages = $("dialog-content").children; // do not use comments inside dialog messages for IE6-8 error
-    for (i = 0; i < messages.size(); i += 1) {
+    for (i = 0; i < messages.length; i += 1) {
         if (messages[i].id === this.text) {
             messages[i].style.display = "block";
         } else {
@@ -57,7 +57,6 @@ Dialog.prototype.show = function () {
     element.open = true;
     element.style.display = "block";
     cbc_addClass(element, this.messageType);
-    $(this.dialogType + "-content").innerHTML = this.text;
     this.setDialogMessage();
 
     if (this.dialogType === DialogType.DIALOG) {

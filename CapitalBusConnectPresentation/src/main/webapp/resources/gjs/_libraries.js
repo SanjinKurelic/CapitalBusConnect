@@ -137,6 +137,19 @@ function cbc_addClickEventListener(element, func) {
 }
 
 /**
+ * Add event listener to element that blocks all clicks
+ * @param {Event} e
+ */
+function cbc_blockEvents(e) {
+    "use strict";
+    e.cancelBubble = true;
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+    return false;
+}
+
+/**
  * If browser support ECMAScript 5, freez the object
  * @param {Object} object
  * @returns {Object}
@@ -156,7 +169,7 @@ function cbc_enum(object) {
 function cbc_voidFunction() {
     "use strict";
     return function () {
-        return;
+        return undefined;
     };
 }
 
@@ -168,17 +181,17 @@ if (!Function.prototype.bind) {
     Function.prototype.bind = function (oThis) {
         "use strict"; //for jslint
         var aArgs, fToBind, FNOP, fBound;
-        if (typeof this !== 'function') {
-            throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+        if (typeof this !== "function") {
+            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
         }
         aArgs = Array.prototype.slice.call(arguments, 1);
         fToBind = this;
         FNOP = cbc_voidFunction();
         fBound = function () {
             return fToBind.apply(this instanceof FNOP
-                    ? this
-                    : oThis,
-                    aArgs.concat(Array.prototype.slice.call(arguments)));
+                ? this
+                : oThis,
+                aArgs.concat(Array.prototype.slice.call(arguments)));
         };
         if (this.prototype) {
             FNOP.prototype = this.prototype;

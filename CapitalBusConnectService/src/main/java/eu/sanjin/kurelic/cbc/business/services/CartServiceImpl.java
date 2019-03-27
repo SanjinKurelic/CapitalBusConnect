@@ -16,7 +16,8 @@ public class CartServiceImpl implements CartService {
         this.items = items;
     }
 
-    private boolean hasCartItem(CartItem cartItem) {
+    @Override
+    public boolean hasCartItem(CartItem cartItem) {
         return items.contains(cartItem);
     }
 
@@ -30,12 +31,6 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean updateCartItem(CartItem cartItem) {
-        //TODO remove
-        //Optional<CartItem> oldItem = items.stream().filter(i -> i.equals(cartItem)).findFirst();
-        //if(oldItem.isPresent()) {
-        //    int index = items.indexOf(oldItem.get());
-        //    items.set(index, cartItem);
-        //}
         try {
             items.set(items.indexOf(cartItem), cartItem);
             return true;

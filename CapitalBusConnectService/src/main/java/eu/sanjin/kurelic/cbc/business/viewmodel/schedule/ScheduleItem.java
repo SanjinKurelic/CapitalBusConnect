@@ -21,6 +21,8 @@ public interface ScheduleItem {
     int getNumberOfChildren();
     
     double getPrice();
+
+    double getBasePrice();
     
     ScheduleButtonType getButton();
     
@@ -33,5 +35,7 @@ public interface ScheduleItem {
     SchedulePayingMethod getPayingMethod();
 
     boolean disabled();
+
+    void setDisabled(boolean disabled);
     
 }

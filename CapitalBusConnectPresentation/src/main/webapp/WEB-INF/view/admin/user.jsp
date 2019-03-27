@@ -5,7 +5,15 @@
 <article>
     <cbc:menuComponent menu="${menuItem}" />
     <div class="center">
-        User
+        <!-- Search bar -->
+        <input name="date" value="${date}" />
+        <cbc:infoItem infoItems="${item}"/>
+        <cbc:paginationItem numberOfPages="${numberOfLoginPages}" currentPageNumber="${currentLoginPage}" />
+
+        <c:forEach var="scheduleItem" items="${travelItems}">
+            <cbc:scheduleItem scheduleItem="${scheduleItem}" />
+        </c:forEach>
+        <cbc:paginationItem numberOfPages="${numberOfTravelPages}" currentPageNumber="${currentTravelPage}" />
     </div>
 </article>
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>

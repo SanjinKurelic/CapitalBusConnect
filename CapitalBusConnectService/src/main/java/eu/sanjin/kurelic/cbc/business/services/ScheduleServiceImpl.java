@@ -24,10 +24,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
+    private static final int TRAVEL_HISTORY_ITEM_LIMIT = 10;
     private final TravelHistoryDao historyDao;
     private final ScheduleDao scheduleDao;
     private final DestinationInfoDao destinationDao;
@@ -93,16 +95,25 @@ public class ScheduleServiceImpl implements ScheduleService {
             for (CartItem item : cartItems) {
                 ids.add(item.getScheduleId());
             }
-            var cities = getCities(ids, language);
+            var schedules = getSchedules(ids);
+            var cities = getCities(schedules, language);
+            double basePrice, price;
             // Fill list
             for (CartItem cartItem : cartItems) {
+                // Calculate price
+                var schedule = schedules.get(cartItem.getScheduleId());
+                basePrice = getTripPrice(schedule.getFromTime(), schedule.getToTime());
+                price = cartItem.getNumberOfAdults() * basePrice + cartItem.getNumberOfChildren() * basePrice;
+                // Build schedule item
                 sb
                         .setScheduleId(cartItem.getScheduleId())
                         .setDate(cartItem.getDate())
                         .setNumberOfAdults(cartItem.getNumberOfAdults())
                         .setNumberOfChildren(cartItem.getNumberOfChildren())
                         .setFromPlace(cities.get(cartItem.getScheduleId()).getFirst())
-                        .setToPlace(cities.get(cartItem.getScheduleId()).getSecond());
+                        .setToPlace(cities.get(cartItem.getScheduleId()).getSecond())
+                        .setBasePrice(basePrice)
+                        .setPrice(price);
                 scheduleItems.add(sb.buildPlaceItem());
             }
         }
@@ -123,13 +134,19 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleDao.getTripPrice(duration, fromDate).getPrice();
     }
 
+    // Travel history
     @Override
     @Transactional
-    public ScheduleItems getTravelHistory(String username, Locale language) {
+    public ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, Locale language) {
+        List<UserTravelHistory> travelItems;
         ScheduleItems items = new ScheduleItems();
         ScheduleBuilder sb = new ScheduleBuilder();
         sb.setDisabled(true).setButtonType(ScheduleButtonType.VIEW_TICKET);
-        var travelItems = historyDao.getUserTravelHistory(username);
+        if(date == null) {
+            travelItems = historyDao.getUserTravelHistory(username, pageNumber, TRAVEL_HISTORY_ITEM_LIMIT);
+        } else {
+            travelItems = historyDao.getUserTravelHistory(username, date, pageNumber, TRAVEL_HISTORY_ITEM_LIMIT);
+        }
         // Database access optimization
         ArrayList<Integer> ids = new ArrayList<>();
         for (UserTravelHistory travelItem : travelItems) {
@@ -161,51 +178,39 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public ScheduleItems getTravelHistory(Locale language) {
-        ScheduleItems items = new ScheduleItems();
-        ScheduleBuilder sb = new ScheduleBuilder();
-        sb.setDisabled(true).setButtonType(ScheduleButtonType.NONE);
-        var historyItems = historyDao.getTravelHistory();
-        // Database access optimization
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (TripHistory historyItem : historyItems) {
-            ids.add(historyItem.getBusSchedule().getId());
-        }
-        var cities = getCities(ids, language);
-        // Build schedules
-        for(TripHistory historyItem : historyItems) {
-            var capacity = historyItem.getBusSchedule().getBusType().getNumberOfSeats();
-            sb
-                    .setScheduleId(historyItem.getId())
-                    .setDate(LocalDateTime.of(historyItem.getDate(), historyItem.getBusSchedule().getFromTime()))
-                    .setNumberOfAdults(capacity - historyItem.getNumberOfSeats()) // Total number of seats - number of non occupied seats
-                    .setPrice(getTripPrice(historyItem.getBusSchedule().getFromTime(), historyItem.getBusSchedule().getToTime()))
-                    .setFromPlace(cities.get(historyItem.getBusSchedule().getId()).getFirst())
-                    .setToPlace(cities.get(historyItem.getBusSchedule().getId()).getSecond())
-                    .setNumberOfChildren(0); // Unused
-            items.add(sb.buildPlaceItem());
-        }
-        return items;
+    public int getUserTravelHistoryCount(String username) {
+        return historyDao.getUserTravelHistoryCount(username);
     }
 
     // Utility methods
     private HashMap<Integer, Pair<String, String>> getCities(ArrayList<Integer> ids, Locale language) {
-        // Get City name for every schedule
-        var busSchedules = scheduleDao.getSchedules(ids.toArray(Integer[]::new));
-        HashMap<Integer, Pair<String, String>> cities = new HashMap<>();
-        for (var busSchedule : busSchedules) {
-            var city1 = destinationDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(), LocaleUtility.getLanguage(language));
-            var city2 = destinationDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(), LocaleUtility.getLanguage(language));
-            if(busSchedule.getTripType().getName().equals(TripTypeValues.A_TO_B.name())) {
-                cities.put(busSchedule.getId(), Pair.of(city1.getTitle(), city2.getTitle()));
-            } else if(busSchedule.getTripType().getName().equals(TripTypeValues.B_TO_A.name())) {
-                cities.put(busSchedule.getId(), Pair.of(city1.getTitle(), city2.getTitle()));
-            } else {
-                throw new RuntimeException("Trip type is not valid!");
-            }
+        return getCities(getSchedules(ids), language);
+    }
 
+    private HashMap<Integer, Pair<String, String>> getCities(Map<Integer, BusSchedule> busSchedules, Locale language) {
+        // Get City name for every schedule
+        HashMap<Integer, Pair<String, String>> cities = new HashMap<>();
+        for (Map.Entry<Integer, BusSchedule> busSchedule : busSchedules.entrySet()) {
+            cities.put(busSchedule.getKey(), getCityDescription(busSchedule.getValue(), language));
         }
         return cities;
+    }
+
+    private Pair<String, String> getCityDescription(BusSchedule busSchedule, Locale language) {
+        var city1 = destinationDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(), LocaleUtility.getLanguage(language));
+        var city2 = destinationDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(), LocaleUtility.getLanguage(language));
+        if(busSchedule.getTripType().getName().equals(TripTypeValues.A_TO_B.name())) {
+            return Pair.of(city1.getTitle(), city2.getTitle());
+        } else if(busSchedule.getTripType().getName().equals(TripTypeValues.B_TO_A.name())) {
+            return Pair.of(city1.getTitle(), city2.getTitle());
+        } else {
+            throw new RuntimeException("Trip type is not valid!");
+        }
+    }
+
+    private Map<Integer, BusSchedule> getSchedules(ArrayList<Integer> ids) {
+        var busSchedules = scheduleDao.getSchedules(ids.toArray(Integer[]::new));
+        return busSchedules.stream().collect(Collectors.toMap(BusSchedule::getId, i -> i));
     }
 
 }
