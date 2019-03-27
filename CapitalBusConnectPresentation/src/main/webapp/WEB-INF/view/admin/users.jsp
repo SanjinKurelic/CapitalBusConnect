@@ -12,7 +12,7 @@
         <input name="date" value="${date}">
         <!-- search bar end -->
         <cbc:infoItem infoItems="${item}"/>
-        <cbc:paginationItem numberOfPages="${numberOfPages}" currentPageNumber="${currentPage}" />
+        <cbc:paginationItem numberOfPages="${numberOfPages}" currentPageNumber="${currentPage}" leftUrlPart="${leftUrlPart}" rightUrlPart="${rightUrlPart}" />
     </div>
 </article>
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>

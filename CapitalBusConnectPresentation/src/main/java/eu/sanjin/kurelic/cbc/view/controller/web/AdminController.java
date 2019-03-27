@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Controller
@@ -102,6 +103,15 @@ public class AdminController {
         // Pagination
         viewModel.addObject("numberOfPages", numberOfPages);
         viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
+        viewModel.addObject("leftUrlPart", "admin/user");
+        var rightUrlPart = "";
+        if(date.isPresent()) {
+            rightUrlPart = date.get().format(DateTimeFormatter.ISO_LOCAL_DATE);
+            if(username.isPresent()) {
+                rightUrlPart += "/" + username.get();
+            }
+        }
+        viewModel.addObject("rightUrlPart", rightUrlPart);
         return viewModel;
     }
 
@@ -138,10 +148,22 @@ public class AdminController {
                 LocaleContextHolder.getLocale());
         viewModel.addObject("travelItems", travelItems);
         // Pagination
+        String leftUrlPart = "admin/user/" + username;
+        String rightTravelUrlPart = "", rightLoginUrlPart = "";
+        if(date.isPresent()) {
+            rightTravelUrlPart = date.get().format(DateTimeFormatter.ISO_LOCAL_DATE);
+            rightLoginUrlPart = "/" + rightTravelUrlPart;
+        }
         viewModel.addObject("numberOfLoginPages", user.getUserLoginHistoryCount(username));
         viewModel.addObject("currentLoginPage", loginPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
+        viewModel.addObject("leftLoginUrlPart", leftUrlPart);
+        viewModel.addObject("rightLoginUrlPart", travelPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM) + rightLoginUrlPart);
+
+        leftUrlPart += "/" + loginPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM);
         viewModel.addObject("numberOfTravelPages", scheduleService.getUserTravelHistoryCount(username));
         viewModel.addObject("currentTravelPage", travelPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
+        viewModel.addObject("leftTravelUrlPart", leftUrlPart);
+        viewModel.addObject("rightTravelUrlPart", rightTravelUrlPart);
         return viewModel;
     }
 
@@ -165,6 +187,7 @@ public class AdminController {
         var numberOfPages = cityInfo.getNumberOfCityLines();
         viewModel.addObject("numberOfPages", numberOfPages);
         viewModel.addObject("currentPageNumber", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
+        viewModel.addObject("leftUrlPart", "admin/routes");
 
         return viewModel;
     }

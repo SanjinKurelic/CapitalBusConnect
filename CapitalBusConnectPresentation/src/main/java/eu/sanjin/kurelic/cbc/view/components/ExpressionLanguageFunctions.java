@@ -117,4 +117,16 @@ public class ExpressionLanguageFunctions {
         return pages.toArray(Integer[]::new);
     }
 
+    public static String getPaginationItemUrl(String leftUrlPart, Integer pageNumber, String rightUrlPart) {
+        String url = "";
+        if(leftUrlPart != null && !leftUrlPart.trim().isEmpty()) {
+            url += leftUrlPart.trim() + "/";
+        }
+        url += pageNumber;
+        if(rightUrlPart != null && !rightUrlPart.trim().isEmpty()) {
+            url += "/" + rightUrlPart.trim();
+        }
+        return url;
+    }
+
 }

@@ -67,6 +67,7 @@ public class UserController {
         // Pagination
         viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         viewModel.addObject("numberOfPages", scheduleService.getUserTravelHistoryCount(username));
+        viewModel.addObject("leftUrlPart", "user/travels");
         return viewModel;
     }
 

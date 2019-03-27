@@ -13,6 +13,8 @@
 <%-- Attributes: --%>
 <%@ attribute name="numberOfPages" required="true" type="java.lang.Integer" %>
 <%@ attribute name="currentPageNumber" required="true" type="java.lang.Integer" %>
+<%@ attribute name="leftUrlPart" required="false" type="java.lang.String" %>
+<%@ attribute name="rightUrlPart" required="false" type="java.lang.String" %>
 
 <%-- Local Variables: --%>
 <c:set var="href" value=""/>
@@ -24,7 +26,7 @@
     <%-- LEFT BUTTON --%>
     <c:choose>
         <c:when test="${currentPageNumber > 1}">
-            <c:set var="href" value="${pageContext.request.requestURL.toString()}/${currentPageNumber - 1}"/>
+            <spring:url value="${cbf:getPaginationItemUrl(leftUrlPart, currentPageNumber - 1, rightUrlPart)}" var="href"/>
             <c:set var="disabled" value=""/>
         </c:when>
         <c:otherwise>
@@ -49,8 +51,9 @@
                             <c:set var="active" value="" />
                         </c:otherwise>
                     </c:choose>
+                    <spring:url value="${cbf:getPaginationItemUrl(leftUrlPart, number, rightUrlPart)}" var="href" />
                     <td class="paginationBox-numbers-items-item ${active}">
-                        <a href="${pageContext.request.requestURL.toString()}/${number}">${number}</a>
+                        <a href="${href}">${number}</a>
                     </td>
                 </c:forEach>
             </tr>
@@ -59,7 +62,7 @@
     <%-- RIGHT BUTTON --%>
     <c:choose>
         <c:when test="${currentPageNumber < numberOfPages}">
-            <c:set var="href" value="${pageContext.request.requestURL.toString()}/${currentPageNumber + 1}"/>
+            <spring:url value="${cbf:getPaginationItemUrl(leftUrlPart, currentPageNumber + 1, rightUrlPart)}" var="href"/>
             <c:set var="disabled" value=""/>
         </c:when>
         <c:otherwise>

@@ -10,7 +10,7 @@
         <input name="city2" >
         <!-- search bar end -->
         <cbc:infoItem infoItems="${routeItems}"/>
-        <cbc:paginationItem numberOfPages="${numberOfPages}" currentPageNumber="${currentPageNumber}"/>
+        <cbc:paginationItem numberOfPages="${numberOfPages}" currentPageNumber="${currentPageNumber}" leftUrlPart="${leftUrlPart}"/>
     </div>
 </article>
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>
