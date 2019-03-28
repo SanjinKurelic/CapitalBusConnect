@@ -80,18 +80,8 @@ public class ExpressionLanguageFunctions {
 
     public static Integer[] getPageList(int currentPageNumber, int numberOfItems) {
         int rangeStart, rangeEnd, numberOfPages;
-        // Bottom statement is more faster and precise than: (int) Math.ceil(numberOfItems / (float) VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS)
-        numberOfPages = (numberOfItems + VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS - 1) / VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS;
-        // Error, no pages
-        if(numberOfPages < 1) {
-            throw new RuntimeException(INVALID_NUMBER_OF_PAGES);
-        }
-        // Check currentPage
-        if(currentPageNumber > numberOfPages) {
-            currentPageNumber = numberOfPages;
-        } else if(currentPageNumber < 1) {
-            currentPageNumber = 1;
-        }
+        numberOfPages = getNumberOfPages(numberOfItems);
+        currentPageNumber = checkAndGetCurrentPage(currentPageNumber, numberOfPages);
         // Define range
         rangeStart = rangeEnd = currentPageNumber;
         for(int i = 1; i <= VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS;) {
@@ -115,6 +105,25 @@ public class ExpressionLanguageFunctions {
             pages.add(i);
         }
         return pages.toArray(Integer[]::new);
+    }
+
+    public static int checkAndGetCurrentPage(int currentPageNumber, int numberOfPages) {
+        if(currentPageNumber > numberOfPages) {
+            currentPageNumber = numberOfPages;
+        } else if(currentPageNumber < 1) {
+            currentPageNumber = 1;
+        }
+        return currentPageNumber;
+    }
+
+    public static int getNumberOfPages(int numberOfItems) {
+        // Bottom statement is more faster and precise than: (int) Math.ceil(numberOfItems / (float) VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS)
+        var numberOfPages = (numberOfItems + VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS - 1) / VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS;
+        // Error, no pages
+        if(numberOfPages < 1) {
+            throw new RuntimeException(INVALID_NUMBER_OF_PAGES);
+        }
+        return numberOfPages;
     }
 
     public static String getPaginationItemUrl(String leftUrlPart, Integer pageNumber, String rightUrlPart) {

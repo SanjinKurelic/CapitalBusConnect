@@ -8,6 +8,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.view.components.ErrorMessagesOrder;
+import eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions;
 import eu.sanjin.kurelic.cbc.view.components.VisibleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,18 +57,28 @@ public class UserController {
         var viewModel = new ModelAndView("user/travels");
         // Menu
         viewModel.addObject("menuItem", getUserMenu());
-        // Schedule items
+        // Pagination
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var numberOfUserTravels = scheduleService.getUserTravelHistoryCount(username);
+        if (pageNumber.isPresent()) {
+            pageNumber = Optional.of(
+                    ExpressionLanguageFunctions.checkAndGetCurrentPage(
+                            pageNumber.get(),
+                            ExpressionLanguageFunctions.getNumberOfPages(numberOfUserTravels)
+                    )
+            );
+        }
+        viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
+        viewModel.addObject("numberOfPages", numberOfUserTravels);
+        viewModel.addObject("leftUrlPart", "user/travels");
+        // Schedule items
         viewModel.addObject("scheduleItems", scheduleService.getUserTravelHistory(
                 username,
                 pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
                 VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS,
                 LocaleContextHolder.getLocale())
         );
-        // Pagination
-        viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
-        viewModel.addObject("numberOfPages", scheduleService.getUserTravelHistoryCount(username));
-        viewModel.addObject("leftUrlPart", "user/travels");
+
         return viewModel;
     }
 

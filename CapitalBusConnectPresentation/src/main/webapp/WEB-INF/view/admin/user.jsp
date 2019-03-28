@@ -7,9 +7,10 @@
     <div class="center">
         <!-- Search bar -->
         <input name="date" value="${date}" />
+        <h2>Login history</h2>
         <cbc:infoItem infoItems="${loginItems}"/>
         <cbc:paginationItem numberOfPages="${numberOfLoginPages}" currentPageNumber="${currentLoginPage}" leftUrlPart="${leftLoginUrlPart}" rightUrlPart="${rightLoginUrlPart}" />
-
+        <h2>Travel history</h2>
         <c:forEach var="scheduleItem" items="${travelItems}">
             <cbc:scheduleItem scheduleItem="${scheduleItem}" />
         </c:forEach>
