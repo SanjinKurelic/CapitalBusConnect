@@ -203,7 +203,8 @@ var DialogMessage = cbc_enum({
     CART_DELETE_ERROR: "dialog-content-cartDelete-error",
     CART_UPDATE_ERROR: "dialog-content-cartUpdate-error",
     USER_SAVE_SUCCESS: "dialog-content-userSave-success",
-    USER_SAVE_ERROR: "dialog-content-userSave-error"
+    USER_SAVE_ERROR: "dialog-content-userSave-error",
+    ALL_SEARCH_FIELDS_REQUIRED: "dialog-content-allSearchFieldsRequired-error"
 });
 
 var DialogButtonType = cbc_enum({
@@ -513,6 +514,35 @@ var RadioBox = {
             cbc_removeClass(items[i], 'active');
         }
         cbc_addClass(element, 'active');
+    }
+};
+
+/*global cbc_findUpTag, $$, Dialog, DialogType, DialogMessage, DialogMessageType, window */
+
+var Search = {
+    apiUrl: "",
+    searchCity: function () {
+        "use strict";
+    },
+    searchUser: function () {
+        "use strict";
+    },
+    findResult: function (element) {
+        "use strict";
+        var root, elements, i, url;
+        root = cbc_findUpTag(element, "table");
+        url = root.getAttribute("data-url");
+        elements = $$("input", root);
+        for (i = 0; i < elements.length; i = i + 1) {
+            if (elements[i].hasAttribute("required")) {
+                if (elements[i].value.trim() === "") {
+                    (new Dialog(DialogType.DIALOG, DialogMessage.ALL_SEARCH_FIELDS_REQUIRED, DialogMessageType.ERROR)).show();
+                    return;
+                }
+            }
+            url = url + "/" + elements[i].value.toLowerCase();
+        }
+        window.location.href = url;
     }
 };
 /* Created by Sanjin Kurelic (kurelic@sanjin.eu) */

@@ -6,13 +6,13 @@
     <cbc:menuComponent menu="${menuItem}" />
     <div class="center">
         <div class="searchBar">
-            <table class="searchBar-content">
+            <table class="searchBar-content" data-url="${searchUrl}">
                 <tr>
-                    <td><label for="date"><spring:message code="searchBox.date.text"/></label></td>
-                    <td><input data-type="date" name="date" id="date" value="${date}"></td>
+                    <td><label for="dateSearch"><spring:message code="searchBox.date.text"/></label></td>
+                    <td><input data-type="date" name="dateSearch" id="dateSearch" value="${date}" required></td>
                     <td></td>
                     <td></td>
-                    <td><button><span class="icon">&#xf002;</span></button></td>
+                    <td><button onclick="Search.findResult(this)"><span class="icon">&#xf002;</span></button></td>
                 </tr>
             </table>
         </div>

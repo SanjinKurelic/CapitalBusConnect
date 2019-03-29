@@ -40,7 +40,17 @@ public interface UserService {
 
     InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit);
 
+    @Transactional
+    default InfoItems getUserLoginHistory(String username, int pageNumber, int limit) {
+        return getUserLoginHistory(username, null, pageNumber, limit);
+    }
+
     InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit);
+
+    @Transactional
+    default InfoItems getAllLoginHistory(int pageNumber, int limit) {
+        return getAllLoginHistory(null, pageNumber, limit);
+    }
 
     int getAllLoginHistoryCount();
 

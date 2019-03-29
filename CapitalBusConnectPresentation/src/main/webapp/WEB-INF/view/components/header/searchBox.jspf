@@ -12,54 +12,64 @@
 <div class="searchBox">
     <div class="center">
         <div class="searchBox-content">
-            <form:form>
                 <div class="searchBox-content-full">
-                    <table>
+                    <table data-url="schedule">
                         <tr>
                             <td>${searchCityIcon}</td>
                             <td>
-                                <input name="fromCityParam" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
+                                <label>
+                                    <input name="fromCitySearch" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
+                                </label>
                             </td>
                             <td>${searchArrowIcon}</td>
                             <td>${searchCityIcon}</td>
                             <td>
-                                <input name="toCityParam" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
+                                <label>
+                                    <input name="toCitySearch" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
+                                </label>
                             </td>
                             <td>${searchDateIcon}</td>
                             <td>
-                                <input data-type="date" required name="dateParam" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
+                                <label>
+                                    <input data-type="date" required name="dateSearch" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
+                                </label>
                             </td>
                             <td>
-                                <button type="submit">${searchButtonIcon}</button>
+                                <button onclick="Search.findResult(this)">${searchButtonIcon}</button>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="searchBox-content-compact">
-                    <table>
+                    <table data-url="schedule">
                         <tr>
                             <td>${searchCityIcon}</td>
                             <td>
-                                <input name="fromCityParam" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
+                                <label>
+                                    <input name="fromCitySearch" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
+                                </label>
                             </td>
                             <td>${searchCityIcon}</td>
                             <td>
-                                <input name="toCityParam" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
+                                <label>
+                                    <input name="toCitySearch" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
+                                </label>
                             </td>
                         </tr>
                         <tr>
                             <td>${searchDateIcon}</td>
                             <td>
-                                <input data-type="date" required name="dateParam" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
+                                <label>
+                                    <input data-type="date" required name="dateSearch" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
+                                </label>
                             </td>
                             <td>${searchButtonIcon}</td>
                             <td>
-                                <button type="submit"><spring:message code='searchBox.button.text' /></button>
+                                <button onclick="Search.findResult(this)"><spring:message code='searchBox.button.text' /></button>
                             </td>
                         </tr>
                     </table>
                 </div>
-            </form:form>
         </div>
     </div>
 </div>

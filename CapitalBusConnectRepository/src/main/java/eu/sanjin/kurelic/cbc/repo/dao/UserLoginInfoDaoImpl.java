@@ -51,7 +51,7 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getAllLoginHistory(int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE id.username.usernam != 'admin@cbc' ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.username.username != 'admin@cbc' ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);
@@ -63,7 +63,7 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getAllLoginHistory(LocalDate date, int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE DATE(id.dateTime) = :date AND id.username.usernam != 'admin@cbc' ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE DATE(id.dateTime) = :date AND id.username.username != 'admin@cbc' ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);

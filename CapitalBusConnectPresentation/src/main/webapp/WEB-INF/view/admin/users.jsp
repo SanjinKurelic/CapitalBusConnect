@@ -8,13 +8,13 @@
     <cbc:menuComponent menu="${menuItem}"/>
     <div class="center">
         <div class="searchBar">
-            <table class="searchBar-content">
+            <table class="searchBar-content" data-url="${searchUrl}">
                 <tr>
-                    <td><label for="username"><spring:message code="searchBox.username.text"/></label></td>
-                    <td><input name="username" id="username" value="${username}"/></td>
-                    <td><label for="date"><spring:message code="searchBox.date.text"/></label></td>
-                    <td><input data-type="date" name="date" id="date" value="${date}"></td>
-                    <td><button><span class="icon">&#xf002;</span></button></td>
+                    <td><label for="usernameSearch"><spring:message code="searchBox.username.text"/></label></td>
+                    <td><input name="usernameSearch" id="usernameSearch" value="${username}" required/></td>
+                    <td></td>
+                    <td></td>
+                    <td><button onclick="Search.findResult(this)"><span class="icon">&#xf002;</span></button></td>
                 </tr>
             </table>
         </div>

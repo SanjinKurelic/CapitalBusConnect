@@ -71,18 +71,13 @@ public class AdminController {
     @GetMapping(value = {
             "/users",
             "/users/{pageNumber}",
-            "/users/{pageNumber}/{date}",
-            "/users/{pageNumber}/{date}/{username:.+}"
+            "/users/{pageNumber}/{username:.+}"
     })
     public ModelAndView usersPage(@PathVariable Optional<Integer> pageNumber,
-                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable Optional<LocalDate> date,
                                   @PathVariable Optional<String> username) {
         var viewModel = new ModelAndView("admin/users");
         // Menu
         viewModel.addObject("menuItem", getAdminMenu());
-        // Search bar
-        viewModel.addObject("username", username.orElse(""));
-        viewModel.addObject("date", date.orElse(LocalDate.now()));
         // Pagination
         int numberOfUsers;
         numberOfUsers = username.map(user::getUserLoginHistoryCount).orElseGet(user::getAllLoginHistoryCount);
@@ -98,25 +93,26 @@ public class AdminController {
         viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         viewModel.addObject("leftUrlPart", "admin/users");
         var rightUrlPart = "";
-        if (date.isPresent()) {
-            rightUrlPart = date.get().format(DateTimeFormatter.ISO_LOCAL_DATE);
-            if (username.isPresent()) {
-                rightUrlPart += "/" + username.get();
-            }
+        if (username.isPresent()) {
+            rightUrlPart += "/" + username.get();
         }
         viewModel.addObject("rightUrlPart", rightUrlPart);
+        // Search bar
+        var searchUrl = "admin/user/" + pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM);
+        viewModel.addObject("searchUrl", searchUrl);
+        viewModel.addObject("username", username.orElse(""));
         // User items
         InfoItems loginItems;
         if (username.isPresent()) {
             loginItems = user.getUserLoginHistory(
                     username.get(),
-                    date.orElse(null),
+                    // date
                     pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
                     VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS
             );
         } else {
             loginItems = user.getAllLoginHistory(
-                    date.orElse(null),
+                    // date
                     pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
                     VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS
             );
@@ -140,8 +136,6 @@ public class AdminController {
         var viewModel = new ModelAndView("admin/user");
         // Menu
         viewModel.addObject("menuItem", getAdminMenu());
-        // Search bar
-        viewModel.addObject("date", date.orElse(LocalDate.now()));
         // Pagination
         // Pagination Login - URL
         String leftUrlPart = "admin/user/" + username;
@@ -183,6 +177,10 @@ public class AdminController {
         viewModel.addObject("currentTravelPage", travelPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         viewModel.addObject("leftTravelUrlPart", leftUrlPart);
         viewModel.addObject("rightTravelUrlPart", rightTravelUrlPart);
+        // Search bar
+        leftUrlPart += "/" + travelPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM);
+        viewModel.addObject("date", date.orElse(LocalDate.now()));
+        viewModel.addObject("searchUrl", leftUrlPart);
         // Login history items
         var loginItems = user.getUserLoginHistory(
                 username,

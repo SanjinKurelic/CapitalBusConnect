@@ -19,7 +19,8 @@ var DialogMessage = cbc_enum({
     CART_DELETE_ERROR: "dialog-content-cartDelete-error",
     CART_UPDATE_ERROR: "dialog-content-cartUpdate-error",
     USER_SAVE_SUCCESS: "dialog-content-userSave-success",
-    USER_SAVE_ERROR: "dialog-content-userSave-error"
+    USER_SAVE_ERROR: "dialog-content-userSave-error",
+    ALL_SEARCH_FIELDS_REQUIRED: "dialog-content-allSearchFieldsRequired-error"
 });
 
 var DialogButtonType = cbc_enum({

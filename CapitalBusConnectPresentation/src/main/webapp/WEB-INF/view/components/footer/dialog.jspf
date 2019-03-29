@@ -15,6 +15,7 @@
             <p id="dialog-content-cartDelete-confirm"><spring:message code="dialog.content.cartDelete.confirm.text" /></p>
             <p id="dialog-content-cartDelete-error"><spring:message code="dialog.content.cartDelete.error.text" /></p>
             <p id="dialog-content-cartUpdate-error"><spring:message code="dialog.content.cartUpdate.error.text" /></p>
+            <p id="dialog-content-allSearchFieldsRequired-error"><spring:message code="dialog.content.allSearchFieldsRequired.error.text" /></p>
         </div>
         <div class="dialog-box-buttons">
             <div class="dialog-box-buttons-button negative" id="dialog-cancel"><spring:message code="dialog.button.cancel.text"/></div>
