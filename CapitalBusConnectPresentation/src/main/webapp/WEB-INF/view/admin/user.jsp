@@ -5,16 +5,41 @@
 <article>
     <cbc:menuComponent menu="${menuItem}" />
     <div class="center">
-        <!-- Search bar -->
-        <input name="date" value="${date}" />
-        <h2>Login history</h2>
-        <cbc:infoItem infoItems="${loginItems}"/>
-        <cbc:paginationItem numberOfPages="${numberOfLoginPages}" currentPageNumber="${currentLoginPage}" leftUrlPart="${leftLoginUrlPart}" rightUrlPart="${rightLoginUrlPart}" />
-        <h2>Travel history</h2>
-        <c:forEach var="scheduleItem" items="${travelItems}">
-            <cbc:scheduleItem scheduleItem="${scheduleItem}" />
-        </c:forEach>
-        <cbc:paginationItem numberOfPages="${numberOfTravelPages}" currentPageNumber="${currentTravelPage}" leftUrlPart="${leftTravelUrlPart}" rightUrlPart="${rightTravelUrlPart}" />
+        <div class="searchBar">
+            <table class="searchBar-content">
+                <tr>
+                    <td><label for="date"><spring:message code="searchBox.date.text"/></label></td>
+                    <td><input data-type="date" name="date" id="date" value="${date}"></td>
+                    <td></td>
+                    <td></td>
+                    <td><button><span class="icon">&#xf002;</span></button></td>
+                </tr>
+            </table>
+        </div>
+        <h2 class="article-title"><spring:message code="userData.loginTitle.text"/></h2>
+        <c:choose>
+            <c:when test="${not empty loginItems}">
+                <cbc:infoItem infoItems="${loginItems}"/>
+                <cbc:paginationItem numberOfItems="${numberOfLoginPages}" currentPageNumber="${currentLoginPage}" leftUrlPart="${leftLoginUrlPart}" rightUrlPart="${rightLoginUrlPart}" />
+            </c:when>
+            <c:otherwise>
+                <spring:message code="empty.login.text" />
+            </c:otherwise>
+        </c:choose>
+        <h2 class="article-title"><spring:message code="userData.travelTitle.text"/></h2>
+        <c:choose>
+            <c:when test="${not empty travelItems}">
+                <table class="scheduleBox">
+                    <c:forEach var="scheduleItem" items="${travelItems}">
+                        <cbc:scheduleItem scheduleItem="${scheduleItem}" />
+                    </c:forEach>
+                </table>
+                <cbc:paginationItem numberOfItems="${numberOfTravelPages}" currentPageNumber="${currentTravelPage}" leftUrlPart="${leftTravelUrlPart}" rightUrlPart="${rightTravelUrlPart}" />
+            </c:when>
+            <c:otherwise>
+                <spring:message code="empty.travel.criteria.text" />
+            </c:otherwise>
+        </c:choose>
     </div>
 </article>
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>

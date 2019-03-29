@@ -330,12 +330,13 @@ h2 {
   font-size: 1.1em;
   margin: 0;
   padding: 20px; }
-  h2 .article-title {
+  h2.article-title {
     text-align: left;
     color: #FF6F00;
     letter-spacing: 2px;
-    padding-bottom: 1.5%; }
-    h2 .article-title::after, h2 .article-title:after {
+    padding-bottom: 1.5%;
+    text-transform: uppercase; }
+    h2.article-title::after, h2.article-title:after {
       display: inline-block;
       content: "";
       border: 1px solid #FF6F00;
@@ -789,34 +790,35 @@ body {
         .scheduleBox-item-buttons .mobile {
           display: inline; } }
 
-.search-box-compact table, .search-box-full table {
+.searchBox-content-compact table td button, .searchBox-content-full table td button, .searchBar-content button {
+  border: 1px solid #424242;
+  border-radius: 5px;
+  padding: 0 20px;
+  height: 37px;
+  background: #F0F0F0; }
+
+.searchBox-content-compact table, .searchBox-content-full table {
   width: 100%; }
-  .search-box-compact table td, .search-box-full table td {
+  .searchBox-content-compact table td, .searchBox-content-full table td {
     padding: 5px; }
-    .search-box-compact table td input, .search-box-full table td input {
+    .searchBox-content-compact table td input, .searchBox-content-full table td input {
       background: #F0F0F0;
       width: 100%;
       text-transform: capitalize; }
-    .search-box-compact table td span.icon, .search-box-full table td span.icon {
+    .searchBox-content-compact table td span.icon, .searchBox-content-full table td span.icon {
       font-size: 1.2em; }
-    .search-box-compact table td button, .search-box-full table td button {
-      border: 1px solid #424242;
-      border-radius: 5px;
-      padding: 0 20px;
-      height: 37px;
-      background: #F0F0F0; }
 
-.search {
+.searchBox {
   background-image: url("../images/banner.jpg");
   -webkit-background-size: cover;
           background-size: cover;
   background-position: center;
   width: 100%;
   height: 300px; }
-  .search .center {
+  .searchBox .center {
     position: relative;
     height: 300px; }
-  .search-box {
+  .searchBox-content {
     background: rgba(255, 255, 255, 0.7);
     padding: 10px;
     border-radius: 5px;
@@ -827,25 +829,36 @@ body {
     bottom: 20px;
     left: 5px; }
     @media (max-width: 700px) {
-      .search-box {
+      .searchBox-content {
         background: #DEDEDE;
         bottom: 0;
         border-radius: 0;
         left: 0;
         right: 0; } }
-    .search-box-compact {
+    .searchBox-content-compact {
       display: none; }
       @media (max-width: 500px) {
-        .search-box-compact {
+        .searchBox-content-compact {
           display: block; } }
       @media (max-width: 500px) {
-        .search-box-compact table td button {
+        .searchBox-content-compact table td button {
           width: 100%; } }
-    .search-box-full {
+    .searchBox-content-full {
       display: block; }
       @media (max-width: 500px) {
-        .search-box-full {
+        .searchBox-content-full {
           display: none; } }
+
+.searchBar {
+  background-color: #DEDEDE;
+  padding: 10px;
+  border-radius: 5px; }
+  .searchBar-content {
+    width: 100%;
+    table-layout: fixed; }
+    .searchBar-content td {
+      text-align: right;
+      padding: 0 10px; }
 
 /* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 .successPage {

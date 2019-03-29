@@ -86,4 +86,11 @@
             java.lang.String getPaginationItemUrl(java.lang.String,java.lang.Integer,java.lang.String)
         </function-signature>
     </function>
+    <function>
+        <name>getNumberOfPages</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            int getNumberOfPages(int)
+        </function-signature>
+    </function>
 </taglib>

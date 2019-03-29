@@ -51,7 +51,7 @@ public class TravelHistoryDaoImpl implements TravelHistoryDao {
     public int getUserTravelHistoryCount(String username) {
         var session = sessionFactory.getCurrentSession();
         // We could also use 10 lines of criteria builder and projections code instead of HQL :)
-        var hql = "SELECT COUNT(*) FROM UserTravelHistory WHERE id.username.username = :username";
+        var hql = "SELECT COUNT(*) FROM UserTravelHistory WHERE id.username = :username";
 
         Query query = session.createQuery(hql);
         query.setParameter("username", username);

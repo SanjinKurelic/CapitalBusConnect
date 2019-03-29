@@ -3,6 +3,7 @@ package eu.sanjin.kurelic.cbc.view.controller.web;
 import eu.sanjin.kurelic.cbc.business.services.CityInfoService;
 import eu.sanjin.kurelic.cbc.business.services.ScheduleService;
 import eu.sanjin.kurelic.cbc.business.services.UserService;
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemButtonType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.Menu;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItem;
@@ -13,6 +14,7 @@ import eu.sanjin.kurelic.cbc.view.components.VisibleConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,10 +72,10 @@ public class AdminController {
             "/users",
             "/users/{pageNumber}",
             "/users/{pageNumber}/{date}",
-            "/users/{pageNumber}/{date}/{username}"
+            "/users/{pageNumber}/{date}/{username:.+}"
     })
     public ModelAndView usersPage(@PathVariable Optional<Integer> pageNumber,
-                                  @PathVariable Optional<LocalDate> date,
+                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable Optional<LocalDate> date,
                                   @PathVariable Optional<String> username) {
         var viewModel = new ModelAndView("admin/users");
         // Menu
@@ -94,7 +96,7 @@ public class AdminController {
         }
         viewModel.addObject("numberOfPages", numberOfUsers);
         viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
-        viewModel.addObject("leftUrlPart", "admin/user");
+        viewModel.addObject("leftUrlPart", "admin/users");
         var rightUrlPart = "";
         if (date.isPresent()) {
             rightUrlPart = date.get().format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -126,20 +128,20 @@ public class AdminController {
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @GetMapping(value = {
-            "/user/{username}",
-            "/user/{username}/{loginPageNumber}",
-            "/user/{username}/{loginPageNumber}/{travelPageNumber}",
-            "/user/{username}/{loginPageNumber}/{travelPageNumber}/{date}"
+            "/user/{username:.+}",
+            "/user/{username:.+}/{loginPageNumber}",
+            "/user/{username:.+}/{loginPageNumber}/{travelPageNumber}",
+            "/user/{username:.+}/{loginPageNumber}/{travelPageNumber}/{date}"
     })
     public ModelAndView userPage(@PathVariable String username,
                                  @PathVariable Optional<Integer> loginPageNumber,
                                  @PathVariable Optional<Integer> travelPageNumber,
-                                 @PathVariable Optional<LocalDate> date) {
+                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @PathVariable Optional<LocalDate> date) {
         var viewModel = new ModelAndView("admin/user");
         // Menu
         viewModel.addObject("menuItem", getAdminMenu());
         // Search bar
-        viewModel.addObject("date", date);
+        viewModel.addObject("date", date.orElse(LocalDate.now()));
         // Pagination
         // Pagination Login - URL
         String leftUrlPart = "admin/user/" + username;
@@ -188,6 +190,8 @@ public class AdminController {
                 loginPageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM),
                 VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS
         );
+        // Remove unnecessary buttons
+        loginItems.forEach(i -> i.setButtonType(InfoItemButtonType.NONE));
         viewModel.addObject("loginItems", loginItems);
         // Travel history items
         var travelItems = scheduleService.getUserTravelHistory(

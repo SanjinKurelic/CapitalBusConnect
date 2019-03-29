@@ -11,7 +11,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%-- Attributes: --%>
-<%@ attribute name="numberOfPages" required="true" type="java.lang.Integer" %>
+<%@ attribute name="numberOfItems" required="true" type="java.lang.Integer" %>
 <%@ attribute name="currentPageNumber" required="true" type="java.lang.Integer" %>
 <%@ attribute name="leftUrlPart" required="false" type="java.lang.String" %>
 <%@ attribute name="rightUrlPart" required="false" type="java.lang.String" %>
@@ -42,7 +42,7 @@
     <div class="paginationBox-numbers">
         <table class="paginationBox-numbers-items">
             <tr>
-                <c:forEach var="number" items="${cbf:getPageList(currentPageNumber, numberOfPages)}">
+                <c:forEach var="number" items="${cbf:getPageList(currentPageNumber, numberOfItems)}">
                     <c:choose>
                         <c:when test="${number eq currentPageNumber}">
                             <c:set var="active" value="active" />
@@ -61,7 +61,7 @@
     </div>
     <%-- RIGHT BUTTON --%>
     <c:choose>
-        <c:when test="${currentPageNumber < numberOfPages}">
+        <c:when test="${currentPageNumber < cbf:getNumberOfPages(numberOfItems)}">
             <spring:url value="${cbf:getPaginationItemUrl(leftUrlPart, currentPageNumber + 1, rightUrlPart)}" var="href"/>
             <c:set var="disabled" value=""/>
         </c:when>

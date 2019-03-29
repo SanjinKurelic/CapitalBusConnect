@@ -15,8 +15,6 @@
 <%@ attribute name="infoItems" required="true" type="eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems" %>
 
 <%-- Local Variables: --%>
-<c:set var="buttonText" value=""/>
-<c:set var="buttonClick" value=""/>
 
 <%-- Content: --%>
 <table class="infoBox">
@@ -32,17 +30,16 @@
             <td class="infoBox-item-column">
                 <cbc:infoItemColumn type="${infoItem.columnType3}" value="${infoItem.column3}"/>
             </td>
-            <c:choose>
-                <c:when test="${infoItem.buttonType eq InfoItemButtonType.EDIT_ROUTE}">
-                    <c:set var="buttonText" value='<span class="icon">&#xf044;</span>'/>
-                </c:when>
-                <c:when test="${infoItem.buttonType eq InfoItemButtonType.BUY_INFO}">
-                    <c:set var="buttonText" value='<span class="icon">&#xf129;</span>'/>
-                    <spring:url value="admin/user/${infoItem.column1}" var="buttonClick"/>
-                </c:when>
-            </c:choose>
             <td class="infoBox-item-button">
-                <a class="button" href="${buttonClick}">${buttonText}</a>
+                <c:choose>
+                    <c:when test="${infoItem.buttonType eq InfoItemButtonType.EDIT_ROUTE}">
+                        <a class="button"><span class="icon">&#xf044;</span></a>
+                    </c:when>
+                    <c:when test="${infoItem.buttonType eq InfoItemButtonType.BUY_INFO}">
+                        <spring:url value="admin/user/${infoItem.column1}" var="href"/>
+                        <a class="button" href="${href}"><span class="icon">&#xf129;</span></a>
+                    </c:when>
+                </c:choose>
             </td>
         </tr>
     </c:forEach>

@@ -4,16 +4,16 @@
     Author     : Sanjin Kurelic
 --%>
 <%@ page pageEncoding="UTF-8" %>
-<c:set var="searchCityIcon" value='<span class="icon">&#xf041</span>' />
-<c:set var="searchArrowIcon" value='<span class="icon">&#xf061</span>'/>
-<c:set var="searchDateIcon" value='<span class="icon">&#xf073</span>'/>
-<c:set var="searchButtonIcon" value='<span class="icon">&#xf002</span>'/>
+<c:set var="searchCityIcon" value='<span class="icon">&#xf041;</span>' />
+<c:set var="searchArrowIcon" value='<span class="icon">&#xf061;</span>'/>
+<c:set var="searchDateIcon" value='<span class="icon">&#xf073;</span>'/>
+<c:set var="searchButtonIcon" value='<span class="icon">&#xf002;</span>'/>
 
-<div class="search">
+<div class="searchBox">
     <div class="center">
-        <div class="search-box">
+        <div class="searchBox-content">
             <form:form>
-                <div class="search-box-full">
+                <div class="searchBox-content-full">
                     <table>
                         <tr>
                             <td>${searchCityIcon}</td>
@@ -35,7 +35,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="search-box-compact">
+                <div class="searchBox-content-compact">
                     <table>
                         <tr>
                             <td>${searchCityIcon}</td>

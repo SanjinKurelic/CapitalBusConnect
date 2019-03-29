@@ -1,14 +1,14 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.UserLoginHistory;
-import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -24,7 +24,7 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getUserLoginHistory(String username, int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE id.username = :username ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.username.username = :username ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);
@@ -37,7 +37,7 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getUserLoginHistory(String username, LocalDate date, int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE id.username = :username AND DATE(id.dateTime) = :date ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.username.username = :username AND DATE(id.dateTime) = :date ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);
@@ -51,7 +51,7 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getAllLoginHistory(int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.username.usernam != 'admin@cbc' ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);
@@ -63,12 +63,13 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getAllLoginHistory(LocalDate date, int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE DATE(id.dateTime) = :date ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE DATE(id.dateTime) = :date AND id.username.usernam != 'admin@cbc' ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
-        query.setParameter("date", date);
+        // DATE function in HQL use java.util.date, as date is LocalDate we need to convert it
+        query.setParameter("date", Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
         return query.getResultList();
     }

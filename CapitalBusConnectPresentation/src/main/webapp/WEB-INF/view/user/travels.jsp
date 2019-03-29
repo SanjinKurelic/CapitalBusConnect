@@ -19,7 +19,7 @@
                 <p><spring:message code="empty.travel.text"/></p>
             </c:when>
             <c:otherwise>
-                <cbc:paginationItem numberOfPages="${numberOfPages}" currentPageNumber="${currentPage}" leftUrlPart="${leftUrlPart}"/>
+                <cbc:paginationItem numberOfItems="${numberOfPages}" currentPageNumber="${currentPage}" leftUrlPart="${leftUrlPart}"/>
             </c:otherwise>
         </c:choose>
         <c:if test="${empty scheduleItems}">

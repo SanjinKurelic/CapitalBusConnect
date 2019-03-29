@@ -182,7 +182,7 @@ public class UserServiceImpl implements UserService {
             item.setColumnType1(InfoItemColumnType.TEXT);
             item.setColumn1(loginHistory.getId().getUsername().getUsername());
             item.setColumnType2(InfoItemColumnType.TEXT);
-            item.setColumn2(loginHistory.getId().getDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            item.setColumn2(loginHistory.getId().getDateTime().format(DateTimeFormatter.ISO_DATE_TIME).replace('T', ' '));
             item.setColumnType3(InfoItemColumnType.TEXT);
             item.setColumn3(loginHistory.getIpAddress());
             item.setButtonType(InfoItemButtonType.BUY_INFO);

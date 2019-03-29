@@ -140,7 +140,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleItems items = new ScheduleItems();
         ScheduleBuilder sb = new ScheduleBuilder();
 
-        sb.setDisabled(true).setButtonType(ScheduleButtonType.VIEW_TICKET);
+        sb.setButtonType(ScheduleButtonType.VIEW_TICKET);
         pageNumber -= 1; // Starting from 0
 
         if(date == null) {

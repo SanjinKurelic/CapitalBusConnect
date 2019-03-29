@@ -52,11 +52,12 @@ h2{
     margin:0;
     padding:20px;
 
-    .article-title{
+    &.article-title{
         text-align:left;
         color:color(secondary);
         letter-spacing:2px;
         padding-bottom:1.5%;
+        text-transform: uppercase;
 
         &::after, &:after {
             display:inline-block;

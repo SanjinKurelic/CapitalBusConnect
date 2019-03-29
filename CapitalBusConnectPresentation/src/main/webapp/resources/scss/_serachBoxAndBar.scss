@@ -1,5 +1,13 @@
 // Created by Sanjin Kurelic (kurelic@sanjin.eu)
 
+%search-button {
+    border:1px solid color(dark);
+    border-radius:5px;
+    padding:0 20px;
+    height:37px;
+    background:color(light);
+}
+
 %search-table {
     width: 100%;
     td {
@@ -16,16 +24,12 @@
         }
 
         button {
-            border:1px solid color(dark);
-            border-radius:5px;
-            padding:0 20px;
-            height:37px;
-            background:color(light);
+            @extend %search-button;
         }
     }
 }
 
-.search{
+.searchBox{
     background-image:url('../images/banner.jpg');
     background-size: cover;
     background-position:center;
@@ -37,7 +41,7 @@
         height: 300px;
     }
 
-    &-box{
+    &-content{
         background:rgba(255,255,255,0.7);
         padding:10px;
         border-radius:5px;
@@ -77,6 +81,26 @@
             table {
                 @extend %search-table;
             }
+        }
+    }
+}
+
+.searchBar {
+    background-color: color(dark-shadow);
+    padding: 10px;
+    border-radius: 5px;
+
+    &-content {
+        width: 100%;
+        table-layout: fixed;
+
+        td {
+            text-align: right;
+            padding: 0 10px;
+        }
+
+        button {
+            @extend %search-button;
         }
     }
 }
