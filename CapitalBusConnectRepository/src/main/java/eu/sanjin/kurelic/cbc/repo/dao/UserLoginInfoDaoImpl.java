@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -37,13 +36,14 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
     @Override
     public List<UserLoginHistory> getUserLoginHistory(String username, LocalDate date, int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE id.username.username = :username AND DATE(id.dateTime) = :date ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.username.username = :username AND id.dateTime BETWEEN :startDate AND :endDate ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
         query.setParameter("username", username);
-        query.setParameter("date", date);
+        query.setParameter("startDate", date.atStartOfDay());
+        query.setParameter("endDate", date.atTime(LocalTime.MAX));
 
         return query.getResultList();
     }
@@ -60,16 +60,17 @@ public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
         return query.getResultList();
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public List<UserLoginHistory> getAllLoginHistory(LocalDate date, int offset, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserLoginHistory WHERE DATE(id.dateTime) = :date AND id.username.username != 'admin@cbc' ORDER BY id.dateTime DESC";
+        var hql = "FROM UserLoginHistory WHERE id.username.username != 'admin@cbc' AND id.dateTime BETWEEN :startDate AND :endDate ORDER BY id.dateTime DESC";
 
         Query<UserLoginHistory> query = session.createQuery(hql, UserLoginHistory.class);
         query.setFirstResult(offset);
         query.setMaxResults(limit);
-        // DATE function in HQL use java.util.date, as date is LocalDate we need to convert it
-        query.setParameter("date", Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        query.setParameter("startDate", date.atStartOfDay());
+        query.setParameter("endDate", date.atTime(LocalTime.MAX));
 
         return query.getResultList();
     }

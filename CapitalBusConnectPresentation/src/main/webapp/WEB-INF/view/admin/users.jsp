@@ -25,7 +25,7 @@
                                     leftUrlPart="${leftUrlPart}" rightUrlPart="${rightUrlPart}"/>
             </c:when>
             <c:otherwise>
-                <spring:message code="empty.login.text"/>
+                <p><spring:message code="empty.login.text"/></p>
             </c:otherwise>
         </c:choose>
     </div>

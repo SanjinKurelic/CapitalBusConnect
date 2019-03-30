@@ -13,12 +13,6 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 class PaginationTest {
 
     @Test
-    void wrongTotalNumberOfPagesTest() {
-        var thrown = Assertions.assertThrows(RuntimeException.class, () -> ExpressionLanguageFunctions.getPageList(11, -20));
-        Assertions.assertEquals(ExpressionLanguageFunctions.INVALID_NUMBER_OF_PAGES, thrown.getMessage());
-    }
-
-    @Test
     void validExamples() {
         var result = ExpressionLanguageFunctions.getPageList(5, 20);
         int i = 0;

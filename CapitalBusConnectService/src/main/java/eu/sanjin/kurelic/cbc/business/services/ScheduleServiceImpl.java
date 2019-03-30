@@ -136,6 +136,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language) {
+        if(pageNumber < 1) {
+            return new ScheduleItems();
+        }
         List<UserTravelHistory> travelItems;
         ScheduleItems items = new ScheduleItems();
         ScheduleBuilder sb = new ScheduleBuilder();

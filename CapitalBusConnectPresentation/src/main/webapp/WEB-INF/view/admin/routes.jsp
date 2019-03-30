@@ -23,7 +23,7 @@
                                     leftUrlPart="${leftUrlPart}"/>
             </c:when>
             <c:otherwise>
-                <spring:message code="empty.route.text"/>
+                <p><spring:message code="empty.route.text"/></p>
             </c:otherwise>
         </c:choose>
     </div>

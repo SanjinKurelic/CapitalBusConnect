@@ -92,13 +92,9 @@ public class AdminController {
         viewModel.addObject("numberOfPages", numberOfUsers);
         viewModel.addObject("currentPage", pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM));
         viewModel.addObject("leftUrlPart", "admin/users");
-        var rightUrlPart = "";
-        if (username.isPresent()) {
-            rightUrlPart += "/" + username.get();
-        }
-        viewModel.addObject("rightUrlPart", rightUrlPart);
+        viewModel.addObject("rightUrlPart", username.orElse(""));
         // Search bar
-        var searchUrl = "admin/user/" + pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM);
+        var searchUrl = "admin/users/" + pageNumber.orElse(VisibleConfiguration.FIRST_DEFAULT_PAGINATION_ITEM);
         viewModel.addObject("searchUrl", searchUrl);
         viewModel.addObject("username", username.orElse(""));
         // User items

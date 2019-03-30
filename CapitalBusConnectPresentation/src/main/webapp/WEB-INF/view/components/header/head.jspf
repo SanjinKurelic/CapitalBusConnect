@@ -19,7 +19,7 @@
 <c:if test="${not empty language}">
     <fmt:setLocale value="${language}" scope="session" />
 </c:if>
-<fmt:setBundle basename="kurelic.sanjin.capitalbusconnect.i18n.text" scope="session" /> --%>
+<fmt:setBundle basename="eu.kurelic.sanjin.capitalbusconnect.i18n.text" scope="session" /> --%>
 
 <%-- Content: --%>
 <!DOCTYPE html>
@@ -41,5 +41,7 @@
         <link rel="mask-icon" href="<spring:url value="${ cbcf:getFaviconImageResourceUrl('safari-pinned-tab.svg') }"/>" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
+        <%-- Global bean --%>
+        <jsp:useBean id="currentDate" class="java.util.Date" scope="application" />
     </head>
     <body>

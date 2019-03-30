@@ -54,6 +54,10 @@ public class CityInfoServiceImpl implements CityInfoService {
         InfoItems items = new InfoItems();
         InfoItem item;
         pageNumber -= 1; // Starting from 0
+        // Check page number
+        if(pageNumber < 0) {
+            return items;
+        }
         // Get all lines
         var lines = destinationDao.getCityLines(pageNumber, limit);
         // Database optimization

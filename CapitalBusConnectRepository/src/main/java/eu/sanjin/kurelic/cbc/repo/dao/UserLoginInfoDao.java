@@ -1,10 +1,8 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
-import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.entity.UserLoginHistory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserLoginInfoDao {

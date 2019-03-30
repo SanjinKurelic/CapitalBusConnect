@@ -9,7 +9,7 @@
             <table class="searchBar-content" data-url="${searchUrl}">
                 <tr>
                     <td><label for="dateSearch"><spring:message code="searchBox.date.text"/></label></td>
-                    <td><input data-type="date" name="dateSearch" id="dateSearch" value="${date}" required></td>
+                    <td><input data-type="date" data-max="<fmt:formatDate value='${currentDate}' pattern='yyyy-MM-dd'/>" name="dateSearch" id="dateSearch" value="${date}" required></td>
                     <td></td>
                     <td></td>
                     <td><button onclick="Search.findResult(this)"><span class="icon">&#xf002;</span></button></td>
@@ -23,7 +23,7 @@
                 <cbc:paginationItem numberOfItems="${numberOfLoginPages}" currentPageNumber="${currentLoginPage}" leftUrlPart="${leftLoginUrlPart}" rightUrlPart="${rightLoginUrlPart}" />
             </c:when>
             <c:otherwise>
-                <spring:message code="empty.login.text" />
+                <p><spring:message code="empty.login.text" /></p>
             </c:otherwise>
         </c:choose>
         <h2 class="article-title"><spring:message code="userData.travelTitle.text"/></h2>
@@ -37,7 +37,7 @@
                 <cbc:paginationItem numberOfItems="${numberOfTravelPages}" currentPageNumber="${currentTravelPage}" leftUrlPart="${leftTravelUrlPart}" rightUrlPart="${rightTravelUrlPart}" />
             </c:when>
             <c:otherwise>
-                <spring:message code="empty.travel.criteria.text" />
+                <p><spring:message code="empty.travel.criteria.text" /></p>
             </c:otherwise>
         </c:choose>
     </div>

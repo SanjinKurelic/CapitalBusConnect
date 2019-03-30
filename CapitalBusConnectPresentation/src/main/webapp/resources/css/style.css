@@ -430,7 +430,8 @@ h2 {
       margin: 5px; }
     .footer-contactInfo-applicationStore {
       padding: 0;
-      /* hack for 700-705px screen resolutions */ }
+      /* hack for 700-705px screen resolutions */
+      cursor: pointer; }
   @media (max-width: 700px) {
     .footer-locationInfo {
       width: 100%; } }
@@ -796,6 +797,9 @@ body {
   padding: 0 20px;
   height: 37px;
   background: #F0F0F0; }
+
+.searchBox-content-compact table td button:hover, .searchBox-content-full table td button:hover, .searchBar-content button:hover {
+  cursor: pointer; }
 
 .searchBox-content-compact table, .searchBox-content-full table {
   width: 100%; }

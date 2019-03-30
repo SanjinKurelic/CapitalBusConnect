@@ -4,7 +4,7 @@
     Author     : Sanjin Kurelic
 --%>
 <%@ page pageEncoding="UTF-8" %>
-<c:set var="searchCityIcon" value='<span class="icon">&#xf041;</span>' />
+<c:set var="searchCityIcon" value='<span class="icon">&#xf041;</span>'/>
 <c:set var="searchArrowIcon" value='<span class="icon">&#xf061;</span>'/>
 <c:set var="searchDateIcon" value='<span class="icon">&#xf073;</span>'/>
 <c:set var="searchButtonIcon" value='<span class="icon">&#xf002;</span>'/>
@@ -12,64 +12,61 @@
 <div class="searchBox">
     <div class="center">
         <div class="searchBox-content">
-                <div class="searchBox-content-full">
+            <c:forTokens items="searchBox-content-full,searchBox-content-compact" delims="," var="cssClass">
+                <div class="${cssClass}">
                     <table data-url="schedule">
                         <tr>
                             <td>${searchCityIcon}</td>
                             <td>
                                 <label>
-                                    <input name="fromCitySearch" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
+                                        <%--@elvariable id="searchFromCity" type="java.lang.String"--%>
+                                    <input name="fromCitySearch" required value="${searchFromCity}"
+                                           placeholder="<spring:message code='searchBox.fromCity.placeholder' />"/>
                                 </label>
                             </td>
-                            <td>${searchArrowIcon}</td>
+                            <c:if test="${cssClass.contains('-full')}">
+                                <td>${searchArrowIcon}</td>
+                            </c:if>
                             <td>${searchCityIcon}</td>
                             <td>
                                 <label>
-                                    <input name="toCitySearch" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
+                                        <%--@elvariable id="searchToCity" type="java.lang.String"--%>
+                                    <input name="toCitySearch" required value="${searchToCity}"
+                                           placeholder="<spring:message code='searchBox.toCity.placeholder' />"/>
                                 </label>
                             </td>
+                            <c:if test="${cssClass.contains('-compact')}">
+                                <c:out value="</tr><tr>" escapeXml="false"/>
+                            </c:if>
                             <td>${searchDateIcon}</td>
                             <td>
                                 <label>
-                                    <input data-type="date" required name="dateSearch" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
+                                        <%--@elvariable id="searchDate" type="java.time.LocalDate"--%>
+                                    <input data-type="date"
+                                           data-min="<fmt:formatDate value='${currentDate}' pattern='yyyy-MM-dd'/>"
+                                           required name="dateSearch" value="${searchDate}"
+                                           placeholder="<spring:message code='searchBox.date.placeholder' />"/>
                                 </label>
                             </td>
-                            <td>
-                                <button onclick="Search.findResult(this)">${searchButtonIcon}</button>
-                            </td>
+                            <c:choose>
+                                <c:when test="${cssClass.contains('-compact')}">
+                                    <td>${searchButtonIcon}</td>
+                                    <td>
+                                        <button onclick="Search.findResult(this)"><spring:message
+                                                code='searchBox.button.text'/></button>
+                                    </td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td>
+                                        <button onclick="Search.findResult(this)">${searchButtonIcon}</button>
+                                    </td>
+                                </c:otherwise>
+                            </c:choose>
                         </tr>
                     </table>
                 </div>
-                <div class="searchBox-content-compact">
-                    <table data-url="schedule">
-                        <tr>
-                            <td>${searchCityIcon}</td>
-                            <td>
-                                <label>
-                                    <input name="fromCitySearch" required placeholder="<spring:message code='searchBox.fromCity.placeholder' />" value="${searchFromCity}"/>
-                                </label>
-                            </td>
-                            <td>${searchCityIcon}</td>
-                            <td>
-                                <label>
-                                    <input name="toCitySearch" required placeholder="<spring:message code='searchBox.toCity.placeholder' />" value="${searchToCity}"/>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>${searchDateIcon}</td>
-                            <td>
-                                <label>
-                                    <input data-type="date" required name="dateSearch" placeholder="<spring:message code='searchBox.date.placeholder' />" value="${searchDate}"/>
-                                </label>
-                            </td>
-                            <td>${searchButtonIcon}</td>
-                            <td>
-                                <button onclick="Search.findResult(this)"><spring:message code='searchBox.button.text' /></button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+            </c:forTokens>
+
         </div>
     </div>
 </div>

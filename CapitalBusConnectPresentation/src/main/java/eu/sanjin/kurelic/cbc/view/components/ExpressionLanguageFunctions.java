@@ -25,8 +25,6 @@ public class ExpressionLanguageFunctions {
     private static final String FONT_PATH = RESOURCES_PATH + "fonts/";
     private static final String SCRIPT_PATH = RESOURCES_PATH + "js/";
     private static final String STYLESHEET_PATH = RESOURCES_PATH + "css/";
-    // Pagination
-    public static final String INVALID_NUMBER_OF_PAGES = "Total number of pages in pagination is less than 1";
 
     public static String getImageResourceUrl(String file){
         return IMAGE_PATH  + file;
@@ -108,7 +106,9 @@ public class ExpressionLanguageFunctions {
     }
 
     public static int checkAndGetCurrentPage(int currentPageNumber, int numberOfPages) {
-        if(currentPageNumber > numberOfPages) {
+        if (numberOfPages == 0) {
+            currentPageNumber = 0;
+        } else if(currentPageNumber > numberOfPages) {
             currentPageNumber = numberOfPages;
         } else if(currentPageNumber < 1) {
             currentPageNumber = 1;
@@ -121,7 +121,7 @@ public class ExpressionLanguageFunctions {
         var numberOfPages = (numberOfItems + VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS - 1) / VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS;
         // Error, no pages
         if(numberOfPages < 1) {
-            throw new RuntimeException(INVALID_NUMBER_OF_PAGES);
+            return 0;
         }
         return numberOfPages;
     }
