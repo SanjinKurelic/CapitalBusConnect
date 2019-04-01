@@ -1,6 +1,7 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.User;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,17 @@ public class UserInfoDaoImpl implements UserInfoDao {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<User> searchUserInformation(String partialUsername, int limit) {
+        var session = sessionFactory.getCurrentSession();
+        var hql = "FROM User WHERE LOWER(username) LIKE LOWER(CONCAT(:partialUsername,'%'))";
+
+        Query<User> query = session.createQuery(hql, User.class);
+        query.setMaxResults(limit);
+        query.setParameter("partialUsername", partialUsername);
+
+        return query.getResultList();
     }
 }

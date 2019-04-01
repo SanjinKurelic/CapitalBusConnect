@@ -19,7 +19,7 @@ public class TextValidator implements ConstraintValidator<Text, String> {
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         // Validation
         // Use other validations for null
-        if(s == null || s.trim().isEmpty()) {
+        if(s == null || s.isBlank()) {
             return true;
         }
         for(int i = 0; i < s.length(); i++){

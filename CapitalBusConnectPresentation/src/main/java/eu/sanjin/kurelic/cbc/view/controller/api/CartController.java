@@ -55,7 +55,7 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/cart")
+    @GetMapping(value = "/cart", produces = "application/json")
     @ReadFromSession(sessionKey = SessionKey.CART_ID)
     public CartItems getCartItem() {
         return service.getCartItems();

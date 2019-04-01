@@ -864,6 +864,28 @@ body {
       text-align: right;
       padding: 0 10px; }
 
+.searchContainer {
+  position: relative; }
+  .searchContainer-elements {
+    position: absolute;
+    background: #F0F0F0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 100;
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); }
+    .searchContainer-elements-element {
+      padding: 8px 15px;
+      border-bottom: 1px solid #BEBEBE;
+      font-size: 0.8em;
+      text-align: left; }
+      .searchContainer-elements-element:hover {
+        cursor: pointer;
+        background: #DEDEDE; }
+
 /* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 .successPage {
   text-align: center; }

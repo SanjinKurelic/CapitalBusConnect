@@ -22,6 +22,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -91,7 +92,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean updateUser(UserForm user) {
         boolean returnValue;
-        if (user.getIdentification() == null || user.getIdentification().trim().isEmpty()) {
+        if (user.getIdentification() == null || user.getIdentification().isBlank()) {
             returnValue = userDao.updateUserInformationWithoutPassword(convertUserFormToUser(user));
         } else {
             returnValue = userDao.updateUserInformation(convertUserFormToUser(user));
@@ -111,6 +112,20 @@ public class UserServiceImpl implements UserService {
         return userDao.hasUserInformation(username);
     }
 
+    @Override
+    @Transactional
+    public String[] searchUserByName(String partialName, int numberOfSearchResults) {
+        if (partialName.isBlank()) {
+            return new String[0];
+        }
+        ArrayList<String> result = new ArrayList<>();
+        var users = userDao.searchUserInformation(partialName, numberOfSearchResults);
+        for (User user : users) {
+            result.add(user.getUsername());
+        }
+        return result.toArray(String[]::new);
+    }
+
     // Login history
     @Override
     @Transactional
@@ -121,13 +136,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit) {
-        if(pageNumber < 1) {
+        if (pageNumber < 1) {
             return new InfoItems();
         }
         List<UserLoginHistory> loginHistories;
         pageNumber -= 1; // Starting from 0
         // Get login history
-        if(date == null) {
+        if (date == null) {
             loginHistories = loginHistory.getUserLoginHistory(username, pageNumber, limit);
         } else {
             loginHistories = loginHistory.getUserLoginHistory(username, date, pageNumber, limit);
@@ -139,13 +154,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit) {
-        if(pageNumber < 1) {
+        if (pageNumber < 1) {
             return new InfoItems();
         }
         List<UserLoginHistory> loginHistories;
         pageNumber -= 1; // Starting from 0
         // Get login history
-        if(date == null) {
+        if (date == null) {
             loginHistories = loginHistory.getAllLoginHistory(pageNumber, limit);
         } else {
             loginHistories = loginHistory.getAllLoginHistory(date, pageNumber, limit);
@@ -183,7 +198,7 @@ public class UserServiceImpl implements UserService {
     private InfoItems convertHistoryToInfoItems(List<UserLoginHistory> loginHistories) {
         InfoItems items = new InfoItems();
         InfoItem item;
-        for(UserLoginHistory loginHistory : loginHistories) {
+        for (UserLoginHistory loginHistory : loginHistories) {
             item = new InfoItem();
             item.setColumnType1(InfoItemColumnType.TEXT);
             item.setColumn1(loginHistory.getId().getUsername().getUsername());

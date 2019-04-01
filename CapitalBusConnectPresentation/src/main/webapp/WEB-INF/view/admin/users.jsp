@@ -10,11 +10,20 @@
         <div class="searchBar">
             <table class="searchBar-content" data-url="${searchUrl}">
                 <tr>
-                    <td><label for="usernameSearch"><spring:message code="searchBox.username.text"/></label></td>
-                    <td><input name="usernameSearch" id="usernameSearch" value="${username}" required/></td>
+                    <td>
+                        <%--suppress XmlInvalidId --%>
+                        <label for="usernameSearch"><spring:message code="searchBox.username.text"/></label>
+                    </td>
+                    <td>
+                        <cbc:searchComponent searchUrl="api/search/user" inputName="usernameSearch"
+                                             inputId="usernameSearch" inputValue="${username}"
+                                             inputExtraAttribute="required" />
+                    </td>
                     <td></td>
                     <td></td>
-                    <td><button onclick="Search.findResult(this)"><span class="icon">&#xf002;</span></button></td>
+                    <td>
+                        <button onclick="Search.findResult(this)"><span class="icon">&#xf002;</span></button>
+                    </td>
                 </tr>
             </table>
         </div>

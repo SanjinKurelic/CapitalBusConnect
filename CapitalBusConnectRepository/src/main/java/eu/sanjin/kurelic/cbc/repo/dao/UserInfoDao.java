@@ -2,6 +2,8 @@ package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 
+import java.util.List;
+
 public interface UserInfoDao {
 
     User getUserInformation(String username);
@@ -23,5 +25,7 @@ public interface UserInfoDao {
     default boolean removeUserInformation(String username) {
         return removeUserInformation(getUserInformation(username));
     }
+
+    List<User> searchUserInformation(String partialUsername, int limit);
 
 }

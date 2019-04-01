@@ -18,6 +18,8 @@ public interface DestinationInfoDao {
 
     List<CityDescription> getCityDescriptions(String language, Integer ...ids);
 
+    List<CityDescription> searchCityDescription(String partialCityName, int limit, String language);
+
     List<BusLine> getCityLines(int offset, int limit);
 
     int getNumberOfCityLines();

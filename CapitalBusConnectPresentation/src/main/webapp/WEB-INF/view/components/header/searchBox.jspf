@@ -4,10 +4,13 @@
     Author     : Sanjin Kurelic
 --%>
 <%@ page pageEncoding="UTF-8" %>
+
+<%-- Local variables --%>
 <c:set var="searchCityIcon" value='<span class="icon">&#xf041;</span>'/>
 <c:set var="searchArrowIcon" value='<span class="icon">&#xf061;</span>'/>
 <c:set var="searchDateIcon" value='<span class="icon">&#xf073;</span>'/>
 <c:set var="searchButtonIcon" value='<span class="icon">&#xf002;</span>'/>
+<c:set var="placeholder" value=""/>
 
 <div class="searchBox">
     <div class="center">
@@ -19,9 +22,11 @@
                             <td>${searchCityIcon}</td>
                             <td>
                                 <label>
+                                    <spring:message code='searchBox.fromCity.placeholder' var="placeholder"/>
                                         <%--@elvariable id="searchFromCity" type="java.lang.String"--%>
-                                    <input name="fromCitySearch" required value="${searchFromCity}"
-                                           placeholder="<spring:message code='searchBox.fromCity.placeholder' />"/>
+                                    <cbc:searchComponent searchUrl="api/search/city" inputName="fromCitySearch"
+                                                         inputExtraAttribute="required" inputValue="${searchFromCity}"
+                                                         inputPlaceholder="${placeholder}"/>
                                 </label>
                             </td>
                             <c:if test="${cssClass.contains('-full')}">
@@ -30,9 +35,11 @@
                             <td>${searchCityIcon}</td>
                             <td>
                                 <label>
+                                    <spring:message code='searchBox.toCity.placeholder' var="placeholder"/>
                                         <%--@elvariable id="searchToCity" type="java.lang.String"--%>
-                                    <input name="toCitySearch" required value="${searchToCity}"
-                                           placeholder="<spring:message code='searchBox.toCity.placeholder' />"/>
+                                    <cbc:searchComponent searchUrl="api/search/city" inputName="toCitySearch"
+                                                         inputExtraAttribute="required" inputValue="${searchToCity}"
+                                                         inputPlaceholder="${placeholder}"/>
                                 </label>
                             </td>
                             <c:if test="${cssClass.contains('-compact')}">

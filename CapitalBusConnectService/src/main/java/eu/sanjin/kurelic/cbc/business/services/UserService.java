@@ -35,6 +35,8 @@ public interface UserService {
 
     boolean hasUser(String username);
 
+    String[] searchUserByName(String partialName, int numberOfSearchResults);
+
     // Login history
     boolean addUserLoginHistory(UserLoginHistory userLoginHistory);
 

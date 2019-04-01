@@ -29,7 +29,7 @@ public class DestinationInfoDaoImpl implements DestinationInfoDao {
     @Override
     public CityDescription getCityDescription(String cityName, String language) {
         var session = sessionFactory.getCurrentSession();
-        String hql = "FROM CityDescription WHERE language = :language AND title= :title";
+        String hql = "FROM CityDescription WHERE id.language = :language AND title= :title";
 
         Query<CityDescription> cityQuery = session.createQuery(hql, CityDescription.class);
         cityQuery.setParameter("language", language);
@@ -64,6 +64,19 @@ public class DestinationInfoDaoImpl implements DestinationInfoDao {
         descriptions.setParameterList("ids", ids);
 
         return descriptions.getResultList();
+    }
+
+    @Override
+    public List<CityDescription> searchCityDescription(String partialCityName, int limit, String language) {
+        var session = sessionFactory.getCurrentSession();
+        var hql = "FROM CityDescription WHERE id.language = :language AND LOWER(title) LIKE LOWER(CONCAT(:partialCityName,'%'))";
+
+        Query<CityDescription> query = session.createQuery(hql, CityDescription.class);
+        query.setMaxResults(limit);
+        query.setParameter("partialCityName", partialCityName);
+        query.setParameter("language", language);
+
+        return query.getResultList();
     }
 
     @Override

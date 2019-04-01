@@ -2,7 +2,6 @@ package eu.sanjin.kurelic.cbc.business.services;
 
 import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.business.viewmodel.city.CityInfoItem;
-import eu.sanjin.kurelic.cbc.business.viewmodel.city.CityInfoItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemButtonType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemColumnType;
@@ -39,13 +38,16 @@ public class CityInfoServiceImpl implements CityInfoService {
 
     @Override
     @Transactional
-    public String[] getAllCityNames(Locale language) {
-        ArrayList<String> items = new ArrayList<>();
-        var cities = destinationDao.getCityDescriptions(LocaleUtility.getLanguage(language));
-        for(var city : cities) {
-            items.add(city.getTitle());
+    public String[] searchByCityName(String partialName, int numberOfSearchResults, Locale language) {
+        if (partialName.isBlank()) {
+            return new String[0];
         }
-        return items.toArray(String[]::new);
+        ArrayList<String> result = new ArrayList<>();
+        var cities = destinationDao.searchCityDescription(partialName, numberOfSearchResults, LocaleUtility.getLanguage(language));
+        for (CityDescription city : cities) {
+            result.add(city.getTitle());
+        }
+        return result.toArray(String[]::new);
     }
 
     @Override
@@ -55,19 +57,19 @@ public class CityInfoServiceImpl implements CityInfoService {
         InfoItem item;
         pageNumber -= 1; // Starting from 0
         // Check page number
-        if(pageNumber < 0) {
+        if (pageNumber < 0) {
             return items;
         }
         // Get all lines
         var lines = destinationDao.getCityLines(pageNumber, limit);
         // Database optimization
         HashSet<Integer> ids = new HashSet<>();
-        for(BusLine line : lines) {
+        for (BusLine line : lines) {
             ids.add(line.getCity1().getId());
             ids.add(line.getCity2().getId());
         }
         var cityDescriptions = destinationDao.getCityDescriptions(LocaleUtility.getLanguage(language), ids.toArray(Integer[]::new));
-        for(BusLine line : lines) {
+        for (BusLine line : lines) {
             item = new InfoItem();
             // City 1
             item.setColumnType1(InfoItemColumnType.TEXT);

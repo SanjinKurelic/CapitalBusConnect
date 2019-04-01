@@ -108,3 +108,31 @@
         }
     }
 }
+
+.searchContainer {
+    position: relative;
+
+    &-elements {
+        position: absolute;
+        background: color(light);
+        left: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        z-index: 100;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+        &-element {
+            padding: 8px 15px;
+            border-bottom: 1px solid color(light-shadow);
+            font-size: 0.8em;
+            text-align: left;
+
+            &:hover {
+                cursor: pointer;
+                background: color(dark-shadow);
+            }
+        }
+    }
+}

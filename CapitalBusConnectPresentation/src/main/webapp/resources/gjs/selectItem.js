@@ -11,7 +11,11 @@ var SelectItem = {
         parentElement = selectTag.parentNode;
         wrapElement = document.createElement("DIV");
         // Copy attributes from select tag to class list of wrapper
-        cbc_addClass(wrapElement, (selectTag.hasAttribute("data-size") ? selectTag.getAttribute("data-size") : "select-normal"));
+        if (selectTag.hasAttribute("data-size")) {
+            cbc_addClass(wrapElement, selectTag.getAttribute("data-size"));
+        } else {
+            cbc_addClass(wrapElement, "select-normal");
+        }
         cbc_addClass(wrapElement, "select");
         // Also copy disabled attribute
         if (selectTag.hasAttribute("disabled")) {
@@ -39,7 +43,7 @@ var SelectItem = {
             cbc_addClickEventListener(newSelectElement, SelectItem.showSelectItem);
             selectElement.parentNode.appendChild(newSelectElement);
 
-            // Area for hodling select items
+            // Area for holding select items
             newItemsElement = document.createElement("DIV");
             newItemsElement.setAttribute("class", "select-items select-hide");
             for (j = 0; j < selectElement.length; j += 1) {
@@ -62,9 +66,9 @@ var SelectItem = {
         element = e.target || e.srcElement;
         // Select element and fire onchange if exists
         selectNode = element.parentNode.parentNode.getElementsByTagName("select")[0];
-        selectNode.selectedIndex = element.getAttribute("data-index");
-        if (selectNode.hasAttribute('onchange')) {
-            selectNode.onchange();
+        selectNode.selectedIndex = parseInt(element.getAttribute("data-index"));
+        if (selectNode.hasAttribute("onchange")) {
+            selectNode.onchange(e);
         }
         // Copy value to selected box
         element.parentNode.previousSibling.innerHTML = element.innerHTML;

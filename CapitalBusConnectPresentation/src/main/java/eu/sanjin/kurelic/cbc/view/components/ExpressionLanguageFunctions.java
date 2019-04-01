@@ -128,11 +128,11 @@ public class ExpressionLanguageFunctions {
 
     public static String getPaginationItemUrl(String leftUrlPart, Integer pageNumber, String rightUrlPart) {
         String url = "";
-        if(leftUrlPart != null && !leftUrlPart.trim().isEmpty()) {
+        if(leftUrlPart != null && !leftUrlPart.isBlank()) {
             url += leftUrlPart.trim() + "/";
         }
         url += pageNumber;
-        if(rightUrlPart != null && !rightUrlPart.trim().isEmpty()) {
+        if(rightUrlPart != null && !rightUrlPart.isBlank()) {
             url += "/" + rightUrlPart.trim();
         }
         return url;

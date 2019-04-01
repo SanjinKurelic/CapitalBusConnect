@@ -23,7 +23,7 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         // Validation
         // Use other validations for null
-        if(s == null || s.trim().isEmpty()) {
+        if(s == null || s.isBlank()) {
             return true;
         }
         if(requireNumbers){

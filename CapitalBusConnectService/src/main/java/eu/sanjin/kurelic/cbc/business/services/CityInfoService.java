@@ -11,7 +11,7 @@ public interface CityInfoService {
 
     CityInfoItem getCityItem(String cityName, Locale language);
 
-    String[] getAllCityNames(Locale language);
+    String[] searchByCityName(String partialName, int numberOfSearchResults, Locale language);
 
     InfoItems getCityLines(int pageNumber, int limit, Locale language);
 
