@@ -1,6 +1,6 @@
 /* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 
-/*global window, cbc_addClass, $$, cbc_findUpTag, cbc_addClickEventListener, cbc_blockEvents, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage */
+/*global window, cbc_addClass, $, $$, cbc_findUpTag, cbc_addClickEventListener, cbc_blockEvents, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage, cbc_formatDecimal */
 
 var CartItem = function () {
     "use strict";
@@ -10,9 +10,9 @@ var CartItem = function () {
     this.date = null;
     this.toString = function () {
         return "scheduleId=" + this.scheduleId +
-                "&numberOfAdults=" + this.numberOfAdults +
-                "&numberOfChildren=" + this.numberOfChildren +
-                "&date=" + this.date;
+            "&numberOfAdults=" + this.numberOfAdults +
+            "&numberOfChildren=" + this.numberOfChildren +
+            "&date=" + this.date;
     };
 };
 
@@ -108,9 +108,19 @@ var Cart = {
             price = item.numberOfAdults * basePrice + item.numberOfChildren * basePrice;
             priceElements = priceBox.innerHTML.trim().split(" ");
             currency = priceElements[priceElements.length - 1];
-            priceBox.innerHTML = price.toFixed(2) + " " + currency;
+            priceBox.innerHTML = cbc_formatDecimal(price) + " " + currency;
+            Cart.calculateTotal(cbc_findUpTag(itemElement, "table"), currency);
         };
         fetch.fetch();
+    },
+    calculateTotal: function (itemsTable, currency) {
+        "use strict";
+        var prices, i, total = 0;
+        prices = $$(".scheduleBox-item-price", itemsTable);
+        for (i = 0; i < prices.length; i = i + 1) {
+            total = total + parseFloat(prices[i].innerHTML.trim().replace(",", ""));
+        }
+        $("cartTotalPrice").innerHTML = cbc_formatDecimal(total) + " " + currency;
     }
 
 };

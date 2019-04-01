@@ -691,8 +691,28 @@ body {
         background: #FFC107; }
 
 .paymentBox-button {
-  text-align: right;
-  padding: 20px 10px; }
+  padding: 20px 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: right;
+  -webkit-justify-content: right;
+     -moz-box-pack: right;
+      -ms-flex-pack: right;
+          justify-content: right; }
+  .paymentBox-button-paypal {
+    position: relative;
+    max-width: 150px;
+    overflow: hidden;
+    height: 50px; }
+  .paymentBox-button .button {
+    width: 150px;
+    border: none;
+    font-weight: bold; }
+  .paymentBox-button .hidden {
+    display: none; }
 
 .promotionBox {
   text-align: center; }
@@ -936,6 +956,13 @@ body {
       background: #FFC107; }
     .switchBox-checkbox:checked ~ .switchBox-layer {
       background: #ffdb6d; }
+
+.totalBox {
+  padding: 20px 0 10px;
+  border-bottom: 2px solid #424242; }
+  .totalBox-price {
+    font-size: 1.1em;
+    font-weight: bold; }
 
 .trafficInfoBox-image, .trafficInfoBox-text, .trafficInfoBox-text-item-content, .trafficInfoBox-text-item-icon {
   display: inline-block;

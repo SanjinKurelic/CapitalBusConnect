@@ -6,11 +6,16 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.RegistrationUserForm;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
 import eu.sanjin.kurelic.cbc.view.components.ActiveTabItem;
 import eu.sanjin.kurelic.cbc.view.components.ErrorMessagesOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -52,7 +58,7 @@ public class LoginRegisterController {
 
     @GetMapping("/access-denied")
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ModelAndView accessDeniedPage(){
+    public ModelAndView accessDeniedPage(HttpServletRequest request) {
         return new ModelAndView("login/denied");
     }
 
@@ -60,7 +66,7 @@ public class LoginRegisterController {
     public ModelAndView registerUserPage(@Valid @ModelAttribute("user") RegistrationUserForm user, BindingResult result) {
         ModelAndView viewModel = new ModelAndView();
         // Invalid
-        if(result.hasErrors() || userService.hasUser(user)) {
+        if (result.hasErrors() || userService.hasUser(user)) {
             viewModel.setViewName("login/login_registration");
             viewModel.addObject("userData", user);
             viewModel.addObject("menuItem", getLoginPageMenu(ActiveTabItem.REGISTER_PAGE));
@@ -69,7 +75,7 @@ public class LoginRegisterController {
             // Database access optimization, if result does not have errors, than user already exists
             // If we introduce another error, change used statement whit commented one !
             //if(userService.hasUser(user)) {
-            if(!result.hasErrors()) {
+            if (!result.hasErrors()) {
                 result.rejectValue("email", "errorMessage.email.exists.text", "User already exists.");
             }
 

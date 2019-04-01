@@ -96,12 +96,18 @@ public class WebController {
         return viewModel;
     }
 
-    @GetMapping("/cart")
+    @GetMapping(value = {"/cart", "/cart/logged"})
     @ReadFromSession(sessionKey = SessionKey.CART_ID)
     public ModelAndView cartPage() {
         ModelAndView viewModel = new ModelAndView("web/cart");
         // Cart items
-        viewModel.addObject("scheduleItems", schedule.getCartItemSchedules(cart.getCartItems(), LocaleContextHolder.getLocale()));
+        var cartItems = schedule.getCartItemSchedules(cart.getCartItems(), LocaleContextHolder.getLocale());
+        viewModel.addObject("scheduleItems", cartItems);
+        double total = 0;
+        for(ScheduleItem item : cartItems) {
+            total += item.getPrice();
+        }
+        viewModel.addObject("cartTotalPrice", total);
         // Menu
         var menu = new Menu(MenuType.SIMPLE, "navigation.cartTitle.text", new MenuItems());
         viewModel.addObject("menuItem", menu);

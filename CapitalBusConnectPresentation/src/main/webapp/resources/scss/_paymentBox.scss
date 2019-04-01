@@ -1,45 +1,63 @@
 // Created by Sanjin Kurelic (kurelic@sanjin.eu)
 
 .paymentBox {
-    
-    &-content {
-        background: color(dark-shadow);
-        padding: 20px;
 
-        &-values {
-            display: none;
-        }
+  &-content {
+    background: color(dark-shadow);
+    padding: 20px;
 
-        &-title {
-            padding: 0;
-            margin: 0 0 30px;
-        }
-
-        &-container {
-            width: 100%;
-            border-collapse: collapse;
-
-            &-item {
-                cursor: pointer;
-                user-select: none;
-
-                td {
-                    padding: 10px;
-                }
-
-                .icon {
-                    font-size: 1.8em;
-                }
-
-                &.active {
-                    background: color(primary);
-                }
-            }
-        }
+    &-values {
+      display: none;
     }
-    
-    &-button {
-        text-align: right;
-        padding: 20px 10px;
+
+    &-title {
+      padding: 0;
+      margin: 0 0 30px;
     }
+
+    &-container {
+      width: 100%;
+      border-collapse: collapse;
+
+      &-item {
+        cursor: pointer;
+        user-select: none;
+
+        td {
+          padding: 10px;
+        }
+
+        .icon {
+          font-size: 1.8em;
+        }
+
+        &.active {
+          background: color(primary);
+        }
+      }
+    }
+  }
+
+  &-button {
+    padding: 20px 10px;
+    display: flex;
+    justify-content: right;
+
+    &-paypal {
+      position: relative; // if something is going to change in PayPal API, to be sure that absolute nodes won't mess the rest of UI
+      max-width: 150px;
+      overflow: hidden;
+      height: 50px;
+    }
+
+    .button {
+      width: 150px;
+      border: none;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+  }
 }

@@ -174,6 +174,26 @@ function cbc_voidFunction() {
 }
 
 /**
+ * Convert decimal number to visible format
+ * @param decimalNumber
+ * @returns {string}
+ */
+function cbc_formatDecimal(decimalNumber) {
+    "use strict";
+    return decimalNumber.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+}
+
+/**
+ * Convert HRL currency to Euro, yeah we should use some central bank api :)
+ * @param value
+ * @returns {number}
+ */
+function cbc_hrkToEuro(value) {
+    "use strict";
+    return value / 7.5;
+}
+
+/**
  * ECMAScript 5 property.bind polyfill
  * @type type
  */

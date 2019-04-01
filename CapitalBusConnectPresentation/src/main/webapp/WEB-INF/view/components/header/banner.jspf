@@ -5,11 +5,10 @@
 <%@ include file="head.jspf" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="java.util.Locale" %>
-<%@ page import="eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues" %>
 
 <%-- Local variables --%>
 <c:set var="sessionLocale" value="${ cbcf:getCurrentLocale() }"/>
-<security:authorize access="hasRole('${AuthoritiesValues.ADMIN.value}')" var="isAdmin"/>
+<security:authorize url="/admin/" var="isAdmin"/>
 
 <header class="header">
     <div class="center">
@@ -18,14 +17,14 @@
                                                 alt="Capital Bus Connect"/>
         </a>
         <nav class="header-buttons">
-            <a title="<spring:message code='header.cartButton.title'/>" class="icon" href="<spring:url value='cart'/>">&#xf0f2;</a>&nbsp;
+            <a title="<spring:message code='navigation.cartButton.title'/>" class="icon" href="<spring:url value='cart'/>">&#xf0f2;</a>&nbsp;
             <c:choose>
                 <c:when test="${isAdmin}">
-                    <a title="<spring:message code='header.adminButton.title'/>" class="icon"
-                       href="<spring:url value='admin/statistics'/>">&#xf007;</a>
+                    <a title="<spring:message code='navigation.adminButton.title'/>" class="icon"
+                       href="<spring:url value='admin/stats'/>">&#xf007;</a>
                 </c:when>
                 <c:otherwise>
-                    <a title="<spring:message code='header.userButton.title'/>" class="icon"
+                    <a title="<spring:message code='navigation.userButton.title'/>" class="icon"
                        href="<spring:url value='user/travels'/>">&#xf007;</a>
                 </c:otherwise>
             </c:choose>

@@ -26,7 +26,4 @@
 <dialog id="toast" class="toast">
     <span id="toast-content" class="toast-text"></span>
 </dialog>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBX8R6WIoUPDrKlNCVrl7EkB0hV2ttSuQ&callback=initMap" async defer></script>
-<script src="<spring:url value='${cbcf:getJavaScriptUrl(\'script.js\')}' />"></script>
+<%@ include file="scripts.jspf" %>

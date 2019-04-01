@@ -1,2 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
-<p class="footer-copyright">Capital Bus Connect &COPY; <fmt:formatDate value="${currentDate}" pattern="yyyy" /></p>
+<p class="footer-copyright">
+    Capital Bus Connect &COPY; <fmt:formatDate value="${currentDate}" pattern="yyyy" />
+    <a href="<spring:url value="admin"/>">/<spring:message code="navigation.adminButton.title" /></a>
+</p>

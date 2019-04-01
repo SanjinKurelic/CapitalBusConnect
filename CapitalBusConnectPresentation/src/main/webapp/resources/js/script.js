@@ -1,6 +1,6 @@
 /* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 
-/*global window, cbc_addClass, $$, cbc_findUpTag, cbc_addClickEventListener, cbc_blockEvents, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage */
+/*global window, cbc_addClass, $, $$, cbc_findUpTag, cbc_addClickEventListener, cbc_blockEvents, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage, cbc_formatDecimal */
 
 var CartItem = function () {
     "use strict";
@@ -10,9 +10,9 @@ var CartItem = function () {
     this.date = null;
     this.toString = function () {
         return "scheduleId=" + this.scheduleId +
-                "&numberOfAdults=" + this.numberOfAdults +
-                "&numberOfChildren=" + this.numberOfChildren +
-                "&date=" + this.date;
+            "&numberOfAdults=" + this.numberOfAdults +
+            "&numberOfChildren=" + this.numberOfChildren +
+            "&date=" + this.date;
     };
 };
 
@@ -108,9 +108,19 @@ var Cart = {
             price = item.numberOfAdults * basePrice + item.numberOfChildren * basePrice;
             priceElements = priceBox.innerHTML.trim().split(" ");
             currency = priceElements[priceElements.length - 1];
-            priceBox.innerHTML = price.toFixed(2) + " " + currency;
+            priceBox.innerHTML = cbc_formatDecimal(price) + " " + currency;
+            Cart.calculateTotal(cbc_findUpTag(itemElement, "table"), currency);
         };
         fetch.fetch();
+    },
+    calculateTotal: function (itemsTable, currency) {
+        "use strict";
+        var prices, i, total = 0;
+        prices = $$(".scheduleBox-item-price", itemsTable);
+        for (i = 0; i < prices.length; i = i + 1) {
+            total = total + parseFloat(prices[i].innerHTML.trim().replace(",", ""));
+        }
+        $("cartTotalPrice").innerHTML = cbc_formatDecimal(total) + " " + currency;
     }
 
 };
@@ -487,12 +497,9 @@ function initMap() {
     });
     marker.setMap(map);
 }
-/* 
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
+/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 
-/*jslint browser: true */
-/*global $$, cbc_addClass, cbc_removeClass, cbc_findUpTag */
+/*global $$, cbc_addClass, cbc_removeClass, cbc_findUpClass */
 
 var RadioBox = {
     changeSelection: function (element, selectionName) {
@@ -501,19 +508,31 @@ var RadioBox = {
         // Radio box item
         parent = cbc_findUpClass(element, "radioBox-parent");
         // Select radio item
-        radios = $$('input[type=radio]', parent);
+        radios = $$("input[type=radio]", parent);
         for (i = 0; i < radios.length; i += 1) {
             if (radios[i].value === selectionName) {
                 radios[i].checked = true;
+                radios[i].onchange();
                 break;
             }
         }
         // Set active item
-        items = $$('.radioBox-item', parent);
+        items = $$(".radioBox-item", parent);
         for (i = 0; i < items.length; i += 1) {
-            cbc_removeClass(items[i], 'active');
+            cbc_removeClass(items[i], "active");
         }
-        cbc_addClass(element, 'active');
+        cbc_addClass(element, "active");
+    },
+    selectElement: function (elementsRoot, elementId) {
+        "use strict";
+        var i, elements = elementsRoot.children;
+        for (i = 0; i < elements.length; i = i + 1) {
+            if (elements[i].id === elementId) {
+                cbc_removeClass(elements[i], "hidden");
+            } else {
+                cbc_addClass(elements[i], "hidden");
+            }
+        }
     }
 };
 /*global cbc_findUpTag, $$, Dialog, DialogType, DialogMessage, DialogMessageType, window, Fetch, cbc_addClass, cbc_addClickEventListener */
@@ -881,6 +900,26 @@ function cbc_voidFunction() {
     return function () {
         return undefined;
     };
+}
+
+/**
+ * Convert decimal number to visible format
+ * @param decimalNumber
+ * @returns {string}
+ */
+function cbc_formatDecimal(decimalNumber) {
+    "use strict";
+    return decimalNumber.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+}
+
+/**
+ * Convert HRL currency to Euro, yeah we should use some central bank api :)
+ * @param value
+ * @returns {number}
+ */
+function cbc_hrkToEuro(value) {
+    "use strict";
+    return value / 7.5;
 }
 
 /**
