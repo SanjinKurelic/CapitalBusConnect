@@ -4,11 +4,13 @@
 
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+
 import java.time.LocalDateTime;
 
 public interface ScheduleItem {
 
-    int getScheduleId();
+    int getId();
     
     String getLeftTitle();
     
@@ -33,6 +35,8 @@ public interface ScheduleItem {
     ScheduleUpdateType getOnUpdate();
 
     SchedulePayingMethod getPayingMethod();
+
+    TripTypeValues getTripType();
 
     boolean disabled();
 

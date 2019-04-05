@@ -1,8 +1,4 @@
-<%-- 
-    Document   : schedule
-    Created on : Nov 1, 2018, 11:47:10 AM
-    Author     : Sanjin Kurelic
---%>
+<%-- Sanjin Kurelić (kurelic@sanjin.eu) --%>
 
 <%@ page pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/view/components/header/banner.jspf" %>

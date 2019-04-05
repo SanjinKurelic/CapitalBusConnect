@@ -14,6 +14,7 @@
 
     <properties>
         <cbc.version.htmlcompressor>1.5.2</cbc.version.htmlcompressor>
+        <cbc.version.qrgenerator>3.3.3</cbc.version.qrgenerator>
     </properties>
 
     <dependencies>
@@ -34,7 +35,16 @@
             <artifactId>htmlcompressor</artifactId>
             <version>${cbc.version.htmlcompressor}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${cbc.version.qrgenerator}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${cbc.version.qrgenerator}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -55,8 +55,8 @@ public class CityInfoServiceImpl implements CityInfoService {
     public InfoItems getCityLines(int pageNumber, int limit, Locale language) {
         InfoItems items = new InfoItems();
         InfoItem item;
-        pageNumber -= 1; // Starting from 0
-        // Check page number
+        // Page number
+        pageNumber = (pageNumber - 1) * limit;
         if (pageNumber < 0) {
             return items;
         }

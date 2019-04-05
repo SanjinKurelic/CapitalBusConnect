@@ -10,12 +10,13 @@
 
 <%-- Local variables --%>
 <c:set var="hidePayPal" value="buyPayPalButton" />
-<spring:url value="buy" var="buyUrl" />
+<spring:url var="buyUrl" value="buy/money" />
 <security:authorize access="!isAuthenticated()">
     <c:set var="hidePayPal" value="buyUponArrivalButton" />
-    <spring:url value="cart/logged" var="buyUrl" />
+    <spring:url var="buyUrl" value="cart/logged" />
 </security:authorize>
 
+<%-- Content --%>
 <article>
     <cbc:menuComponent menu="${menuItem}"/>
     <div class="center">
@@ -104,7 +105,7 @@
         },
         onApprove: function (data, actions) {
             return actions.order.capture().then(function (details) {
-                location.href = $("buyUponArrivalButton").firstChild.href;
+                location.href = $("buyUponArrivalButton").firstChild.href.replace("money", "pay-pal");
             });
         },
         style: {

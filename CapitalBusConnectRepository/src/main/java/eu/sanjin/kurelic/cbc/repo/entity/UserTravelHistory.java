@@ -1,6 +1,7 @@
 package eu.sanjin.kurelic.cbc.repo.entity;
 
-import eu.sanjin.kurelic.cbc.repo.entity.composite.UserPrimaryKey;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 
@@ -8,11 +9,15 @@ import javax.persistence.*;
 @Table(name = "user_travel_history")
 public class UserTravelHistory {
 
-    @EmbeddedId
-    private UserPrimaryKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column
+    private String username;
     @Column
     private double price;
     @OneToOne
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "trip_history_id", referencedColumnName = "id")
     private TripHistory tripHistory;
     @Column(name = "number_of_adults")
@@ -23,12 +28,20 @@ public class UserTravelHistory {
     @JoinColumn(name = "paying_method_id", referencedColumnName = "id")
     private PayingMethod payingMethod;
 
-    public UserPrimaryKey getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(UserPrimaryKey id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public double getPrice() {

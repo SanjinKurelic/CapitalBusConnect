@@ -4,12 +4,14 @@
 
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class ScheduleBuilder {
     
-    private int scheduleId;
+    private int id;
     private String fromPlace;
     private String toPlace;
     private LocalTime fromTime;
@@ -22,26 +24,29 @@ public class ScheduleBuilder {
     private ScheduleButtonType button;
     private ScheduleUpdateType onUpdate;
     private SchedulePayingMethod payingMethod;
+    private TripTypeValues tripType;
     private boolean disabled;
 
     public ScheduleBuilder() {
-        scheduleId = 0;
+        id = 0;
         fromPlace = "";
         toPlace = "";
         fromTime = null;
         toTime = null;
         date = null;
-        basePrice = price = 0;
+        price = 0;
+        basePrice = 0;
         numberOfAdults = 0;
         numberOfChildren = 0;
         onUpdate = ScheduleUpdateType.NONE;
         button = ScheduleButtonType.NONE;
         payingMethod = SchedulePayingMethod.NONE;
+        tripType = TripTypeValues.NONE;
         disabled = false;
     }
 
-    int getScheduleId() {
-        return scheduleId;
+    int getId() {
+        return id;
     }
 
     String getFromPlace() {
@@ -92,12 +97,16 @@ public class ScheduleBuilder {
         return payingMethod;
     }
 
+    TripTypeValues getTripType() {
+        return tripType;
+    }
+
     public boolean getDisabled() {
         return disabled;
     }
 
-    public ScheduleBuilder setScheduleId(int scheduleId) {
-        this.scheduleId = scheduleId;
+    public ScheduleBuilder setId(int id) {
+        this.id = id;
         return this;
     }
 
@@ -158,6 +167,11 @@ public class ScheduleBuilder {
 
     public ScheduleBuilder setPayingMethod(SchedulePayingMethod payingMethod) {
         this.payingMethod = payingMethod;
+        return this;
+    }
+
+    public ScheduleBuilder setTripType(TripTypeValues tripType) {
+        this.tripType = tripType;
         return this;
     }
 

@@ -1,6 +1,7 @@
 package eu.sanjin.kurelic.cbc.business.viewmodel.cart;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -13,15 +14,17 @@ public class CartItem implements Serializable {
     private LocalDateTime date;
     private int numberOfAdults;
     private int numberOfChildren;
+    private TripTypeValues tripType;
 
     public CartItem() {
     }
 
-    public CartItem(int scheduleId, LocalDateTime date, int numberOfAdults, int numberOfChildren) {
+    public CartItem(int scheduleId, LocalDateTime date, int numberOfAdults, int numberOfChildren, TripTypeValues tripType) {
         this.scheduleId = scheduleId;
         this.date = date;
         this.numberOfAdults = numberOfAdults;
         this.numberOfChildren = numberOfChildren;
+        this.tripType = tripType;
     }
 
     public int getScheduleId() {
@@ -56,17 +59,25 @@ public class CartItem implements Serializable {
         this.numberOfChildren = numberOfChildren;
     }
 
+    public TripTypeValues getTripType() {
+        return tripType;
+    }
+
+    public void setTripType(TripTypeValues tripType) {
+        this.tripType = tripType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartItem cartItem = (CartItem) o;
         return scheduleId == cartItem.scheduleId &&
-                Objects.equals(date, cartItem.date);
+                Objects.equals(date, cartItem.date) && tripType == cartItem.tripType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(scheduleId, date);
+        return Objects.hash(scheduleId, date, tripType);
     }
 }

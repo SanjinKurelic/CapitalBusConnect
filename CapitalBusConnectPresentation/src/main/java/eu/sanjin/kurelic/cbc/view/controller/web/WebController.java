@@ -83,7 +83,7 @@ public class WebController {
         var scheduleItems = schedule.getBusLineSchedules(fromCity, toCity, date, LocaleContextHolder.getLocale());
         // If item is in the cart, mark it as disabled
         for(ScheduleItem scheduleItem : scheduleItems) {
-            var cartItem = new CartItem(scheduleItem.getScheduleId(), scheduleItem.getDate(), 0, 0);
+            var cartItem = new CartItem(scheduleItem.getId(), scheduleItem.getDate(), 0, 0, scheduleItem.getTripType());
             if (cart.hasCartItem(cartItem)) {
                 scheduleItem.setDisabled(true);
             }

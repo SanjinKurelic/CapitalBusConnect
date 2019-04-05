@@ -2,7 +2,6 @@ package eu.sanjin.kurelic.cbc.business.services;
 
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItems;
-import eu.sanjin.kurelic.cbc.repo.entity.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,7 +16,12 @@ public interface ScheduleService {
 
     ScheduleItems getBusLineSchedules(String fromCityName, String toCityName, LocalDate date, Locale language);
 
-    ScheduleItems getCartItemSchedules(CartItems cartItems, Locale language);
+    @Transactional
+    default ScheduleItems getCartItemSchedules(CartItems cartItems, Locale language) {
+        return getCartItemSchedules(cartItems, false, language);
+    }
+
+    ScheduleItems getCartItemSchedules(CartItems cartItems, boolean bought, Locale language);
 
     double getTripPrice(LocalTime fromTime, LocalTime toTime);
 

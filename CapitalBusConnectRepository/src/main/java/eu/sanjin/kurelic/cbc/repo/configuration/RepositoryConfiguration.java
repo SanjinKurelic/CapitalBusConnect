@@ -65,6 +65,7 @@ public class RepositoryConfiguration {
         Properties properties = new Properties();
         properties.setProperty(Environment.SHOW_SQL, Objects.requireNonNull(environment.getProperty(Environment.SHOW_SQL)));
         properties.setProperty(Environment.DIALECT, Objects.requireNonNull(environment.getProperty(Environment.DIALECT)));
+        properties.setProperty(Environment.JDBC_TIME_ZONE, Objects.requireNonNull(environment.getProperty(Environment.JDBC_TIME_ZONE)));
         return properties;
     }
 

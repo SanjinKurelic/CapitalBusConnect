@@ -136,11 +136,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit) {
-        if (pageNumber < 1) {
+        List<UserLoginHistory> loginHistories;
+        // Page number
+        pageNumber = (pageNumber - 1) * limit;
+        if (pageNumber < 0) {
             return new InfoItems();
         }
-        List<UserLoginHistory> loginHistories;
-        pageNumber -= 1; // Starting from 0
         // Get login history
         if (date == null) {
             loginHistories = loginHistory.getUserLoginHistory(username, pageNumber, limit);
@@ -154,11 +155,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit) {
-        if (pageNumber < 1) {
+        List<UserLoginHistory> loginHistories;
+        // Page number
+        pageNumber = (pageNumber - 1) * limit;
+        if (pageNumber < 0) {
             return new InfoItems();
         }
-        List<UserLoginHistory> loginHistories;
-        pageNumber -= 1; // Starting from 0
         // Get login history
         if (date == null) {
             loginHistories = loginHistory.getAllLoginHistory(pageNumber, limit);

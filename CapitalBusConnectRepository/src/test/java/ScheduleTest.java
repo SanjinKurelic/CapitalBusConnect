@@ -27,7 +27,7 @@ public class ScheduleTest {
     @Test
     @Transactional
     public void getSchedule() {
-        var schedule = dao.getSchedule(2);
+        var schedule = dao.getSchedule(816);
         printSchedule(schedule);
     }
 

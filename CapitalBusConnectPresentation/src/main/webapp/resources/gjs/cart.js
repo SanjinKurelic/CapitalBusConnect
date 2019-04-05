@@ -8,11 +8,14 @@ var CartItem = function () {
     this.numberOfAdults = 0;
     this.numberOfChildren = 0;
     this.date = null;
+    this.tripType = null;
     this.toString = function () {
-        return "scheduleId=" + this.scheduleId +
-            "&numberOfAdults=" + this.numberOfAdults +
-            "&numberOfChildren=" + this.numberOfChildren +
-            "&date=" + this.date;
+        var text = "scheduleId=" + this.scheduleId;
+        text = text + "&numberOfAdults=" + this.numberOfAdults;
+        text = text + "&numberOfChildren=" + this.numberOfChildren;
+        text = text + "&date=" + this.date;
+        text = text + "&trip" + this.tripType;
+        return text;
     };
 };
 
@@ -24,6 +27,7 @@ var Cart = {
 
         item.scheduleId = itemElement.getAttribute("data-id-param");
         item.date = itemElement.getAttribute("data-date-param");
+        item.tripType = itemElement.getAttribute("data-trip-param");
         item.numberOfAdults = $$("select[name=numberOfAdults]", itemElement)[0].value;
         item.numberOfChildren = $$("select[name=numberOfChildren]", itemElement)[0].value;
 

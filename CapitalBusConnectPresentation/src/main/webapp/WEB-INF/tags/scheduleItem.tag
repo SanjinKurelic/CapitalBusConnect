@@ -20,9 +20,10 @@
 
 <%-- Local variables --%>
 <c:set var="disabled" value="${scheduleItem.disabled() ? 'disabled' : ''}" />
+<c:set var="selectDisabled" value="${scheduleItem.button eq ScheduleButtonType.VIEW_TICKET ? 'disabled' : ''}" />
 
 <%-- Content: --%>
-<tr class="scheduleBox-item ${disabled}" data-id-param="${scheduleItem.scheduleId}" data-date-param="${scheduleItem.date}">
+<tr class="scheduleBox-item ${disabled}" data-id-param="${scheduleItem.id}" data-date-param="${scheduleItem.date}" data-trip-param="${scheduleItem.tripType.name()}">
     <td class="scheduleBox-item-title">
         <div class="scheduleBox-item-title-main">
             ${scheduleItem.leftTitle}
@@ -53,7 +54,7 @@
     </c:choose>
     <td class="scheduleBox-item-adults">
         <label for="numberOfAdults"><spring:message code="schedule.adults.text"/></label>
-        <select name="numberOfAdults" id="numberOfAdults" data-size="select-tiny" ${onChange} ${disabled}>
+        <select name="numberOfAdults" id="numberOfAdults" data-size="select-tiny" ${onChange} ${disabled} ${selectDisabled}>
             <c:forEach var="i" begin="1" end="10">
                 <option value="${i}" ${(scheduleItem.numberOfAdults eq i) ? 'selected' : ''}>${i}</option>
             </c:forEach>
@@ -61,7 +62,7 @@
     </td>
     <td class="scheduleBox-item-children">
         <label for="numberOfChildren"><spring:message code="schedule.children.text"/></label>
-        <select name="numberOfChildren" id="numberOfChildren" data-size="select-tiny" ${onChange} ${disabled}>
+        <select name="numberOfChildren" id="numberOfChildren" data-size="select-tiny" ${onChange} ${disabled} ${selectDisabled}>
             <c:forEach var="i" begin="0" end="10">
                 <option value="${i}" ${(scheduleItem.numberOfChildren eq i) ? 'selected' : ''}>${i}</option>
             </c:forEach>

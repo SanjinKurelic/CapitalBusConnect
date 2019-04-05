@@ -2,6 +2,7 @@ package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.TripPrices;
+import eu.sanjin.kurelic.cbc.repo.entity.TripType;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -58,7 +59,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 "(busLine.city1.id = :city1 AND busLine.city2.id = :city2) OR " +
                 "(busLine.city1.id = :city2 AND busLine.city2.id = :city1)) AND " +
                 // Operates
-                "operates = 1";
+                "operates = 1 ORDER BY fromTime ASC";
 
         Query<BusSchedule> query = session.createQuery(hql, BusSchedule.class);
         query.setParameter("city1", fromCityId);
@@ -83,12 +84,18 @@ public class ScheduleDaoImpl implements ScheduleDao {
         query.setParameter("duration", tripDuration);
         query.setParameter("date", date);
 
-        var prices = query.getResultList();
-        if(prices.size() < 1) {
-            return null;
-        }
+        return query.getResultList().get(0); // or throw null pointer exception
+    }
 
-        return prices.get(0);
+    @Override
+    public TripType getTripType(TripTypeValues value) {
+        var session = sessionFactory.getCurrentSession();
+        var hql = "FROM TripType WHERE name = :name";
+
+        Query<TripType> query = session.createQuery(hql, TripType.class);
+        query.setParameter("name", value.name());
+
+        return query.getSingleResult();
     }
 
 }

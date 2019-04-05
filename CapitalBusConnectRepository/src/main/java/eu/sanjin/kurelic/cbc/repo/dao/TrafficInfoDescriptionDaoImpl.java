@@ -22,7 +22,7 @@ public class TrafficInfoDescriptionDaoImpl implements TrafficInfoDescriptionDao 
     @Override
     public List<TrafficDescription> getTrafficDescriptions(LocalDate date, String language, int limit) {
         var session = sessionFactory.getCurrentSession();
-        var hql = "FROM TrafficDescription WHERE traffic.date > :date AND id.language = :language";
+        var hql = "FROM TrafficDescription WHERE traffic.date > :date AND id.language = :language ORDER BY traffic.date ASC";
 
         Query<TrafficDescription> query = session.createQuery(hql, TrafficDescription.class);
         query.setParameter("language", language);
