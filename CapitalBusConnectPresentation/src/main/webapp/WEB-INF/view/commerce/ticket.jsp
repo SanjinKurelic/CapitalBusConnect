@@ -57,7 +57,7 @@
             </tr>
             <tr>
                 <td colspan="2" class="center">
-                    <img width="${TicketGenerator.QR_IMAGE_WIDTH}" height="${TicketGenerator.QR_IMAGE_WIDTH}"
+                    <img width="${TicketGenerator.QR_IMAGE_WIDTH}" height="${TicketGenerator.QR_IMAGE_HEIGHT}"
                          src="<spring:url value='/ticket/image/${ticket.code}'/>" alt="${ticket.code}">
                 </td>
             </tr>

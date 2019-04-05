@@ -20,9 +20,11 @@ public class TicketGenerator {
         return getQrImage(text, QR_IMAGE_WIDTH, QR_IMAGE_HEIGHT);
     }
 
+    @SuppressWarnings("WeakerAccess")
     public static byte[] getQrImage(String text, int width, int height) {
         byte[] image = new byte[0];
         try {
+            // If application doesn't have required directory authority
             ImageIO.setUseCache(false);
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);

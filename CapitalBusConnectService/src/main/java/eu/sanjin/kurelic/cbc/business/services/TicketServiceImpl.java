@@ -8,15 +8,12 @@ import eu.sanjin.kurelic.cbc.repo.dao.TravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Locale;
 
@@ -64,6 +61,9 @@ public class TicketServiceImpl implements TicketService {
 
     private Ticket getTicket(UserTravelHistory travelHistory, User user, String username, String language) {
         Ticket ticket = new Ticket();
+        if(!travelHistory.getUsername().equals(user.getName())) {
+            return ticket;
+        }
         // Fill trip info
         ticket.setDate(travelHistory.getTripHistory().getDate());
         ticket.setId(travelHistory.getId());
