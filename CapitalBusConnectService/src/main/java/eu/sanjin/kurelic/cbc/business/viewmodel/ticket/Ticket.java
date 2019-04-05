@@ -18,6 +18,7 @@ public class Ticket {
     private int numberOfAdults;
     private int numberOfChildren;
     private TripTypeValues tripType;
+    private String code;
 
     public int getId() {
         return id;
@@ -105,5 +106,13 @@ public class Ticket {
 
     public void setTripType(TripTypeValues tripType) {
         this.tripType = tripType;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -6,12 +6,14 @@ import eu.sanjin.kurelic.cbc.business.services.TicketService;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.Menu;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
+import eu.sanjin.kurelic.cbc.business.viewmodel.ticket.Ticket;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
 import eu.sanjin.kurelic.cbc.view.aspect.ReadFromSession;
 import eu.sanjin.kurelic.cbc.view.aspect.SaveToSession;
 import eu.sanjin.kurelic.cbc.view.components.SessionKey;
+import eu.sanjin.kurelic.cbc.view.components.TicketGenerator;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +23,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class CommerceController {
@@ -70,6 +75,14 @@ public class CommerceController {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         viewModel.addObject("ticket", ticketService.getTicket(username, LocaleContextHolder.getLocale(), id));
         return viewModel;
+    }
+
+    @GetMapping("/ticket/image/{text}")
+    public void ticketBarcodeImage(HttpServletResponse response, @PathVariable String text) throws IOException {
+        response.setContentType("image/" + TicketGenerator.IMAGE_FORMAT);
+        var out = response.getOutputStream();
+        out.write(TicketGenerator.getQrImage(text));
+        out.flush();
     }
 
 }

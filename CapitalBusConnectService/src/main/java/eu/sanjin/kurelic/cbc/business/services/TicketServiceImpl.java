@@ -8,22 +8,30 @@ import eu.sanjin.kurelic.cbc.repo.dao.TravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Locale;
 
 @Service
 public class TicketServiceImpl implements TicketService {
 
+    private static final char CODE_SEPARATOR = ':';
     private final TravelHistoryDao travelHistoryDao;
     private final UserService userService;
-    private DestinationInfoDao destinationInfoDao;
+    private final DestinationInfoDao destinationInfoDao;
 
-    public TicketServiceImpl(@Qualifier("travelHistoryDaoImpl") TravelHistoryDao travelHistoryDao, @Qualifier("userServiceImpl") UserService userService) {
+    public TicketServiceImpl(@Qualifier("travelHistoryDaoImpl") TravelHistoryDao travelHistoryDao, @Qualifier("userServiceImpl") UserService userService, @Qualifier("destinationInfoDaoImpl") DestinationInfoDao destinationInfoDao) {
         this.travelHistoryDao = travelHistoryDao;
         this.userService = userService;
+        this.destinationInfoDao = destinationInfoDao;
     }
 
     @Override
@@ -78,6 +86,26 @@ public class TicketServiceImpl implements TicketService {
         ticket.setEmail(username);
         ticket.setName(user.getName());
         ticket.setSurname(user.getSurname());
+        // Add QR code
+        ticket.setCode(getCode(travelHistory, username));
         return ticket;
+    }
+
+    /**
+     * Build code for QR code => timestamp:id:tripType:username
+     */
+    private String getCode(UserTravelHistory travelHistory, String username){
+        StringBuilder sb = new StringBuilder();
+        // timestamp of trip
+        var dateTime = LocalDateTime.of(travelHistory.getTripHistory().getDate(), travelHistory.getTripHistory().getBusSchedule().getFromTime());
+        sb.append(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli()).append(CODE_SEPARATOR);
+        // id of trip
+        sb.append(travelHistory.getId()).append(CODE_SEPARATOR);
+        // travelType name
+        sb.append(travelHistory.getTripHistory().getTripType().getName().toUpperCase()).append(CODE_SEPARATOR);
+        // username
+        sb.append(username);
+
+        return DigestUtils.md5DigestAsHex(sb.toString().getBytes());
     }
 }

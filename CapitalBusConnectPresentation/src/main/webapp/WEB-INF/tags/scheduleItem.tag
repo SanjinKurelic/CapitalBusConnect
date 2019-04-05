@@ -101,7 +101,7 @@
             </c:when>
             <c:when test="${scheduleItem.button eq ScheduleButtonType.VIEW_TICKET}">
                 <c:set var="buttonIcon" value="&#xf145;"/> <%-- TICKET ICON --%>
-                <c:set var="buttonOnClick" value="alert('TODO')"/>
+                <c:set var="buttonOnClick" value="Ticket.show(this)"/>
                 <c:set var="buttonText" value="schedule.ticketButton.text"/>
             </c:when>
             <c:otherwise>

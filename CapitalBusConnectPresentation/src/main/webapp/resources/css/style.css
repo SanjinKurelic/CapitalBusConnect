@@ -957,6 +957,30 @@ body {
     .switchBox-checkbox:checked ~ .switchBox-layer {
       background: #ffdb6d; }
 
+.ticket {
+  background-color: white;
+  color: black; }
+  .ticket h3 {
+    margin: 0;
+    text-align: center;
+    padding: 14px; }
+  .ticket-content {
+    width: 100%; }
+    .ticket-content td {
+      padding: 3px; }
+      .ticket-content td.center {
+        text-align: center; }
+      .ticket-content td label, .ticket-content td span {
+        font-size: 0.8em; }
+      .ticket-content td input {
+        border: 1px solid black;
+        border-radius: 0;
+        background: white;
+        color: black;
+        font-weight: bold;
+        width: 140px;
+        padding: 7px; }
+
 .totalBox {
   padding: 20px 0 10px;
   border-bottom: 2px solid #424242; }

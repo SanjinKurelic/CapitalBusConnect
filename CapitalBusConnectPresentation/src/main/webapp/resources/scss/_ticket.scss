@@ -1,0 +1,36 @@
+.ticket {
+  background-color: white;
+  color: black;
+
+  h3 {
+    margin: 0;
+    text-align: center;
+    padding: 14px;
+  }
+
+  &-content {
+    width: 100%;
+
+    & td {
+      padding: 3px;
+
+      &.center {
+        text-align: center;
+      }
+
+      & label, & span {
+        font-size: 0.8em;
+      }
+
+      & input {
+        border: 1px solid black;
+        border-radius: 0;
+        background: white;
+        color: black;
+        font-weight: bold;
+        width: 140px;
+        padding: 7px;
+      }
+    }
+  }
+}
