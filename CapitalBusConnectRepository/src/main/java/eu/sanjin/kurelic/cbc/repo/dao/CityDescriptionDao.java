@@ -1,14 +1,10 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
-import eu.sanjin.kurelic.cbc.repo.entity.BusLine;
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-@Service
-public interface DestinationInfoDao {
+public interface CityDescriptionDao {
 
     CityDescription getCityDescription(int id, String language);
 
@@ -19,9 +15,5 @@ public interface DestinationInfoDao {
     List<CityDescription> getCityDescriptions(String language, Integer ...ids);
 
     List<CityDescription> searchCityDescription(String partialCityName, int limit, String language);
-
-    List<BusLine> getCityLines(int offset, int limit);
-
-    int getNumberOfCityLines();
 
 }

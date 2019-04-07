@@ -2,11 +2,9 @@ package eu.sanjin.kurelic.cbc.business.services;
 
 import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.business.viewmodel.city.CityInfoItem;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItem;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemButtonType;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemColumnType;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
-import eu.sanjin.kurelic.cbc.repo.dao.DestinationInfoDao;
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.*;
+import eu.sanjin.kurelic.cbc.repo.dao.BusLineDao;
+import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusLine;
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +20,13 @@ import java.util.Locale;
 @Service
 public class CityInfoServiceImpl implements CityInfoService {
 
-    private final DestinationInfoDao destinationDao;
+    private final CityDescriptionDao destinationDao;
+    private final BusLineDao busLineDao;
 
     @Autowired
-    public CityInfoServiceImpl(@Qualifier("destinationInfoDaoImpl") DestinationInfoDao destinationDao) {
+    public CityInfoServiceImpl(@Qualifier("cityDescriptionDaoImpl") CityDescriptionDao destinationDao, @Qualifier("busLineDaoImpl") BusLineDao busLineDao) {
         this.destinationDao = destinationDao;
+        this.busLineDao = busLineDao;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class CityInfoServiceImpl implements CityInfoService {
             return items;
         }
         // Get all lines
-        var lines = destinationDao.getCityLines(pageNumber, limit);
+        var lines = busLineDao.getCityLines(pageNumber, limit);
         // Database optimization
         HashSet<Integer> ids = new HashSet<>();
         for (BusLine line : lines) {
@@ -71,16 +71,11 @@ public class CityInfoServiceImpl implements CityInfoService {
         var cityDescriptions = destinationDao.getCityDescriptions(LocaleUtility.getLanguage(language), ids.toArray(Integer[]::new));
         for (BusLine line : lines) {
             item = new InfoItem();
-            // City 1
-            item.setColumnType1(InfoItemColumnType.TEXT);
-            item.setColumn1(getCityDesc(cityDescriptions, line.getCity1().getId()));
-            // ->
-            item.setColumnType2(InfoItemColumnType.ARROW_ICON);
-            // City 2
-            item.setColumnType3(InfoItemColumnType.TEXT);
-            item.setColumn3(getCityDesc(cityDescriptions, line.getCity2().getId()));
-            // Button
-            item.setButtonType(InfoItemButtonType.EDIT_ROUTE);
+            item.addColumn(new InfoItemTextColumn(getCityDesc(cityDescriptions, line.getCity1().getId())));
+            item.addColumn(new InfoItemIconColumn(InfoItemIconType.ARROW_ICON));
+            item.addColumn(new InfoItemTextColumn(getCityDesc(cityDescriptions, line.getCity2().getId())));
+            item.addColumn(new InfoItemButtonColumn(InfoItemButtonType.EDIT_ROUTE, ""));
+
             items.add(item);
         }
         return items;
@@ -89,7 +84,7 @@ public class CityInfoServiceImpl implements CityInfoService {
     @Override
     @Transactional
     public int getNumberOfCityLines() {
-        return destinationDao.getNumberOfCityLines();
+        return busLineDao.getNumberOfCityLines();
     }
 
     // Utility

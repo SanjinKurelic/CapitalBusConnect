@@ -1,5 +1,5 @@
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
-import eu.sanjin.kurelic.cbc.repo.dao.TrafficInfoDescriptionDao;
+import eu.sanjin.kurelic.cbc.repo.dao.TrafficDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.entity.TrafficDescription;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +16,8 @@ import java.time.LocalDate;
 public class TrafficInfoTest {
 
     @Autowired
-    @Qualifier("trafficInfoDescriptionDaoImpl")
-    TrafficInfoDescriptionDao dao;
+    @Qualifier("trafficDescriptionDaoImpl")
+    TrafficDescriptionDao dao;
 
     @Test
     @Transactional

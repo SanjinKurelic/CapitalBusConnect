@@ -6,16 +6,11 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.RegistrationUserForm;
-import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
 import eu.sanjin.kurelic.cbc.view.components.ActiveTabItem;
 import eu.sanjin.kurelic.cbc.view.components.ErrorMessagesOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +54,7 @@ public class LoginRegisterController {
     @GetMapping("/access-denied")
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView accessDeniedPage(HttpServletRequest request) {
-        return new ModelAndView("login/denied");
+        return new ModelAndView("error/denied");
     }
 
     @PostMapping("/register")

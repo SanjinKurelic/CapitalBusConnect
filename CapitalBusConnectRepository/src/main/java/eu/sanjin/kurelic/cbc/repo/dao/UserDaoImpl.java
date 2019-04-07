@@ -1,7 +1,6 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.User;
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +9,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class UserInfoDaoImpl implements UserInfoDao {
+public class UserDaoImpl implements UserDao {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public UserInfoDaoImpl(SessionFactory sessionFactory) {
+    public UserDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

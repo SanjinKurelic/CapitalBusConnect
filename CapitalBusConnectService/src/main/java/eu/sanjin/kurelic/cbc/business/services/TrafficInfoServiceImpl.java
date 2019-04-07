@@ -2,7 +2,7 @@ package eu.sanjin.kurelic.cbc.business.services;
 
 import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.repo.entity.TrafficDescription;
-import eu.sanjin.kurelic.cbc.repo.dao.TrafficInfoDescriptionDao;
+import eu.sanjin.kurelic.cbc.repo.dao.TrafficDescriptionDao;
 import eu.sanjin.kurelic.cbc.business.viewmodel.traffic.TrafficInfoItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.traffic.TrafficInfoItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.traffic.TrafficWarningType;
@@ -17,10 +17,10 @@ import java.util.Locale;
 @Service
 public class TrafficInfoServiceImpl implements TrafficInfoService {
 
-    private final TrafficInfoDescriptionDao trafficDao;
+    private final TrafficDescriptionDao trafficDao;
 
     @Autowired
-    public TrafficInfoServiceImpl(TrafficInfoDescriptionDao trafficDao) {
+    public TrafficInfoServiceImpl(TrafficDescriptionDao trafficDao) {
         this.trafficDao = trafficDao;
     }
 

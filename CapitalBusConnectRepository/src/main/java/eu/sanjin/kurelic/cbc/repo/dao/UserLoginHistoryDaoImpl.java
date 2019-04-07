@@ -11,12 +11,12 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Repository
-public class UserLoginInfoDaoImpl implements UserLoginInfoDao {
+public class UserLoginHistoryDaoImpl implements UserLoginHistoryDao {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public UserLoginInfoDaoImpl(SessionFactory sessionFactory) {
+    public UserLoginHistoryDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

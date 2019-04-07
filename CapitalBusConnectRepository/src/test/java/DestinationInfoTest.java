@@ -1,5 +1,5 @@
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
-import eu.sanjin.kurelic.cbc.repo.dao.DestinationInfoDao;
+import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +16,8 @@ import java.util.List;
 public class DestinationInfoTest {
 
     @Autowired
-    @Qualifier("destinationInfoDaoImpl")
-    DestinationInfoDao dao;
+    @Qualifier("cityDescriptionDaoImpl")
+    CityDescriptionDao dao;
 
     private void printCity(CityDescription city){
         System.out.println(city.getTitle() + " [" + city.getCountry().getTitle() + "]");

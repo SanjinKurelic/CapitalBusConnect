@@ -1,25 +1,22 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
-import eu.sanjin.kurelic.cbc.repo.entity.TripPrices;
-import eu.sanjin.kurelic.cbc.repo.entity.TripType;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ScheduleDaoImpl implements ScheduleDao {
+public class BusScheduleDaoImpl implements BusScheduleDao {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public ScheduleDaoImpl(SessionFactory sessionFactory) {
+    public BusScheduleDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -68,34 +65,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
         query.setParameter("baTrip", TripTypeValues.B_TO_A.name());
         query.setParameter("roundTrip", TripTypeValues.ROUND_TRIP.name());
         return query.getResultList();
-    }
-
-    @Override
-    public TripPrices getTripPrice(Integer tripDuration) {
-        return getTripPrice(tripDuration, LocalDate.now());
-    }
-
-    @Override
-    public TripPrices getTripPrice(Integer tripDuration, LocalDate date) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM TripPrices WHERE tripDuration <= :duration AND fromDate <= :date ORDER BY tripDuration DESC, fromDate DESC";
-
-        Query<TripPrices> query = session.createQuery(hql, TripPrices.class);
-        query.setParameter("duration", tripDuration);
-        query.setParameter("date", date);
-
-        return query.getResultList().get(0); // or throw null pointer exception
-    }
-
-    @Override
-    public TripType getTripType(TripTypeValues value) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM TripType WHERE name = :name";
-
-        Query<TripType> query = session.createQuery(hql, TripType.class);
-        query.setParameter("name", value.name());
-
-        return query.getSingleResult();
     }
 
 }

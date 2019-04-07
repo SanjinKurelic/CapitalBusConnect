@@ -3,8 +3,9 @@ package eu.sanjin.kurelic.cbc.business.services;
 import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.business.viewmodel.ticket.Ticket;
 import eu.sanjin.kurelic.cbc.business.viewmodel.ticket.Tickets;
-import eu.sanjin.kurelic.cbc.repo.dao.DestinationInfoDao;
-import eu.sanjin.kurelic.cbc.repo.dao.TravelHistoryDao;
+import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
+import eu.sanjin.kurelic.cbc.repo.dao.TripHistoryDao;
+import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
@@ -21,14 +22,16 @@ import java.util.Locale;
 public class TicketServiceImpl implements TicketService {
 
     private static final char CODE_SEPARATOR = ':';
-    private final TravelHistoryDao travelHistoryDao;
+    private final TripHistoryDao tripHistoryDao;
     private final UserService userService;
-    private final DestinationInfoDao destinationInfoDao;
+    private final CityDescriptionDao cityDescriptionDao;
+    private final UserTravelHistoryDao userTravelHistoryDao;
 
-    public TicketServiceImpl(@Qualifier("travelHistoryDaoImpl") TravelHistoryDao travelHistoryDao, @Qualifier("userServiceImpl") UserService userService, @Qualifier("destinationInfoDaoImpl") DestinationInfoDao destinationInfoDao) {
-        this.travelHistoryDao = travelHistoryDao;
+    public TicketServiceImpl(@Qualifier("tripHistoryDaoImpl") TripHistoryDao tripHistoryDao, @Qualifier("userServiceImpl") UserService userService, @Qualifier("cityDescriptionDaoImpl") CityDescriptionDao cityDescriptionDao, @Qualifier("userTravelHistoryDaoImpl") UserTravelHistoryDao userTravelHistoryDao) {
+        this.tripHistoryDao = tripHistoryDao;
         this.userService = userService;
-        this.destinationInfoDao = destinationInfoDao;
+        this.cityDescriptionDao = cityDescriptionDao;
+        this.userTravelHistoryDao = userTravelHistoryDao;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class TicketServiceImpl implements TicketService {
     public Ticket getTicket(String username, Locale language, Integer userTravelHistoryId) {
         Ticket ticket = new Ticket();
         // Get data
-        var travelHistory = travelHistoryDao.getUserTravelHistoryById(userTravelHistoryId);
+        var travelHistory = userTravelHistoryDao.getUserTravelHistoryById(userTravelHistoryId);
         var user = userService.getUser(username);
         // Fill data
         if(travelHistory != null && user != null) {
@@ -49,7 +52,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public Tickets getTickets(String username, Locale language, Integer... userTravelHistoryIds) {
         Tickets tickets = new Tickets();
-        var travelHistories = travelHistoryDao.getUserTravelHistoryById(userTravelHistoryIds);
+        var travelHistories = userTravelHistoryDao.getUserTravelHistoryById(userTravelHistoryIds);
         var user = userService.getUser(username);
         var lang = LocaleUtility.getLanguage(language);
         // Foreach user travel history
@@ -71,8 +74,8 @@ public class TicketServiceImpl implements TicketService {
         ticket.setNumberOfChildren(travelHistory.getNumberOfChildren());
         ticket.setTime(travelHistory.getTripHistory().getBusSchedule().getFromTime());
         // Fill cities names and trip direction
-        var city1 = destinationInfoDao.getCityDescription(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity1().getId(), language);
-        var city2 = destinationInfoDao.getCityDescription(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity2().getId(), language);
+        var city1 = cityDescriptionDao.getCityDescription(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity1().getId(), language);
+        var city2 = cityDescriptionDao.getCityDescription(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity2().getId(), language);
         var tripType = TripTypeValues.valueOf(travelHistory.getTripHistory().getTripType().getName());
         if (tripType == TripTypeValues.B_TO_A) {
             ticket.setFromCity(city2.getTitle());

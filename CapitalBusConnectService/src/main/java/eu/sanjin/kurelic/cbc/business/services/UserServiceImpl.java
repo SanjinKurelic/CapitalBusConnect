@@ -1,14 +1,11 @@
 package eu.sanjin.kurelic.cbc.business.services;
 
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItem;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemButtonType;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemColumnType;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
+import eu.sanjin.kurelic.cbc.business.viewmodel.info.*;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
 import eu.sanjin.kurelic.cbc.repo.dao.AuthoritiesDao;
-import eu.sanjin.kurelic.cbc.repo.dao.UserInfoDao;
-import eu.sanjin.kurelic.cbc.repo.dao.UserLoginInfoDao;
+import eu.sanjin.kurelic.cbc.repo.dao.UserDao;
+import eu.sanjin.kurelic.cbc.repo.dao.UserLoginHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.Authorities;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.entity.UserLoginHistory;
@@ -31,13 +28,13 @@ public class UserServiceImpl implements UserService {
     @SuppressWarnings("SpellCheckingInspection")
     private static final String PASSWORD_APPENDER = "{bcrypt}";
 
-    private final UserInfoDao userDao;
-    private final UserLoginInfoDao loginHistory;
+    private final UserDao userDao;
+    private final UserLoginHistoryDao loginHistory;
     private final AuthoritiesDao authorities;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(@Qualifier("userInfoDaoImpl") UserInfoDao userDao, @Qualifier("userLoginInfoDaoImpl") UserLoginInfoDao loginHistory, @Qualifier("authoritiesDaoImpl") AuthoritiesDao authorities) {
+    public UserServiceImpl(@Qualifier("userDaoImpl") UserDao userDao, @Qualifier("userLoginHistoryDaoImpl") UserLoginHistoryDao loginHistory, @Qualifier("authoritiesDaoImpl") AuthoritiesDao authorities) {
         this.userDao = userDao;
         this.loginHistory = loginHistory;
         this.passwordEncoder = new BCryptPasswordEncoder(); // Spring security problem if BCryptPasswordEncoder is defined as bean
@@ -202,13 +199,10 @@ public class UserServiceImpl implements UserService {
         InfoItem item;
         for (UserLoginHistory loginHistory : loginHistories) {
             item = new InfoItem();
-            item.setColumnType1(InfoItemColumnType.TEXT);
-            item.setColumn1(loginHistory.getId().getUsername().getUsername());
-            item.setColumnType2(InfoItemColumnType.TEXT);
-            item.setColumn2(loginHistory.getId().getDateTime().format(DateTimeFormatter.ISO_DATE_TIME).replace('T', ' '));
-            item.setColumnType3(InfoItemColumnType.TEXT);
-            item.setColumn3(loginHistory.getIpAddress());
-            item.setButtonType(InfoItemButtonType.BUY_INFO);
+            item.addColumn(new InfoItemTextColumn(loginHistory.getId().getUsername().getUsername()));
+            item.addColumn(new InfoItemTextColumn(loginHistory.getId().getDateTime().format(DateTimeFormatter.ISO_DATE_TIME).replace('T', ' ')));
+            item.addColumn(new InfoItemTextColumn(loginHistory.getIpAddress()));
+            item.addColumn(new InfoItemButtonColumn(InfoItemButtonType.BUY_INFO, loginHistory.getId().getUsername().getUsername()));
             // Add to items
             items.add(item);
         }

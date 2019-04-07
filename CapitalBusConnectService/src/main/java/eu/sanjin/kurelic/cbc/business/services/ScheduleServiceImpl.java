@@ -4,9 +4,7 @@ import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.*;
-import eu.sanjin.kurelic.cbc.repo.dao.DestinationInfoDao;
-import eu.sanjin.kurelic.cbc.repo.dao.ScheduleDao;
-import eu.sanjin.kurelic.cbc.repo.dao.TravelHistoryDao;
+import eu.sanjin.kurelic.cbc.repo.dao.*;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
@@ -28,15 +26,19 @@ import java.util.stream.Collectors;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private final TravelHistoryDao historyDao;
-    private final ScheduleDao scheduleDao;
-    private final DestinationInfoDao destinationDao;
+    private final TripHistoryDao historyDao;
+    private final BusScheduleDao busScheduleDao;
+    private final CityDescriptionDao cityDescriptionDao;
+    private final TripPricesDao tripPricesDao;
+    private final UserTravelHistoryDao userTravelHistoryDao;
 
     @Autowired
-    public ScheduleServiceImpl(@Qualifier("scheduleDaoImpl") ScheduleDao dao, @Qualifier("destinationInfoDaoImpl") DestinationInfoDao destinationDao, @Qualifier("travelHistoryDaoImpl") TravelHistoryDao historyDao) {
-        this.scheduleDao = dao;
-        this.destinationDao = destinationDao;
+    public ScheduleServiceImpl(@Qualifier("busScheduleDaoImpl") BusScheduleDao dao, @Qualifier("cityDescriptionDaoImpl") CityDescriptionDao cityDescriptionDao, @Qualifier("tripHistoryDaoImpl") TripHistoryDao historyDao, @Qualifier("tripPricesDaoImpl") TripPricesDao tripPricesDao, @Qualifier("userTravelHistoryDaoImpl") UserTravelHistoryDao userTravelHistoryDao) {
+        this.busScheduleDao = dao;
+        this.cityDescriptionDao = cityDescriptionDao;
         this.historyDao = historyDao;
+        this.tripPricesDao = tripPricesDao;
+        this.userTravelHistoryDao = userTravelHistoryDao;
     }
 
     @Override
@@ -47,7 +49,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         sb.setButtonType(ScheduleButtonType.ADD_TO_CART);
 
         var weekend = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
-        List<BusSchedule> busSchedules = scheduleDao.getBusLineSchedules(fromCityId, toCityId);
+        List<BusSchedule> busSchedules = busScheduleDao.getBusLineSchedules(fromCityId, toCityId);
         for (BusSchedule busSchedule : busSchedules) {
             // If bus does not operates continue
             if (!busSchedule.isOperates()) {
@@ -81,8 +83,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public ScheduleItems getBusLineSchedules(String fromCityName, String toCityName, LocalDate date, Locale language) {
-        var fromCity = destinationDao.getCityDescription(fromCityName, LocaleUtility.getLanguage(language));
-        var toCity = destinationDao.getCityDescription(toCityName, LocaleUtility.getLanguage(language));
+        var fromCity = cityDescriptionDao.getCityDescription(fromCityName, LocaleUtility.getLanguage(language));
+        var toCity = cityDescriptionDao.getCityDescription(toCityName, LocaleUtility.getLanguage(language));
         return getBusLineSchedules(fromCity.getId().getId(), toCity.getId().getId(), date);
     }
 
@@ -148,7 +150,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public double getTripPrice(LocalTime fromTime, LocalTime toTime, LocalDate fromDate) {
         //TODO remove ABS function
         int duration = (int) Math.abs(Math.ceil(ChronoUnit.MINUTES.between(fromTime, toTime) / 60.0));
-        return scheduleDao.getTripPrice(duration, fromDate).getPrice();
+        return tripPricesDao.getTripPrice(duration, fromDate).getPrice();
     }
 
     // Travel history
@@ -166,9 +168,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         sb.setButtonType(ScheduleButtonType.VIEW_TICKET);
 
         if(date == null) {
-            travelItems = historyDao.getUserTravelHistory(username, pageNumber, limit);
+            travelItems = userTravelHistoryDao.getUserTravelHistory(username, pageNumber, limit);
         } else {
-            travelItems = historyDao.getUserTravelHistory(username, date, pageNumber, limit);
+            travelItems = userTravelHistoryDao.getUserTravelHistory(username, date, pageNumber, limit);
         }
         // Database access optimization
         ArrayList<Integer> ids = new ArrayList<>();
@@ -212,7 +214,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public int getUserTravelHistoryCount(String username) {
-        return historyDao.getUserTravelHistoryCount(username);
+        return userTravelHistoryDao.getUserTravelHistoryCount(username);
     }
 
     // Utility methods
@@ -230,13 +232,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     private Pair<String, String> getCityDescription(BusSchedule busSchedule, Locale language) {
-        var city1 = destinationDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(), LocaleUtility.getLanguage(language));
-        var city2 = destinationDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(), LocaleUtility.getLanguage(language));
+        var city1 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(), LocaleUtility.getLanguage(language));
+        var city2 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(), LocaleUtility.getLanguage(language));
         return Pair.of(city1.getTitle(), city2.getTitle());
     }
 
     private Map<Integer, BusSchedule> getSchedules(ArrayList<Integer> ids) {
-        var busSchedules = scheduleDao.getSchedules(ids.toArray(Integer[]::new));
+        var busSchedules = busScheduleDao.getSchedules(ids.toArray(Integer[]::new));
         return busSchedules.stream().collect(Collectors.toMap(BusSchedule::getId, i -> i));
     }
 

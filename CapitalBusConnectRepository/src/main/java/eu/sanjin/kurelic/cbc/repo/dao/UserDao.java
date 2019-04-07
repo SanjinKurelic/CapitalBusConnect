@@ -4,7 +4,7 @@ import eu.sanjin.kurelic.cbc.repo.entity.User;
 
 import java.util.List;
 
-public interface UserInfoDao {
+public interface UserDao {
 
     User getUserInformation(String username);
 

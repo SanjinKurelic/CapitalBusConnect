@@ -10,12 +10,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public class TrafficInfoDescriptionDaoImpl implements TrafficInfoDescriptionDao {
+public class TrafficDescriptionDaoImpl implements TrafficDescriptionDao {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public TrafficInfoDescriptionDaoImpl(SessionFactory sessionFactory) {
+    public TrafficDescriptionDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

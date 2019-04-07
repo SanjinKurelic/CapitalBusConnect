@@ -1,6 +1,5 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
-import eu.sanjin.kurelic.cbc.repo.entity.BusLine;
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import eu.sanjin.kurelic.cbc.repo.entity.composite.LanguagePrimaryKey;
 import org.hibernate.SessionFactory;
@@ -11,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class DestinationInfoDaoImpl implements DestinationInfoDao {
+public class CityDescriptionDaoImpl implements CityDescriptionDao {
 
     private final SessionFactory sessionFactory;
 
     @Autowired
-    public DestinationInfoDaoImpl(SessionFactory sessionFactory) {
+    public CityDescriptionDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -78,25 +77,4 @@ public class DestinationInfoDaoImpl implements DestinationInfoDao {
 
         return query.getResultList();
     }
-
-    @Override
-    public List<BusLine> getCityLines(int offset, int limit) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM BusLine";
-
-        Query<BusLine> query = session.createQuery(hql, BusLine.class);
-        query.setFirstResult(offset * limit);
-        query.setMaxResults(limit);
-        return query.getResultList();
-    }
-
-    @Override
-    public int getNumberOfCityLines() {
-        var session = sessionFactory.getCurrentSession();
-        // We could also use 10 lines of criteria builder and projections code instead of HQL :)
-        var hql = "SELECT COUNT(*) FROM BusLine";
-
-        return ((Long) session.createQuery(hql).uniqueResult()).intValue();
-    }
-
 }

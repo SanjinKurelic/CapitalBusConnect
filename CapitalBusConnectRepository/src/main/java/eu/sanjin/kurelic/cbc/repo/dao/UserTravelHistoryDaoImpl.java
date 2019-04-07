@@ -1,24 +1,25 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
-import eu.sanjin.kurelic.cbc.repo.entity.PayingMethod;
-import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
+import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory_;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public class TravelHistoryDaoImpl implements TravelHistoryDao {
+public class UserTravelHistoryDaoImpl implements UserTravelHistoryDao {
 
     private final SessionFactory sessionFactory;
 
-    @Autowired
-    public TravelHistoryDaoImpl(SessionFactory sessionFactory) {
+    public UserTravelHistoryDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -66,6 +67,28 @@ public class TravelHistoryDaoImpl implements TravelHistoryDao {
         return query.getResultList();
     }
 
+    /**
+     * Get users that travel the most.
+     *
+     * @param limit - show only limited number of list
+     * @return List of Tuple classes. First parameter is username (email of user), second parameter is number of travels
+     */
+    @Override
+    public List<Tuple> getTopUsersByTravels(int limit) {
+        var session = sessionFactory.getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        CriteriaQuery<Tuple> criteria = builder.createQuery(Tuple.class);
+        Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
+        Expression counter = builder.count(root);
+
+        criteria.multiselect(root.get(UserTravelHistory_.username), counter);
+        criteria.groupBy(root.get(UserTravelHistory_.username));
+        criteria.orderBy(builder.desc(counter));
+
+        return session.createQuery(criteria).setMaxResults(limit).getResultList();
+    }
+
     @Override
     public int getUserTravelHistoryCount(String username) {
         var session = sessionFactory.getCurrentSession();
@@ -79,54 +102,26 @@ public class TravelHistoryDaoImpl implements TravelHistoryDao {
     }
 
     @Override
+    public Long getAllUserTravelHistoryCount() {
+        var session = sessionFactory.getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+        Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
+        criteria.select(builder.count(root));
+
+        return session.createQuery(criteria).getSingleResult();
+    }
+
+    @Override
     public boolean addUserTravelHistory(UserTravelHistory userTravelHistory) {
         var session = sessionFactory.getCurrentSession();
         try {
             session.save(userTravelHistory);
         } catch (Exception e) {
-            throw e;
-            //return false;
+            return false;
         }
         return true;
     }
 
-    @Override
-    public TripHistory getTripHistory(int id) {
-        var session = sessionFactory.getCurrentSession();
-        return session.get(TripHistory.class, id);
-    }
-
-    @Override
-    public void addOrUpdateTripHistory(TripHistory tripHistory) {
-        var session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(tripHistory);
-    }
-
-    @Override
-    public int hasTripHistory(int busScheduleId, LocalDate date, int tripTypeId) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM TripHistory WHERE busSchedule.id = :busScheduleId AND date = :date AND tripType.id = :tripTypeId";
-
-        Query<TripHistory> query = session.createQuery(hql, TripHistory.class);
-        query.setParameter("busScheduleId", busScheduleId);
-        query.setParameter("date", date);
-        query.setParameter("tripTypeId", tripTypeId);
-
-        var list = query.getResultList();
-        if(list.size() != 1 ){
-            return 0;
-        }
-        return list.get(0).getId();
-    }
-
-    @Override
-    public PayingMethod getPayingMethodByName(PayingMethodValues value) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM PayingMethod WHERE name = :name";
-
-        Query<PayingMethod> query = session.createQuery(hql, PayingMethod.class);
-        query.setParameter("name", value.name());
-
-        return query.getSingleResult();
-    }
 }

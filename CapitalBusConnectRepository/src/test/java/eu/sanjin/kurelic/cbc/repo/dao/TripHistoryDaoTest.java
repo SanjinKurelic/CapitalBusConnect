@@ -1,5 +1,8 @@
+package eu.sanjin.kurelic.cbc.repo.dao;
+
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
-import eu.sanjin.kurelic.cbc.repo.dao.UserLoginHistoryDao;
+import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,23 +11,34 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
-class UserLoginHistory {
+class TripHistoryDaoTest {
 
     @Autowired
-    @Qualifier("userLoginHistoryDaoImpl")
-    private UserLoginHistoryDao dao;
+    @Qualifier("tripHistoryDaoImpl")
+    private TripHistoryDao tripHistoryDao;
+
+    @Test
+    void getTripHistory() {
+    }
+
+    @Test
+    void addOrUpdateTripHistory() {
+    }
+
+    @Test
+    void hasTripHistory() {
+    }
 
     @Test
     @Transactional
-    void getUserLoginHistoryTest() {
-        var results = dao.getUserLoginHistory("test@example.com", LocalDate.of(2019, 3, 17), 0, 9);
-        for(var result : results) {
-            System.out.println(result.getIpAddress() + " -> " + result.getId().getDateTime() + ", " + result.getId().getUsername());
-        }
+    void getMostTraveledSchedules() {
+        Assertions.assertDoesNotThrow(() -> tripHistoryDao.getMostTraveledSchedules(10));
     }
 
+    @Test
+    void getLastFilledTripHistory() {
+    }
 }

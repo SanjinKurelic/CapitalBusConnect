@@ -2,8 +2,8 @@ package eu.sanjin.kurelic.cbc.view.controller.web;
 
 import eu.sanjin.kurelic.cbc.business.services.CityInfoService;
 import eu.sanjin.kurelic.cbc.business.services.ScheduleService;
+import eu.sanjin.kurelic.cbc.business.services.StatisticService;
 import eu.sanjin.kurelic.cbc.business.services.UserService;
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemButtonType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.Menu;
 import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItem;
@@ -32,12 +32,14 @@ public class AdminController {
     private final CityInfoService cityInfo;
     private final UserService user;
     private final ScheduleService scheduleService;
+    private final StatisticService statisticService;
 
     @Autowired
-    public AdminController(@Qualifier("cityInfoServiceImpl") CityInfoService cityInfo, @Qualifier("userServiceImpl") UserService user, @Qualifier("scheduleServiceImpl") ScheduleService scheduleService) {
+    public AdminController(CityInfoService cityInfo, @Qualifier("userServiceImpl") UserService user, ScheduleService scheduleService, StatisticService statisticService) {
         this.cityInfo = cityInfo;
         this.user = user;
         this.scheduleService = scheduleService;
+        this.statisticService = statisticService;
     }
 
     private Menu getAdminMenu() {
@@ -63,7 +65,14 @@ public class AdminController {
         var viewModel = new ModelAndView("admin/statistics");
         // Menu
         viewModel.addObject("menuItem", getAdminMenu());
-
+        // Get top user by travels
+        viewModel.addObject("userItems", statisticService.getTopUsersByTravels(VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS));
+        viewModel.addObject("numberOfPassengers", statisticService.getTotalNumberOfPassengers());
+        // Get top bus lines
+        viewModel.addObject("lineItems", statisticService.getTopBusLinesByTravelling(LocaleContextHolder.getLocale(), VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS));
+        viewModel.addObject("numberOfTrips", statisticService.getTotalNumberOfTrips());
+        // Get overflow bus lines
+        viewModel.addObject("overbookedItems", statisticService.getOverbookedBusLines(LocaleContextHolder.getLocale(), VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS));
         return viewModel;
     }
 
@@ -185,7 +194,7 @@ public class AdminController {
                 VisibleConfiguration.NUMBER_OF_PAGINATION_ITEMS
         );
         // Remove unnecessary buttons
-        loginItems.forEach(i -> i.setButtonType(InfoItemButtonType.NONE));
+        loginItems.forEach(i -> i.getColumns().remove(i.getColumns().size() - 1));
         viewModel.addObject("loginItems", loginItems);
         // Travel history items
         var travelItems = scheduleService.getUserTravelHistory(

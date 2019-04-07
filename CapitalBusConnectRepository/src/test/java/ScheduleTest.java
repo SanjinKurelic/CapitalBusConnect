@@ -1,5 +1,5 @@
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
-import eu.sanjin.kurelic.cbc.repo.dao.ScheduleDao;
+import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +15,8 @@ import javax.transaction.Transactional;
 public class ScheduleTest {
 
     @Autowired
-    @Qualifier("scheduleDaoImpl")
-    ScheduleDao dao;
+    @Qualifier("busScheduleDaoImpl")
+    BusScheduleDao dao;
 
     private void printSchedule(BusSchedule busSchedule) {
         System.out.print("[" + busSchedule.getBusLine().getCity1().getId() + "] " + busSchedule.getFromTime() + " -> ");

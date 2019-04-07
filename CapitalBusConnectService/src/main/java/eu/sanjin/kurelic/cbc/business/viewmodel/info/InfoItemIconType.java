@@ -1,7 +1,7 @@
 package eu.sanjin.kurelic.cbc.business.viewmodel.info;
 
-public enum InfoItemColumnType {
+public enum InfoItemIconType {
 
-    TEXT, ICON, BUTTON
+    ARROW_ICON
 
 }

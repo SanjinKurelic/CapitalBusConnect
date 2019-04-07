@@ -5,7 +5,7 @@ import eu.sanjin.kurelic.cbc.repo.entity.TrafficDescription;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface TrafficInfoDescriptionDao {
+public interface TrafficDescriptionDao {
 
     int TRAFFIC_ITEMS_LIMIT = 25;
 

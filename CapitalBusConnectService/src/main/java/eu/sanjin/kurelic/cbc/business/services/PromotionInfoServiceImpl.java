@@ -3,7 +3,7 @@ package eu.sanjin.kurelic.cbc.business.services;
 import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.business.viewmodel.promotion.PromotionItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.promotion.PromotionItems;
-import eu.sanjin.kurelic.cbc.repo.dao.DestinationInfoDao;
+import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ import java.util.Locale;
 @Service
 public class PromotionInfoServiceImpl implements PromotionInfoService {
 
-    private final DestinationInfoDao destinationInfoDao;
+    private final CityDescriptionDao cityDescriptionDao;
     // Hardcoded items, as this is the only example of system
     private static final Integer[] PROMOTION_ITEMS = {15, 19, 20, 26, 28, 37};
     private static final String DEFAULT_CITY = "Zagreb";
 
     @Autowired
-    public PromotionInfoServiceImpl(DestinationInfoDao destinationInfoDao) {
-        this.destinationInfoDao = destinationInfoDao;
+    public PromotionInfoServiceImpl(CityDescriptionDao cityDescriptionDao) {
+        this.cityDescriptionDao = cityDescriptionDao;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
         PromotionItem item;
 
         String language = LocaleUtility.getLanguage(locale);
-        List<CityDescription> cities = destinationInfoDao.getCityDescriptions(language, PROMOTION_ITEMS);
+        List<CityDescription> cities = cityDescriptionDao.getCityDescriptions(language, PROMOTION_ITEMS);
         for(CityDescription city : cities) {
             item = new PromotionItem();
             item.setFromCity(fromCity.getTitle());
@@ -56,7 +56,7 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
     @Override
     @Transactional
     public PromotionItems getPromotionItems(Locale locale) {
-        var fromCity = destinationInfoDao.getCityDescription(DEFAULT_CITY, LocaleUtility.getLanguage(locale));
+        var fromCity = cityDescriptionDao.getCityDescription(DEFAULT_CITY, LocaleUtility.getLanguage(locale));
         return getPromotionItems(fromCity, locale);
     }
 

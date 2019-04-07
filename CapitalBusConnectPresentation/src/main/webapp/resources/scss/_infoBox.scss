@@ -1,5 +1,10 @@
 //Created by Sanjin Kurelic (kurelic@sanjin.eu)
 
+%infoBox-tableCell {
+  padding: 10px 0;
+  border-bottom: 1px solid color(dark-shadow);
+}
+
 .infoBox {
   margin: 25px 0;
   width: 100%;
@@ -13,9 +18,8 @@
       background: color(light-shadow);
     }
 
-    td {
-      padding: 10px 0;
-      border-bottom: 1px solid color(dark-shadow);
+    &-column {
+      @extend %infoBox-tableCell;
       text-align: center;
 
       &:first-of-type, &:last-of-type {
@@ -23,7 +27,8 @@
       }
     }
 
-    @at-root td#{&}-button {
+    &-button {
+      @extend %infoBox-tableCell;
       text-align: right;
 
       & .button {

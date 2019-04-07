@@ -15,15 +15,15 @@ public class UserTravelHistory {
     @Column
     private String username;
     @Column
-    private double price;
+    private Double price;
     @OneToOne
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "trip_history_id", referencedColumnName = "id")
     private TripHistory tripHistory;
     @Column(name = "number_of_adults")
-    private int numberOfAdults;
+    private Integer numberOfAdults;
     @Column(name = "number_of_children")
-    private int numberOfChildren;
+    private Integer numberOfChildren;
     @OneToOne
     @JoinColumn(name = "paying_method_id", referencedColumnName = "id")
     private PayingMethod payingMethod;
@@ -44,11 +44,11 @@ public class UserTravelHistory {
         this.username = username;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -60,19 +60,19 @@ public class UserTravelHistory {
         this.tripHistory = tripHistory;
     }
 
-    public int getNumberOfAdults() {
+    public Integer getNumberOfAdults() {
         return numberOfAdults;
     }
 
-    public void setNumberOfAdults(int numberOfAdults) {
+    public void setNumberOfAdults(Integer numberOfAdults) {
         this.numberOfAdults = numberOfAdults;
     }
 
-    public int getNumberOfChildren() {
+    public Integer getNumberOfChildren() {
         return numberOfChildren;
     }
 
-    public void setNumberOfChildren(int numberOfChildren) {
+    public void setNumberOfChildren(Integer numberOfChildren) {
         this.numberOfChildren = numberOfChildren;
     }
 
