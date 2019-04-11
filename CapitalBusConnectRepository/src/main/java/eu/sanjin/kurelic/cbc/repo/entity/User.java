@@ -10,9 +10,10 @@ public class User {
 
     @Id
     private String username;
+    @Column
     private String password;
-    private boolean enabled;
-
+    @Column
+    private Boolean enabled;
     @Column(table = "user_info")
     private String name;
     @Column(table = "user_info")
@@ -20,12 +21,12 @@ public class User {
     @Column(table = "user_info", name = "date_of_birth")
     private LocalDate dateOfBirth;
     @Column(table = "user_info", name = "receive_newsletter")
-    private boolean receiveNewsletter;
+    private Boolean receiveNewsletter;
 
     public User() {
     }
 
-    public User(String username, String password, boolean enabled, String name, String surname, LocalDate dateOfBirth, boolean receiveNewsletter) {
+    public User(String username, String password, Boolean enabled, String name, String surname, LocalDate dateOfBirth, Boolean receiveNewsletter) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -51,11 +52,11 @@ public class User {
         this.password = password;
     }
 
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -83,11 +84,11 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public boolean isReceiveNewsletter() {
+    public Boolean isReceiveNewsletter() {
         return receiveNewsletter;
     }
 
-    public void setReceiveNewsletter(boolean receiveNewsletter) {
+    public void setReceiveNewsletter(Boolean receiveNewsletter) {
         this.receiveNewsletter = receiveNewsletter;
     }
 }

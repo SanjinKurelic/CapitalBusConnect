@@ -12,7 +12,7 @@ public interface CityDescriptionDao {
 
     List<CityDescription> getCityDescriptions(String language);
 
-    List<CityDescription> getCityDescriptions(String language, Integer ...ids);
+    List<CityDescription> getCityDescriptions(String language, Integer... ids);
 
     List<CityDescription> searchCityDescription(String partialCityName, int limit, String language);
 

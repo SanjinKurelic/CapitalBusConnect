@@ -6,23 +6,18 @@ import javax.persistence.*;
 public class City {
 
     @Id
-    private int id;
+    private Integer id;
     @Column(name = "image_name")
     private String imageName;
-
-    /*@JoinColumns({
-            @JoinColumn(name = "language", referencedColumnName = "language", insertable = false, updatable = false),
-            @JoinColumn(name = "country_id", referencedColumnName = "id", insertable = false, updatable = false)
-    })*/
     @OneToOne
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

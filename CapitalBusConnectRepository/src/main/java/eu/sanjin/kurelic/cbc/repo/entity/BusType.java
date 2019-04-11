@@ -8,23 +8,23 @@ public class BusType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(unique = true)
     private String name;
     @Column(name = "number_of_seats")
-    private int numberOfSeats;
+    private Integer numberOfSeats;
     @Column(name = "children_friendly")
-    private boolean childrenFriendly;
+    private Boolean childrenFriendly;
     @Column(name = "pet_friendly")
-    private boolean petFriendly;
+    private Boolean petFriendly;
     @Column
-    private boolean operates;
+    private Boolean operates;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -36,35 +36,35 @@ public class BusType {
         this.name = name;
     }
 
-    public int getNumberOfSeats() {
+    public Integer getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public void setNumberOfSeats(int numberOfSeats) {
+    public void setNumberOfSeats(Integer numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public boolean isChildrenFriendly() {
+    public Boolean isChildrenFriendly() {
         return childrenFriendly;
     }
 
-    public void setChildrenFriendly(boolean childrenFriendly) {
+    public void setChildrenFriendly(Boolean childrenFriendly) {
         this.childrenFriendly = childrenFriendly;
     }
 
-    public boolean isPetFriendly() {
+    public Boolean isPetFriendly() {
         return petFriendly;
     }
 
-    public void setPetFriendly(boolean petFriendly) {
+    public void setPetFriendly(Boolean petFriendly) {
         this.petFriendly = petFriendly;
     }
 
-    public boolean isOperates() {
+    public Boolean isOperates() {
         return operates;
     }
 
-    public void setOperates(boolean operates) {
+    public void setOperates(Boolean operates) {
         this.operates = operates;
     }
 }

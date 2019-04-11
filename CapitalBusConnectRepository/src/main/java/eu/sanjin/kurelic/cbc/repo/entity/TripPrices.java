@@ -9,27 +9,27 @@ public class TripPrices {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name = "trip_duration")
-    private int tripDuration;
+    private Integer tripDuration;
     @Column(name = "from_date")
     private LocalDate fromDate;
     @Column
-    private double price;
+    private Double price;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getTripDuration() {
+    public Integer getTripDuration() {
         return tripDuration;
     }
 
-    public void setTripDuration(int tripDuration) {
+    public void setTripDuration(Integer tripDuration) {
         this.tripDuration = tripDuration;
     }
 
@@ -41,11 +41,11 @@ public class TripPrices {
         this.fromDate = fromDate;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

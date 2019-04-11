@@ -23,6 +23,7 @@ import java.util.Properties;
 @ComponentScan("eu.sanjin.kurelic.cbc.repo")
 public class RepositoryConfiguration {
 
+    private static final String ENTITY_PACKAGE = "eu.sanjin.kurelic.cbc.repo.entity";
     private final org.springframework.core.env.Environment environment;
     private ComboPooledDataSource _dataSource;
     private LocalSessionFactoryBean _sessionFactory;
@@ -55,7 +56,7 @@ public class RepositoryConfiguration {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         _sessionFactory = new LocalSessionFactoryBean();
-        _sessionFactory.setPackagesToScan("eu.sanjin.kurelic.cbc.repo.entity");
+        _sessionFactory.setPackagesToScan(ENTITY_PACKAGE);
         _sessionFactory.setDataSource(dataSource());
         _sessionFactory.setHibernateProperties(hibernateProperties());
         return _sessionFactory;
@@ -75,11 +76,11 @@ public class RepositoryConfiguration {
     }
 
     @PreDestroy
-    public void closeDatasource(){
-        if(_dataSource != null) {
+    public void closeDatasource() {
+        if (_dataSource != null) {
             _dataSource.close();
         }
-        if(_sessionFactory != null) {
+        if (_sessionFactory != null) {
             _sessionFactory.destroy();
         }
     }

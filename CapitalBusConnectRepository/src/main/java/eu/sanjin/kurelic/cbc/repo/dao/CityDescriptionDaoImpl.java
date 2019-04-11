@@ -1,41 +1,42 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
+import eu.sanjin.kurelic.cbc.repo.entity.CityDescription_;
 import eu.sanjin.kurelic.cbc.repo.entity.composite.LanguagePrimaryKey;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
+import eu.sanjin.kurelic.cbc.repo.entity.composite.LanguagePrimaryKey_;
+import eu.sanjin.kurelic.cbc.repo.utility.MatchMode;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
 public class CityDescriptionDaoImpl implements CityDescriptionDao {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public CityDescriptionDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public CityDescription getCityDescription(int id, String language) {
-        var session = sessionFactory.getCurrentSession();
-        return session.get(CityDescription.class, new LanguagePrimaryKey(id, language));
+        return entityManager.unwrap(Session.class).get(CityDescription.class, new LanguagePrimaryKey(id, language));
     }
 
     @Override
     public CityDescription getCityDescription(String cityName, String language) {
-        var session = sessionFactory.getCurrentSession();
-        String hql = "FROM CityDescription WHERE id.language = :language AND title= :title";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CityDescription> criteria = getCriteria(builder);
+        Root<CityDescription> root = getRoot(criteria);
 
-        Query<CityDescription> cityQuery = session.createQuery(hql, CityDescription.class);
-        cityQuery.setParameter("language", language);
-        cityQuery.setParameter("title", cityName);
-        var cities = cityQuery.getResultList();
+        // HQL FROM CityDescription WHERE id.language = :language AND LOWER(title) = LOWER(:title)
+        Predicate equalName = builder.equal(builder.lower(root.get(CityDescription_.title)), builder.lower(builder.literal(cityName)));
+        criteria.where(builder.and(languageEqualPredicate(builder, root, language), equalName));
+
+        var cities = entityManager.createQuery(criteria).getResultList();
         // Cities with same name in different countries are not supported by this implementation
-        if(cities.size() != 1) {
+        if (cities.size() != 1) {
             return null;
         }
 
@@ -44,37 +45,54 @@ public class CityDescriptionDaoImpl implements CityDescriptionDao {
 
     @Override
     public List<CityDescription> getCityDescriptions(String language) {
-        var session = sessionFactory.getCurrentSession();
-        String hql = "FROM CityDescription WHERE id.language = :language";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CityDescription> criteria = getCriteria(builder);
+        Root<CityDescription> root = getRoot(criteria);
 
-        Query<CityDescription> descriptions = session.createQuery(hql, CityDescription.class);
-        descriptions.setParameter("language", language);
+        // HQL = FROM CityDescription WHERE id.language = :language
+        criteria.where(languageEqualPredicate(builder, root, language));
 
-        return descriptions.getResultList();
+        return entityManager.createQuery(criteria).getResultList();
     }
 
     @Override
     public List<CityDescription> getCityDescriptions(String language, Integer... ids) {
-        var session = sessionFactory.getCurrentSession();
-        String hql = "FROM CityDescription WHERE id.language = :language AND id.id IN (:ids)";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CityDescription> criteria = getCriteria(builder);
+        Root<CityDescription> root = getRoot(criteria);
 
-        Query<CityDescription> descriptions = session.createQuery(hql, CityDescription.class);
-        descriptions.setParameter("language", language);
-        descriptions.setParameterList("ids", ids);
+        // HQL = FROM CityDescription WHERE id.language = :language AND id.id IN (:ids)
+        Predicate inId = root.get(CityDescription_.id).get(LanguagePrimaryKey_.id).in((Object[]) ids);
+        criteria.where(builder.and(languageEqualPredicate(builder, root, language), inId));
 
-        return descriptions.getResultList();
+        return entityManager.createQuery(criteria).getResultList();
     }
 
     @Override
     public List<CityDescription> searchCityDescription(String partialCityName, int limit, String language) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM CityDescription WHERE id.language = :language AND LOWER(title) LIKE LOWER(CONCAT(:partialCityName,'%'))";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CityDescription> criteria = getCriteria(builder);
+        Root<CityDescription> root = getRoot(criteria);
 
-        Query<CityDescription> query = session.createQuery(hql, CityDescription.class);
-        query.setMaxResults(limit);
-        query.setParameter("partialCityName", partialCityName);
-        query.setParameter("language", language);
+        // HQL = FROM CityDescription WHERE id.language = :language AND LOWER(title) LIKE LOWER(CONCAT(:partialCityName,'%'))
+        Expression<String> lowerTitle = builder.lower(root.get(CityDescription_.title));
+        // we are using only DBMS lower function because of inconsistency between Java toLowerCase and DBMS lower
+        Predicate likeName = builder.like(lowerTitle, builder.lower(builder.literal(MatchMode.startsWith(partialCityName))));
+        criteria.where(builder.and(languageEqualPredicate(builder, root, language), likeName));
 
-        return query.getResultList();
+        return entityManager.createQuery(criteria).setMaxResults(limit).getResultList();
+    }
+
+    // Utility
+    private CriteriaQuery<CityDescription> getCriteria(CriteriaBuilder builder) {
+        return builder.createQuery(CityDescription.class);
+    }
+
+    private Root<CityDescription> getRoot(CriteriaQuery<CityDescription> criteria) {
+        return criteria.from(CityDescription.class);
+    }
+
+    private Predicate languageEqualPredicate(CriteriaBuilder builder, Root<CityDescription> root, String language) {
+        return builder.equal(root.get(CityDescription_.id).get(LanguagePrimaryKey_.language), language);
     }
 }

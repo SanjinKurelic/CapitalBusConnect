@@ -8,6 +8,6 @@ public interface BusLineDao {
 
     List<BusLine> getCityLines(int offset, int limit);
 
-    int getNumberOfCityLines();
+    Long getNumberOfCityLines();
 
 }

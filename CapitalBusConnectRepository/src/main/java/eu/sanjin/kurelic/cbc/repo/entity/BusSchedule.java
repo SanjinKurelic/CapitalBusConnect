@@ -9,7 +9,7 @@ public class BusSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name = "from_time")
     private LocalTime fromTime;
     @Column(name = "to_time")
@@ -21,20 +21,20 @@ public class BusSchedule {
     @JoinColumn(name = "trip_type_id", referencedColumnName = "id")
     private TripType tripType;
     @Column
-    private boolean workweek;
+    private Boolean workweek;
     @Column
-    private boolean weekend;
+    private Boolean weekend;
     @OneToOne
     @JoinColumn(name = "bus_type_id", referencedColumnName = "id")
     private BusType busType;
     @Column
-    private boolean operates;
+    private Boolean operates;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -70,19 +70,19 @@ public class BusSchedule {
         this.tripType = tripType;
     }
 
-    public boolean isWorkweek() {
+    public Boolean isWorkweek() {
         return workweek;
     }
 
-    public void setWorkweek(boolean workweek) {
+    public void setWorkweek(Boolean workweek) {
         this.workweek = workweek;
     }
 
-    public boolean isWeekend() {
+    public Boolean isWeekend() {
         return weekend;
     }
 
-    public void setWeekend(boolean weekend) {
+    public void setWeekend(Boolean weekend) {
         this.weekend = weekend;
     }
 
@@ -94,11 +94,11 @@ public class BusSchedule {
         this.busType = busType;
     }
 
-    public boolean isOperates() {
+    public Boolean isOperates() {
         return operates;
     }
 
-    public void setOperates(boolean operates) {
+    public void setOperates(Boolean operates) {
         this.operates = operates;
     }
 }

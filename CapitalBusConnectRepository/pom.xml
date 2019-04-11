@@ -12,4 +12,12 @@
     <artifactId>CapitalBusConnectRepository</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.8.2</version>
+        </dependency>
+    </dependencies>
+
 </project>

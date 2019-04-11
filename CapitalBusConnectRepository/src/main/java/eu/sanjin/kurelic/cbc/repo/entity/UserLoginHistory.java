@@ -2,8 +2,10 @@ package eu.sanjin.kurelic.cbc.repo.entity;
 
 import eu.sanjin.kurelic.cbc.repo.entity.composite.LoginHistoryPrimaryKey;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "user_login_history")

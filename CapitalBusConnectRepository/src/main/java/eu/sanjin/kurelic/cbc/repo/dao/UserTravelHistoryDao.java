@@ -10,7 +10,7 @@ public interface UserTravelHistoryDao {
 
     UserTravelHistory getUserTravelHistoryById(int id);
 
-    List<UserTravelHistory> getUserTravelHistoryById(Integer ...ids);
+    List<UserTravelHistory> getUserTravelHistoryByIds(Integer... ids);
 
     List<UserTravelHistory> getUserTravelHistory(String username, LocalDate date, int offset, int limit);
 
@@ -18,10 +18,10 @@ public interface UserTravelHistoryDao {
 
     List<Tuple> getTopUsersByTravels(int limit);
 
-    int getUserTravelHistoryCount(String username);
+    Long getUserTravelHistoryCount(String username);
 
     Long getAllUserTravelHistoryCount();
 
-    boolean addUserTravelHistory(UserTravelHistory userTravelHistory);
+    void addUserTravelHistory(UserTravelHistory userTravelHistory);
 
 }

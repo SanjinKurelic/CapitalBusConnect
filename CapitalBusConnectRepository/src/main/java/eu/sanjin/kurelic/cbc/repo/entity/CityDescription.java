@@ -10,13 +10,13 @@ public class CityDescription {
 
     @EmbeddedId
     private LanguagePrimaryKey id;
+    @Column
     private String title;
+    @Column
     private String description;
-
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     private City city;
-
     @OneToOne
     @JoinColumns({
             @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false),

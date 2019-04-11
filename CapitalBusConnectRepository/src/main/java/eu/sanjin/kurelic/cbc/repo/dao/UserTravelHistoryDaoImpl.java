@@ -1,70 +1,72 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
+import eu.sanjin.kurelic.cbc.repo.entity.TripHistory_;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory_;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
+import eu.sanjin.kurelic.cbc.repo.utility.RowCounter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class UserTravelHistoryDaoImpl implements UserTravelHistoryDao {
 
-    private final SessionFactory sessionFactory;
-
-    public UserTravelHistoryDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public UserTravelHistory getUserTravelHistoryById(int id) {
-        var session = sessionFactory.getCurrentSession();
-        return session.get(UserTravelHistory.class, id);
+        return entityManager.unwrap(Session.class).get(UserTravelHistory.class, id);
     }
 
     @Override
-    public List<UserTravelHistory> getUserTravelHistoryById(Integer... ids) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserTravelHistory WHERE id IN (:ids)";
+    public List<UserTravelHistory> getUserTravelHistoryByIds(Integer... ids) {
+        if (ids == null || ids.length == 0) {
+            return new ArrayList<>();
+        }
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        Query<UserTravelHistory> query = session.createQuery(hql, UserTravelHistory.class);
-        query.setParameter("ids", ids);
+        CriteriaQuery<UserTravelHistory> criteria = builder.createQuery(UserTravelHistory.class);
+        Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
+        //HQL = FROM UserTravelHistory WHERE id IN (:ids)
+        criteria.where(root.get(UserTravelHistory_.id).in((Object[]) ids));
 
-        return query.getResultList();
+        return entityManager.createQuery(criteria).getResultList();
     }
 
     @Override
     public List<UserTravelHistory> getUserTravelHistory(String username, LocalDate date, int offset, int limit) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserTravelHistory WHERE username = :username AND tripHistory.date = :date";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        Query<UserTravelHistory> query = session.createQuery(hql, UserTravelHistory.class);
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        query.setParameter("username", username);
-        query.setParameter("date", date);
+        CriteriaQuery<UserTravelHistory> criteria = builder.createQuery(UserTravelHistory.class);
+        Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
 
-        return query.getResultList();
+        // HQL = FROM UserTravelHistory WHERE username = :username AND tripHistory.date = :date
+        Predicate datePredicate = builder.equal(root.get(UserTravelHistory_.tripHistory).get(TripHistory_.date), date);
+        criteria.where(builder.and(usernameEqualPredicate(builder, root, username), datePredicate));
+
+        return entityManager.createQuery(criteria).setFirstResult(offset).setMaxResults(limit).getResultList();
     }
 
     @Override
     public List<UserTravelHistory> getUserTravelHistory(String username, int offset, int limit) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM UserTravelHistory WHERE username = :username ORDER BY tripHistory.date DESC";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        Query<UserTravelHistory> query = session.createQuery(hql, UserTravelHistory.class);
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        query.setParameter("username", username);
+        CriteriaQuery<UserTravelHistory> criteria = builder.createQuery(UserTravelHistory.class);
+        Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
 
-        return query.getResultList();
+        // HQL = FROM UserTravelHistory WHERE username = :username ORDER BY tripHistory.date DESC
+        criteria.where(usernameEqualPredicate(builder, root, username));
+        criteria.orderBy(builder.desc(root.get(UserTravelHistory_.tripHistory).get(TripHistory_.date)));
+
+        return entityManager.createQuery(criteria).setFirstResult(offset).setMaxResults(limit).getResultList();
     }
 
     /**
@@ -75,8 +77,7 @@ public class UserTravelHistoryDaoImpl implements UserTravelHistoryDao {
      */
     @Override
     public List<Tuple> getTopUsersByTravels(int limit) {
-        var session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Tuple> criteria = builder.createQuery(Tuple.class);
         Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
@@ -86,42 +87,36 @@ public class UserTravelHistoryDaoImpl implements UserTravelHistoryDao {
         criteria.groupBy(root.get(UserTravelHistory_.username));
         criteria.orderBy(builder.desc(counter));
 
-        return session.createQuery(criteria).setMaxResults(limit).getResultList();
+        return entityManager.createQuery(criteria).setMaxResults(limit).getResultList();
     }
 
     @Override
-    public int getUserTravelHistoryCount(String username) {
-        var session = sessionFactory.getCurrentSession();
-        // We could also use 10 lines of criteria builder and projections code instead of HQL :)
-        var hql = "SELECT COUNT(*) FROM UserTravelHistory WHERE username = :username";
+    public Long getUserTravelHistoryCount(String username) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        Query query = session.createQuery(hql);
-        query.setParameter("username", username);
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+        Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
 
-        return ((Long) query.uniqueResult()).intValue();
+        // HQL = SELECT COUNT(*) FROM UserTravelHistory WHERE username = :username
+        criteria.select(builder.count(root));
+        criteria.where(usernameEqualPredicate(builder, root, username));
+
+        return entityManager.createQuery(criteria).getSingleResult();
     }
 
     @Override
     public Long getAllUserTravelHistoryCount() {
-        var session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-
-        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-        Root<UserTravelHistory> root = criteria.from(UserTravelHistory.class);
-        criteria.select(builder.count(root));
-
-        return session.createQuery(criteria).getSingleResult();
+        return RowCounter.countNumberOfRows(entityManager.unwrap(Session.class), UserTravelHistory.class);
     }
 
     @Override
-    public boolean addUserTravelHistory(UserTravelHistory userTravelHistory) {
-        var session = sessionFactory.getCurrentSession();
-        try {
-            session.save(userTravelHistory);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    public void addUserTravelHistory(UserTravelHistory userTravelHistory) {
+        entityManager.unwrap(Session.class).save(userTravelHistory);
+    }
+
+    // Utility
+    private Predicate usernameEqualPredicate(CriteriaBuilder builder, Root<UserTravelHistory> root, String username) {
+        return builder.equal(root.get(UserTravelHistory_.username), username);
     }
 
 }

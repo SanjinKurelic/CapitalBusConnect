@@ -1,96 +1,81 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.User;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
+import eu.sanjin.kurelic.cbc.repo.entity.User_;
+import eu.sanjin.kurelic.cbc.repo.utility.MatchMode;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public UserDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public User getUserInformation(String username) {
-        var session = sessionFactory.getCurrentSession();
-        return session.get(User.class, username);
+        return entityManager.unwrap(Session.class).get(User.class, username);
     }
 
     @Override
     public boolean hasUserInformation(User user) {
-        if(user == null) {
+        if (user == null) {
             return false;
         }
-        var session = sessionFactory.getCurrentSession();
-        return session.contains(user);
-    }
-
-    @SuppressWarnings("Duplicates")
-    @Override
-    public boolean addUserInformation(User user) {
-        var session = sessionFactory.getCurrentSession();
-        try {
-            session.save(user);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+        return entityManager.unwrap(Session.class).contains(user);
     }
 
     @Override
-    public boolean updateUserInformation(User user) {
-        var session = sessionFactory.getCurrentSession();
-        try {
-            session.update(user);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    public void addUserInformation(User user) {
+        entityManager.unwrap(Session.class).save(user);
     }
 
     @Override
-    public boolean updateUserInformationWithoutPassword(User user) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "UPDATE User SET name = :name, surname = :surname, dateOfBirth = :dateOfBirth, receiveNewsletter = :receiveNewsletter WHERE username = :username";
-
-        Query query = session.createQuery(hql);
-        query.setParameter("name", user.getName());
-        query.setParameter("surname", user.getSurname());
-        query.setParameter("dateOfBirth", user.getDateOfBirth());
-        query.setParameter("receiveNewsletter", user.isReceiveNewsletter());
-        query.setParameter("username", user.getUsername());
-
-        return query.executeUpdate() == 1;
+    public void updateUserInformation(User user) {
+        entityManager.unwrap(Session.class).update(user);
     }
 
     @Override
-    public boolean removeUserInformation(User user) {
-        var session = sessionFactory.getCurrentSession();
-        try {
-            session.remove(user);
-        } catch (Exception e) {
-            return false;
+    public void updateUserInformationWithoutPassword(User user) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+        CriteriaUpdate<User> criteria = builder.createCriteriaUpdate(User.class);
+        Root<User> root = criteria.from(User.class);
+
+        // HQL = UPDATE User SET name = :name, surname = :surname, dateOfBirth = :dateOfBirth, receiveNewsletter = :receiveNewsletter WHERE username = :username
+        criteria.set(root.get(User_.name), user.getName());
+        criteria.set(root.get(User_.surname), user.getSurname());
+        criteria.set(root.get(User_.dateOfBirth), user.getDateOfBirth());
+        criteria.set(root.get(User_.receiveNewsletter), user.isReceiveNewsletter());
+        // Where
+        criteria.where(builder.equal(root.get(User_.username), user.getUsername()));
+        if (entityManager.createQuery(criteria).executeUpdate() != 1) {
+            throw new RuntimeException(); // Rollback transaction
         }
-        return true;
+    }
+
+    @Override
+    public void removeUserInformation(User user) {
+        entityManager.unwrap(Session.class).remove(user);
     }
 
     @Override
     public List<User> searchUserInformation(String partialUsername, int limit) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM User WHERE LOWER(username) LIKE LOWER(CONCAT(:partialUsername,'%'))";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        Query<User> query = session.createQuery(hql, User.class);
-        query.setMaxResults(limit);
-        query.setParameter("partialUsername", partialUsername);
+        CriteriaQuery<User> criteria = builder.createQuery(User.class);
+        Root<User> root = criteria.from(User.class);
+        // HQL = FROM User WHERE LOWER(username) LIKE LOWER(CONCAT(:partialUsername,'%'))
+        criteria.where(builder.like(builder.lower(root.get(User_.username)), builder.lower(builder.literal(MatchMode.startsWith(partialUsername)))));
 
-        return query.getResultList();
+        return entityManager.createQuery(criteria).setMaxResults(limit).getResultList();
     }
 }

@@ -8,22 +8,22 @@ public interface UserDao {
 
     User getUserInformation(String username);
 
-    default boolean hasUserInformation(String username){
+    default boolean hasUserInformation(String username) {
         return hasUserInformation(getUserInformation(username));
     }
 
     boolean hasUserInformation(User user);
 
-    boolean addUserInformation(User user);
+    void addUserInformation(User user);
 
-    boolean updateUserInformation(User user);
+    void updateUserInformation(User user);
 
-    boolean updateUserInformationWithoutPassword(User user);
+    void updateUserInformationWithoutPassword(User user);
 
-    boolean removeUserInformation(User user);
+    void removeUserInformation(User user);
 
-    default boolean removeUserInformation(String username) {
-        return removeUserInformation(getUserInformation(username));
+    default void removeUserInformation(String username) {
+        removeUserInformation(getUserInformation(username));
     }
 
     List<User> searchUserInformation(String partialUsername, int limit);

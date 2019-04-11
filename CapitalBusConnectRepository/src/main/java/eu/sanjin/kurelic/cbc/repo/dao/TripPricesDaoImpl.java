@@ -1,37 +1,44 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.entity.TripPrices;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
+import eu.sanjin.kurelic.cbc.repo.entity.TripPrices_;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 
 @Repository
 public class TripPricesDaoImpl implements TripPricesDao {
 
-    private final SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public TripPricesDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    @Override
-    public TripPrices getTripPrice(Integer tripDuration) {
-        return getTripPrice(tripDuration, LocalDate.now());
-    }
-
+    /**
+     * Get trip price based on trip duration and date from which price is valid
+     *
+     * @param tripDuration - duration of a trip
+     * @param date         - optional parameter, if we want to know price of journey in past
+     * @return - price or throw exception (every trip duration should have price)
+     */
     @Override
     public TripPrices getTripPrice(Integer tripDuration, LocalDate date) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM TripPrices WHERE tripDuration <= :duration AND fromDate <= :date ORDER BY tripDuration DESC, fromDate DESC";
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        Query<TripPrices> query = session.createQuery(hql, TripPrices.class);
-        query.setParameter("duration", tripDuration);
-        query.setParameter("date", date);
+        CriteriaQuery<TripPrices> criteria = builder.createQuery(TripPrices.class);
+        Root<TripPrices> root = criteria.from(TripPrices.class);
 
-        return query.getResultList().get(0); // or throw null pointer exception
+        // HQL = FROM TripPrices WHERE tripDuration <= :duration AND fromDate <= :date ORDER BY tripDuration DESC, fromDate DESC
+        Predicate tripDurationPredicate = builder.lessThanOrEqualTo(root.get(TripPrices_.tripDuration), tripDuration);
+        Predicate datePredicate = builder.lessThanOrEqualTo(root.get(TripPrices_.fromDate), date);
+        criteria.where(builder.and(tripDurationPredicate, datePredicate));
+        criteria.orderBy(builder.desc(root.get(TripPrices_.tripDuration)), builder.desc(root.get(TripPrices_.fromDate)));
+
+        return entityManager.createQuery(criteria).setMaxResults(1).getSingleResult();
     }
 
 }

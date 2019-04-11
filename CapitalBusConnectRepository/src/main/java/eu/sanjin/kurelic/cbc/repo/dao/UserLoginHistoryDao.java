@@ -15,10 +15,10 @@ public interface UserLoginHistoryDao {
 
     List<UserLoginHistory> getAllLoginHistory(LocalDate date, int offset, int limit);
 
-    int getUserLoginHistoryCount(String username);
+    Long getUserLoginHistoryCount(String username);
 
-    int getAllLoginHistoryCount();
+    Long getAllLoginHistoryCount();
 
-    boolean addUserLoginHistory(UserLoginHistory userLoginHistory);
+    void addUserLoginHistory(UserLoginHistory userLoginHistory);
 
 }

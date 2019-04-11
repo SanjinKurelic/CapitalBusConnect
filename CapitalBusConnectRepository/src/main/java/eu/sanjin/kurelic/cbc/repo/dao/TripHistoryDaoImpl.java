@@ -1,68 +1,65 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
+import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule_;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory_;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
+import eu.sanjin.kurelic.cbc.repo.entity.TripType_;
+import eu.sanjin.kurelic.cbc.repo.utility.RowCounter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public class TripHistoryDaoImpl implements TripHistoryDao {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public TripHistoryDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public TripHistory getTripHistory(int id) {
-        var session = sessionFactory.getCurrentSession();
-        return session.get(TripHistory.class, id);
+        return entityManager.unwrap(Session.class).get(TripHistory.class, id);
     }
 
     @Override
     public void addOrUpdateTripHistory(TripHistory tripHistory) {
-        var session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(tripHistory);
+        entityManager.unwrap(Session.class).saveOrUpdate(tripHistory);
     }
 
     @Override
-    public int hasTripHistory(int busScheduleId, LocalDate date, int tripTypeId) {
-        var session = sessionFactory.getCurrentSession();
-        var hql = "FROM TripHistory WHERE busSchedule.id = :busScheduleId AND date = :date AND tripType.id = :tripTypeId";
+    public Integer getTripHistoryIdOrNull(Integer busScheduleId, LocalDate date, Integer tripTypeId) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        Query<TripHistory> query = session.createQuery(hql, TripHistory.class);
-        query.setParameter("busScheduleId", busScheduleId);
-        query.setParameter("date", date);
-        query.setParameter("tripTypeId", tripTypeId);
+        CriteriaQuery<TripHistory> criteria = builder.createQuery(TripHistory.class);
+        Root<TripHistory> root = criteria.from(TripHistory.class);
 
-        var list = query.getResultList();
-        if(list.size() != 1 ){
-            return 0;
+        // HQL = FROM TripHistory WHERE busSchedule.id = :busScheduleId AND date = :date AND tripType.id = :tripTypeId
+        Predicate busSchedulePredicate = builder.equal(root.get(TripHistory_.busSchedule).get(BusSchedule_.id), busScheduleId);
+        Predicate datePredicate = builder.equal(root.get(TripHistory_.date), date);
+        Predicate tripTypePredicate = builder.equal(root.get(TripHistory_.tripType).get(TripType_.id), tripTypeId);
+        criteria.where(builder.and(busSchedulePredicate, datePredicate, tripTypePredicate));
+
+        var list = entityManager.createQuery(criteria).getResultList();
+        if (list.size() != 1) {
+            return null;
         }
         return list.get(0).getId();
     }
 
     /**
+     * Return list of most traveled schedules (grouped by bus line and operating time)
      *
-     * @param limit
+     * @param limit - limit the results
      * @return Tuple - first parameter is TripHistory and second parameter is counter
      */
     @Override
     public List<Tuple> getMostTraveledSchedules(int limit) {
-        var session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Tuple> criteria = builder.createQuery(Tuple.class);
         Root<TripHistory> root = criteria.from(TripHistory.class);
@@ -72,18 +69,18 @@ public class TripHistoryDaoImpl implements TripHistoryDao {
         criteria.groupBy(root.get(TripHistory_.busSchedule), root.get(TripHistory_.tripType));
         criteria.orderBy(builder.desc(counter));
 
-        return session.createQuery(criteria).setMaxResults(limit).getResultList();
+        return entityManager.createQuery(criteria).setMaxResults(limit).getResultList();
     }
 
     /**
+     * Return list of trips that operated with full bus capacity
      *
-     * @param limit
+     * @param limit - limit the results
      * @return Tuple - first parameters is TripHistory and second parameter is counter
      */
     @Override
     public List<Tuple> getLastFilledTripHistory(int limit) {
-        var session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Tuple> criteria = builder.createQuery(Tuple.class);
         Root<TripHistory> root = criteria.from(TripHistory.class);
@@ -93,19 +90,12 @@ public class TripHistoryDaoImpl implements TripHistoryDao {
         criteria.groupBy(root.get(TripHistory_.busSchedule), root.get(TripHistory_.tripType)); // group by schedule & direction
         criteria.orderBy(builder.desc(root.get(TripHistory_.date))); // get last results by ordering date
 
-        return session.createQuery(criteria).setMaxResults(limit).getResultList();
+        return entityManager.createQuery(criteria).setMaxResults(limit).getResultList();
     }
 
     @Override
     public Long getTripHistoryCount() {
-        var session = sessionFactory.getCurrentSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-
-        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-        Root<TripHistory> root = criteria.from(TripHistory.class);
-        criteria.select(builder.count(root));
-
-        return session.createQuery(criteria).getSingleResult();
+        return RowCounter.countNumberOfRows(entityManager.unwrap(Session.class), TripHistory.class);
     }
 
 }

@@ -7,12 +7,6 @@ import java.util.List;
 
 public interface TrafficDescriptionDao {
 
-    int TRAFFIC_ITEMS_LIMIT = 25;
-
     List<TrafficDescription> getTrafficDescriptions(LocalDate date, String language, int limit);
-
-    default List<TrafficDescription> getTrafficDescriptions(LocalDate date, String language){
-        return getTrafficDescriptions(date, language, TRAFFIC_ITEMS_LIMIT);
-    }
 
 }

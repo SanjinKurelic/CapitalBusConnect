@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface BusScheduleDao {
 
-    BusSchedule getSchedule(Integer id);
+    BusSchedule getSchedule(int id);
 
-    List<BusSchedule> getSchedules(Integer ...ids);
+    List<BusSchedule> getSchedules(Integer... ids);
 
     List<BusSchedule> getBusLineSchedules(Integer fromCityId, Integer toCityId);
 

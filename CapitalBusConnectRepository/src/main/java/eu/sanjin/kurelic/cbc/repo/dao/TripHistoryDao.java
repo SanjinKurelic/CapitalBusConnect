@@ -14,11 +14,11 @@ public interface TripHistoryDao {
 
     void addOrUpdateTripHistory(TripHistory tripHistory);
 
-    default int hasTripHistory(BusSchedule busSchedule, LocalDate date, TripType tripType) {
-        return hasTripHistory(busSchedule.getId(), date, tripType.getId());
+    default Integer getTripHistoryIdOrNull(BusSchedule busSchedule, LocalDate date, TripType tripType) {
+        return getTripHistoryIdOrNull(busSchedule.getId(), date, tripType.getId());
     }
 
-    int hasTripHistory(int busScheduleId, LocalDate date, int tripTypeId);
+    Integer getTripHistoryIdOrNull(Integer busScheduleId, LocalDate date, Integer tripTypeId);
 
     List<Tuple> getMostTraveledSchedules(int limit);
 

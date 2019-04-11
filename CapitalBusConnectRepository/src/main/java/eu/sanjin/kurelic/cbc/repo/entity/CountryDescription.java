@@ -10,6 +10,7 @@ public class CountryDescription {
 
     @EmbeddedId
     private LanguagePrimaryKey id;
+    @Column
     private String title;
     @OneToOne
     @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)

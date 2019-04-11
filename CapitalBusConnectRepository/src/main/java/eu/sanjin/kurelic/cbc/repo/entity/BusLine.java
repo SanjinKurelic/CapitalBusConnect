@@ -8,7 +8,7 @@ public class BusLine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @OneToOne
     @JoinColumn(name = "city1_id", referencedColumnName = "id")
     private City city1;
@@ -16,13 +16,13 @@ public class BusLine {
     @JoinColumn(name = "city2_id", referencedColumnName = "id")
     private City city2;
     @Column
-    private boolean operates;
+    private Boolean operates;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -42,11 +42,11 @@ public class BusLine {
         this.city2 = city2;
     }
 
-    public boolean isOperates() {
+    public Boolean isOperates() {
         return operates;
     }
 
-    public void setOperates(boolean operates) {
+    public void setOperates(Boolean operates) {
         this.operates = operates;
     }
 }

@@ -1,6 +1,8 @@
 package eu.sanjin.kurelic.cbc.repo.entity.composite;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,22 +10,22 @@ import java.util.Objects;
 public class LanguagePrimaryKey implements Serializable {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String language;
 
     public LanguagePrimaryKey() {
     }
 
-    public LanguagePrimaryKey(int id, String language) {
+    public LanguagePrimaryKey(Integer id, String language) {
         this.id = id;
         this.language = language;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -40,7 +42,7 @@ public class LanguagePrimaryKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LanguagePrimaryKey that = (LanguagePrimaryKey) o;
-        return id == that.id && Objects.equals(language, that.language);
+        return Objects.equals(id, that.id) && Objects.equals(language, that.language);
     }
 
     @Override

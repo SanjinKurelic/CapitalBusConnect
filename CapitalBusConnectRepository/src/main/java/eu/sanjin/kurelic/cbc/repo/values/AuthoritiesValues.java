@@ -4,8 +4,9 @@ public enum AuthoritiesValues {
 
     ADMIN("ROLE_ADMIN"), USER("ROLE_USER");
 
-    private String value;
-    AuthoritiesValues(String value){
+    private final String value;
+
+    AuthoritiesValues(String value) {
         this.value = value;
     }
 

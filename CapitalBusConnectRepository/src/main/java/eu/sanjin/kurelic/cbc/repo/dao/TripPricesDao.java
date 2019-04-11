@@ -6,7 +6,9 @@ import java.time.LocalDate;
 
 public interface TripPricesDao {
 
-    TripPrices getTripPrice(Integer tripDuration);
+    default TripPrices getTripPrice(Integer tripDuration) {
+        return getTripPrice(tripDuration, LocalDate.now());
+    }
 
     TripPrices getTripPrice(Integer tripDuration, LocalDate date);
 
