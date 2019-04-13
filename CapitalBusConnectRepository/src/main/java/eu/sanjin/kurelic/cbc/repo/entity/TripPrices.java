@@ -1,6 +1,7 @@
 package eu.sanjin.kurelic.cbc.repo.entity;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDate;
 
 @Entity
@@ -11,7 +12,7 @@ public class TripPrices {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "trip_duration")
-    private Integer tripDuration;
+    private Duration tripDuration;
     @Column(name = "from_date")
     private LocalDate fromDate;
     @Column
@@ -25,11 +26,11 @@ public class TripPrices {
         this.id = id;
     }
 
-    public Integer getTripDuration() {
+    public Duration getTripDuration() {
         return tripDuration;
     }
 
-    public void setTripDuration(Integer tripDuration) {
+    public void setTripDuration(Duration tripDuration) {
         this.tripDuration = tripDuration;
     }
 

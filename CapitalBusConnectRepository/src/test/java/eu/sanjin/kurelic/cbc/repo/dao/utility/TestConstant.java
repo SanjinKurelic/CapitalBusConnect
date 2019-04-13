@@ -1,5 +1,6 @@
 package eu.sanjin.kurelic.cbc.repo.dao.utility;
 
+import java.time.Duration;
 import java.time.LocalDate;
 
 public class TestConstant {
@@ -25,8 +26,8 @@ public class TestConstant {
     public static final int VALID_ID = 1;
     public static final int VALID_NEXT_ID = 2;
     public static final int VALID_LIST_ID_COUNT = 3;
-    public static final int VALID_TRIP_DURATION = 2;
-    public static final int INVALID_TRIP_DURATION = -2;
+    public static final Duration VALID_TRIP_DURATION = Duration.ofHours(2);
+    public static final Duration INVALID_TRIP_DURATION = Duration.ofHours(-2);
     public static final Integer[] VALID_LIST_ID = {1, 2, 3};
     public static final Object NULL_VALUE = null;
     public static final String VALID_LANGUAGE = "en";

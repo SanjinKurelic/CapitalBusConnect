@@ -1,6 +1,7 @@
 package eu.sanjin.kurelic.cbc.repo.entity;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalTime;
 
 @Entity
@@ -12,8 +13,8 @@ public class BusSchedule {
     private Integer id;
     @Column(name = "from_time")
     private LocalTime fromTime;
-    @Column(name = "to_time")
-    private LocalTime toTime;
+    @Column
+    private Duration duration;
     @OneToOne
     @JoinColumn(name = "line_id", referencedColumnName = "id")
     private BusLine busLine;
@@ -46,12 +47,12 @@ public class BusSchedule {
         this.fromTime = fromTime;
     }
 
-    public LocalTime getToTime() {
-        return toTime;
+    public Duration getDuration() {
+        return duration;
     }
 
-    public void setToTime(LocalTime toTime) {
-        this.toTime = toTime;
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 
     public BusLine getBusLine() {

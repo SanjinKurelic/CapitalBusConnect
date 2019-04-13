@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.Duration;
 import java.time.LocalDate;
 
 @Repository
@@ -26,7 +27,7 @@ public class TripPricesDaoImpl implements TripPricesDao {
      * @return - price or throw exception (every trip duration should have price)
      */
     @Override
-    public TripPrices getTripPrice(Integer tripDuration, LocalDate date) {
+    public TripPrices getTripPrice(Duration tripDuration, LocalDate date) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<TripPrices> criteria = builder.createQuery(TripPrices.class);

@@ -2,6 +2,7 @@ package eu.sanjin.kurelic.cbc.repo.entity;
 
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
+import java.time.Duration;
 import java.time.LocalDate;
 
 @StaticMetamodel(BusSchedule.class)
@@ -9,7 +10,7 @@ public class BusSchedule_ {
 
     public static volatile SingularAttribute<BusSchedule, Integer> id;
     public static volatile SingularAttribute<BusSchedule, LocalDate> fromTime;
-    public static volatile SingularAttribute<BusSchedule, LocalDate> toTime;
+    public static volatile SingularAttribute<BusSchedule, Duration> duration;
     public static volatile SingularAttribute<BusSchedule, BusLine> busLine;
     public static volatile SingularAttribute<BusSchedule, TripType> tripType;
     public static volatile SingularAttribute<BusSchedule, Boolean> workweek;
