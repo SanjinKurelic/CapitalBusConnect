@@ -4,6 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 public class DateOfBirthValidator implements ConstraintValidator<DateOfBirth, LocalDate> {
 
@@ -25,7 +26,7 @@ public class DateOfBirthValidator implements ConstraintValidator<DateOfBirth, Lo
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         // Validation
         // Use other validations for null
-        if(date == null) {
+        if (Objects.isNull(date)) {
             return true;
         }
         long yearsOld = ChronoUnit.YEARS.between(date, LocalDate.now());

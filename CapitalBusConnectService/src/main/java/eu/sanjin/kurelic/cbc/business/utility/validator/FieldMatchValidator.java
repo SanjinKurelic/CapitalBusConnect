@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
-public class FieldMatchValidator  implements ConstraintValidator<FieldMatch, Object> {
+public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
 
     private String message;
     private String firstField;

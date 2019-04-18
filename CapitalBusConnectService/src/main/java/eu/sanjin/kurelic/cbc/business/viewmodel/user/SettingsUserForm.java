@@ -4,14 +4,14 @@ import eu.sanjin.kurelic.cbc.business.utility.validator.FieldMatch;
 import eu.sanjin.kurelic.cbc.business.utility.validator.Password;
 
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @FieldMatch(message = "errorMessage.identification.mustBeSame.text", firstField = "identification", secondField = "confirmedIdentification")
 public class SettingsUserForm extends UserForm {
 
     // Can be null
     @Password(message = "errorMessage.identification.invalid.number.text")
-    @Pattern(regexp = "|.{8,}", message = "errorMessage.identification.invalid.minSize.text") // @Size does not accept empty value
+    @Pattern(regexp = "|.{8,}", message = "errorMessage.identification.invalid.minSize.text")
+    // @Size does not accept empty value
     private String identification;
 
     private String confirmedIdentification;

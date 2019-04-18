@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Locale;
 
 @Service
@@ -23,11 +22,6 @@ public interface ScheduleService {
 
     ScheduleItems getCartItemSchedules(CartItems cartItems, boolean bought, Locale language);
 
-    double getTripPrice(LocalTime fromTime, LocalTime toTime);
-
-    double getTripPrice(LocalTime fromTime, LocalTime toTime, LocalDate fromDate);
-
-    // Travel history
     @Transactional
     default ScheduleItems getUserTravelHistory(String username, int pageNumber, int limit, Locale language) {
         return getUserTravelHistory(username, null, pageNumber, limit, language);
@@ -35,6 +29,6 @@ public interface ScheduleService {
 
     ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language);
 
-    int getUserTravelHistoryCount(String username);
+    Long getUserTravelHistoryCount(String username);
 
 }

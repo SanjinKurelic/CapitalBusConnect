@@ -2,24 +2,40 @@ package eu.sanjin.kurelic.cbc.business.viewmodel.cart;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CartItem implements Serializable {
 
-    private int scheduleId;
+    @NotNull(message = "ScheduleId is required.")
+    @Min(value = 1, message = "ScheduleId must be positive (not 0) number.")
+    private Integer scheduleId;
+    @NotNull(message = "Date is required.")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime date;
-    private int numberOfAdults;
-    private int numberOfChildren;
+    @NotNull(message = "NumberOfAdults is required.")
+    @Min(value = 1, message = "NumberOfAdults must be between 1-10.")
+    @Max(value = 10, message = "NumberOfAdults must be between 1-10.")
+    private Integer numberOfAdults;
+    @NotNull(message = "NumberOfChildren is required.")
+    @Min(value = 0, message = "NumberOfAdults must be between 0-10.")
+    @Max(value = 10, message = "NumberOfChildren must be between 0-10.")
+    private Integer numberOfChildren;
+    @NotNull(message = "TripType is required.")
     private TripTypeValues tripType;
 
     public CartItem() {
     }
 
-    public CartItem(int scheduleId, LocalDateTime date, int numberOfAdults, int numberOfChildren, TripTypeValues tripType) {
+    public CartItem(Integer scheduleId, LocalDateTime date, Integer numberOfAdults, Integer numberOfChildren,
+                    TripTypeValues tripType) {
         this.scheduleId = scheduleId;
         this.date = date;
         this.numberOfAdults = numberOfAdults;
@@ -27,11 +43,11 @@ public class CartItem implements Serializable {
         this.tripType = tripType;
     }
 
-    public int getScheduleId() {
+    public Integer getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(int scheduleId) {
+    public void setScheduleId(Integer scheduleId) {
         this.scheduleId = scheduleId;
     }
 
@@ -43,19 +59,19 @@ public class CartItem implements Serializable {
         this.date = date;
     }
 
-    public int getNumberOfAdults() {
+    public Integer getNumberOfAdults() {
         return numberOfAdults;
     }
 
-    public void setNumberOfAdults(int numberOfAdults) {
+    public void setNumberOfAdults(Integer numberOfAdults) {
         this.numberOfAdults = numberOfAdults;
     }
 
-    public int getNumberOfChildren() {
+    public Integer getNumberOfChildren() {
         return numberOfChildren;
     }
 
-    public void setNumberOfChildren(int numberOfChildren) {
+    public void setNumberOfChildren(Integer numberOfChildren) {
         this.numberOfChildren = numberOfChildren;
     }
 
@@ -70,9 +86,9 @@ public class CartItem implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (Objects.isNull(o) || getClass() != o.getClass()) return false;
         CartItem cartItem = (CartItem) o;
-        return scheduleId == cartItem.scheduleId &&
+        return Objects.equals(scheduleId, cartItem.scheduleId) &&
                 Objects.equals(date, cartItem.date) && tripType == cartItem.tripType;
     }
 

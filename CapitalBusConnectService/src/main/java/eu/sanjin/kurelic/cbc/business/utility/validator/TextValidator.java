@@ -2,6 +2,7 @@ package eu.sanjin.kurelic.cbc.business.utility.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Objects;
 
 public class TextValidator implements ConstraintValidator<Text, String> {
 
@@ -19,11 +20,11 @@ public class TextValidator implements ConstraintValidator<Text, String> {
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         // Validation
         // Use other validations for null
-        if(s == null || s.isBlank()) {
+        if (Objects.isNull(s) || s.isBlank()) {
             return true;
         }
-        for(int i = 0; i < s.length(); i++){
-            if(!Character.isLetter(s.charAt(i))){
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isLetter(s.charAt(i))) {
                 return false;
             }
         }

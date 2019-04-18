@@ -2,6 +2,7 @@ package eu.sanjin.kurelic.cbc.business.utility.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Objects;
 
 public class PasswordValidator implements ConstraintValidator<Password, String> {
 
@@ -23,30 +24,30 @@ public class PasswordValidator implements ConstraintValidator<Password, String> 
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         // Validation
         // Use other validations for null
-        if(s == null || s.isBlank()) {
+        if (Objects.isNull(s) || s.isBlank()) {
             return true;
         }
-        if(requireNumbers){
+        if (requireNumbers) {
             boolean hasNumber = false;
-            for(int i = 0; i < s.length(); i++) {
-                if(Character.isDigit(s.charAt(i))){
+            for (int i = 0; i < s.length(); i++) {
+                if (Character.isDigit(s.charAt(i))) {
                     hasNumber = true;
                 }
             }
-            if(!hasNumber) {
+            if (!hasNumber) {
                 return false;
             }
         }
         // Simple validation - for real situations use more complex one
-        if(requireSpecialCharacters) {
+        if (requireSpecialCharacters) {
             boolean hasSpecialCharacter = false;
-            for(int i = 0; i < s.length(); i++) {
-                if(!Character.isLetterOrDigit(s.charAt(i))){
+            for (int i = 0; i < s.length(); i++) {
+                if (!Character.isLetterOrDigit(s.charAt(i))) {
                     hasSpecialCharacter = true;
                 }
             }
             //noinspection RedundantIfStatement
-            if(!hasSpecialCharacter) {
+            if (!hasSpecialCharacter) {
                 return false;
             }
         }

@@ -5,9 +5,10 @@ import eu.sanjin.kurelic.cbc.business.utility.validator.Text;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class UserForm {
+public abstract class UserForm implements Serializable {
 
     @NotNull(message = "errorMessage.name.required.text")
     @Size(min = 2, message = "errorMessage.name.size.text")

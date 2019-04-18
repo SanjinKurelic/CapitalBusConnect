@@ -4,13 +4,15 @@ import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.*;
-import eu.sanjin.kurelic.cbc.repo.dao.*;
+import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleDao;
+import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
+import eu.sanjin.kurelic.cbc.repo.dao.TripPricesDao;
+import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +20,22 @@ import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-    private final TripHistoryDao historyDao;
     private final BusScheduleDao busScheduleDao;
     private final CityDescriptionDao cityDescriptionDao;
     private final TripPricesDao tripPricesDao;
     private final UserTravelHistoryDao userTravelHistoryDao;
 
     @Autowired
-    public ScheduleServiceImpl(@Qualifier("busScheduleDaoImpl") BusScheduleDao dao, @Qualifier("cityDescriptionDaoImpl") CityDescriptionDao cityDescriptionDao, @Qualifier("tripHistoryDaoImpl") TripHistoryDao historyDao, @Qualifier("tripPricesDaoImpl") TripPricesDao tripPricesDao, @Qualifier("userTravelHistoryDaoImpl") UserTravelHistoryDao userTravelHistoryDao) {
+    public ScheduleServiceImpl(BusScheduleDao dao, CityDescriptionDao cityDescriptionDao, TripPricesDao tripPricesDao
+            , UserTravelHistoryDao userTravelHistoryDao) {
         this.busScheduleDao = dao;
         this.cityDescriptionDao = cityDescriptionDao;
-        this.historyDao = historyDao;
         this.tripPricesDao = tripPricesDao;
         this.userTravelHistoryDao = userTravelHistoryDao;
     }
@@ -46,8 +45,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     public ScheduleItems getBusLineSchedules(Integer fromCityId, Integer toCityId, LocalDate date) {
         ScheduleItems items = new ScheduleItems();
         ScheduleBuilder sb = new ScheduleBuilder();
+        // Check
+        if (Objects.isNull(fromCityId) || Objects.isNull(toCityId) || Objects.isNull(date) || fromCityId < 1 || toCityId < 1) {
+            return items;
+        }
         sb.setButtonType(ScheduleButtonType.ADD_TO_CART);
-
+        // Logic
         var weekend = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
         List<BusSchedule> busSchedules = busScheduleDao.getBusLineSchedules(fromCityId, toCityId);
         for (BusSchedule busSchedule : busSchedules) {
@@ -64,13 +67,14 @@ public class ScheduleServiceImpl implements ScheduleService {
                 continue;
             }
             // Otherwise fill info
-            sb.setId(busSchedule.getId());
-            sb.setDate(LocalDateTime.of(date, busSchedule.getFromTime()));
-            sb.setFromTime(busSchedule.getFromTime());
-            sb.setToTime(busSchedule.getToTime());
-            sb.setPrice(getTripPrice(busSchedule.getFromTime(), busSchedule.getToTime()));
+            sb
+                    .setId(busSchedule.getId())
+                    .setDate(LocalDateTime.of(date, busSchedule.getFromTime()))
+                    .setFromTime(busSchedule.getFromTime())
+                    .setDuration(busSchedule.getDuration())
+                    .setPrice(tripPricesDao.getTripPrice(busSchedule.getDuration(), date).getPrice());
             // Trip type info
-            if (busSchedule.getBusLine().getCity1().getId() == fromCityId) {
+            if (busSchedule.getBusLine().getCity1().getId().equals(fromCityId)) {
                 sb.setTripType(TripTypeValues.A_TO_B);
             } else {
                 sb.setTripType(TripTypeValues.B_TO_A);
@@ -83,8 +87,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public ScheduleItems getBusLineSchedules(String fromCityName, String toCityName, LocalDate date, Locale language) {
-        var fromCity = cityDescriptionDao.getCityDescription(fromCityName, LocaleUtility.getLanguage(language));
-        var toCity = cityDescriptionDao.getCityDescription(toCityName, LocaleUtility.getLanguage(language));
+        // Check
+        if (Objects.isNull(fromCityName) || Objects.isNull(toCityName) || Objects.isNull(date) || Objects.isNull(language)) {
+            return new ScheduleItems();
+        }
+        if (fromCityName.isBlank() || toCityName.isBlank()) {
+            return new ScheduleItems();
+        }
+        // Logic
+        var fromCity = cityDescriptionDao.getCityDescription(fromCityName.trim(), LocaleUtility.getLanguage(language));
+        var toCity = cityDescriptionDao.getCityDescription(toCityName.trim(), LocaleUtility.getLanguage(language));
+        if (Objects.isNull(fromCity) || Objects.isNull(toCity)) {
+            return new ScheduleItems();
+        }
         return getBusLineSchedules(fromCity.getId().getId(), toCity.getId().getId(), date);
     }
 
@@ -92,82 +107,78 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public ScheduleItems getCartItemSchedules(CartItems cartItems, boolean bought, Locale language) {
         ScheduleItems scheduleItems = new ScheduleItems();
-
-        if (cartItems != null && cartItems.size() > 0) {
-            ScheduleBuilder sb = new ScheduleBuilder();
-            if(!bought) {
-                sb.setButtonType(ScheduleButtonType.REMOVE_FROM_CART).setOnUpdate(ScheduleUpdateType.UPDATE_CART);
-            } else {
-                sb.setButtonType(ScheduleButtonType.VIEW_TICKET);
-            }
-            // Database access optimization
-            ArrayList<Integer> ids = new ArrayList<>();
-            for (CartItem item : cartItems) {
-                ids.add(item.getScheduleId());
-            }
-            var schedules = getSchedules(ids);
-            var cities = getCities(schedules, language);
-            double basePrice, price;
-            // Fill list
-            for (CartItem cartItem : cartItems) {
-                // Calculate price
-                var schedule = schedules.get(cartItem.getScheduleId());
-                basePrice = getTripPrice(schedule.getFromTime(), schedule.getToTime());
-                price = cartItem.getNumberOfAdults() * basePrice + cartItem.getNumberOfChildren() * basePrice;
-                // Get correct city order
-                var city1 = cities.get(cartItem.getScheduleId()).getFirst();
-                var city2 = cities.get(cartItem.getScheduleId()).getSecond();
-                if(cartItem.getTripType() == TripTypeValues.B_TO_A) {
-                    var city = city1;
-                    city1 = city2;
-                    city2 = city;
-                }
-                // Build schedule item
-                sb
-                        .setId(cartItem.getScheduleId())
-                        .setDate(cartItem.getDate())
-                        .setNumberOfAdults(cartItem.getNumberOfAdults())
-                        .setNumberOfChildren(cartItem.getNumberOfChildren())
-                        .setFromPlace(city1)
-                        .setToPlace(city2)
-                        .setTripType(cartItem.getTripType())
-                        .setBasePrice(basePrice)
-                        .setPrice(price);
-                scheduleItems.add(sb.buildPlaceItem());
-            }
+        // Check
+        if (Objects.isNull(cartItems) || cartItems.isEmpty() || Objects.isNull(language)) {
+            return scheduleItems;
         }
+        // Logic
+        ScheduleBuilder sb = new ScheduleBuilder();
+        if (!bought) {
+            sb.setButtonType(ScheduleButtonType.REMOVE_FROM_CART).setOnUpdate(ScheduleUpdateType.UPDATE_CART);
+        } else {
+            sb.setButtonType(ScheduleButtonType.VIEW_TICKET);
+        }
+        // Database access optimization
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (CartItem item : cartItems) {
+            ids.add(item.getScheduleId());
+        }
+        var schedules = getSchedules(ids);
+        var cities = getCities(schedules, language);
+        // Usually if language is wrong
+        if (Objects.isNull(cities)) {
+            return scheduleItems;
+        }
+        double basePrice, price;
+        // Fill list
+        for (CartItem cartItem : cartItems) {
+            // Calculate price
+            var schedule = schedules.get(cartItem.getScheduleId());
+            basePrice = tripPricesDao.getTripPrice(schedule.getDuration()).getPrice();
+            price = cartItem.getNumberOfAdults() * basePrice + cartItem.getNumberOfChildren() * basePrice;
+            // Get correct city order
+            var city1 = cities.get(cartItem.getScheduleId()).getFirst();
+            var city2 = cities.get(cartItem.getScheduleId()).getSecond();
+            if (cartItem.getTripType() == TripTypeValues.B_TO_A) {
+                var city = city1;
+                city1 = city2;
+                city2 = city;
+            }
+            // Build schedule item
+            sb
+                    .setId(cartItem.getScheduleId())
+                    .setDate(cartItem.getDate())
+                    .setNumberOfAdults(cartItem.getNumberOfAdults())
+                    .setNumberOfChildren(cartItem.getNumberOfChildren())
+                    .setFromPlace(city1)
+                    .setToPlace(city2)
+                    .setTripType(cartItem.getTripType())
+                    .setBasePrice(basePrice)
+                    .setPrice(price);
+            scheduleItems.add(sb.buildPlaceItem());
+        }
+
         return scheduleItems;
     }
 
-    @Override
-    @Transactional
-    public double getTripPrice(LocalTime fromTime, LocalTime toTime) {
-        return getTripPrice(fromTime, toTime, LocalDate.now());
-    }
-
-    @Override
-    @Transactional
-    public double getTripPrice(LocalTime fromTime, LocalTime toTime, LocalDate fromDate) {
-        //TODO remove ABS function
-        int duration = (int) Math.abs(Math.ceil(ChronoUnit.MINUTES.between(fromTime, toTime) / 60.0));
-        return tripPricesDao.getTripPrice(duration, fromDate).getPrice();
-    }
-
-    // Travel history
     @Override
     @Transactional
     public ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language) {
         List<UserTravelHistory> travelItems;
         ScheduleItems items = new ScheduleItems();
         ScheduleBuilder sb = new ScheduleBuilder();
+        // Check
+        if (Objects.isNull(username) || username.isBlank() || Objects.isNull(language) || limit < 1) {
+            return items;
+        }
         // Page number
         pageNumber = (pageNumber - 1) * limit;
         if (pageNumber < 0) {
             return items;
         }
         sb.setButtonType(ScheduleButtonType.VIEW_TICKET);
-
-        if(date == null) {
+        // Logic
+        if (Objects.isNull(date)) {
             travelItems = userTravelHistoryDao.getUserTravelHistory(username, pageNumber, limit);
         } else {
             travelItems = userTravelHistoryDao.getUserTravelHistory(username, date, pageNumber, limit);
@@ -178,13 +189,17 @@ public class ScheduleServiceImpl implements ScheduleService {
             ids.add(travelItem.getTripHistory().getBusSchedule().getId());
         }
         var cities = getCities(ids, language);
+        // Wrong language
+        if (Objects.isNull(cities)) {
+            return items;
+        }
         // Build schedules
-        for(UserTravelHistory travelItem : travelItems) {
+        for (UserTravelHistory travelItem : travelItems) {
             var tripHistory = travelItem.getTripHistory();
             // Get correct city order
             var city1 = cities.get(tripHistory.getBusSchedule().getId()).getFirst();
             var city2 = cities.get(tripHistory.getBusSchedule().getId()).getSecond();
-            if(tripHistory.getTripType().getName().equals(TripTypeValues.B_TO_A.name())) {
+            if (tripHistory.getTripType().getName().equals(TripTypeValues.B_TO_A.name())) {
                 var city = city1;
                 city1 = city2;
                 city2 = city;
@@ -200,9 +215,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .setFromPlace(city1)
                     .setToPlace(city2);
             // Set button type - could be done with valueOf
-            if(travelItem.getPayingMethod().getName().equals(PayingMethodValues.PAY_PAL.name())) {
+            if (travelItem.getPayingMethod().getName().equals(PayingMethodValues.PAY_PAL.name())) {
                 sb.setPayingMethod(SchedulePayingMethod.PAY_PAL);
-            } else if(travelItem.getPayingMethod().getName().equals(PayingMethodValues.MONEY.name())) {
+            } else if (travelItem.getPayingMethod().getName().equals(PayingMethodValues.MONEY.name())) {
                 sb.setPayingMethod(SchedulePayingMethod.MONEY);
             }
             items.add(sb.buildPlaceItem());
@@ -213,7 +228,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public int getUserTravelHistoryCount(String username) {
+    public Long getUserTravelHistoryCount(String username) {
+        if (Objects.isNull(username) || username.isBlank()) {
+            return 0L;
+        }
         return userTravelHistoryDao.getUserTravelHistoryCount(username);
     }
 
@@ -226,7 +244,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         // Get City name for every schedule
         HashMap<Integer, Pair<String, String>> cities = new HashMap<>();
         for (Map.Entry<Integer, BusSchedule> busSchedule : busSchedules.entrySet()) {
-            cities.put(busSchedule.getKey(), getCityDescription(busSchedule.getValue(), language));
+            var descriptionPair = getCityDescription(busSchedule.getValue(), language);
+            if (Objects.isNull(descriptionPair)) {
+                return null;
+            }
+            cities.put(busSchedule.getKey(), descriptionPair);
         }
         return cities;
     }
@@ -234,6 +256,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     private Pair<String, String> getCityDescription(BusSchedule busSchedule, Locale language) {
         var city1 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(), LocaleUtility.getLanguage(language));
         var city2 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(), LocaleUtility.getLanguage(language));
+        if (Objects.isNull(city1) || Objects.isNull(city2)) {
+            return null;
+        }
         return Pair.of(city1.getTitle(), city2.getTitle());
     }
 

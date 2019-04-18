@@ -1,5 +1,8 @@
 package eu.sanjin.kurelic.cbc.business.services;
 
+import eu.sanjin.kurelic.cbc.business.exception.InvalidCartItemException;
+import eu.sanjin.kurelic.cbc.business.exception.InvalidSuppliedArgumentsException;
+import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
@@ -10,15 +13,16 @@ public interface CartService {
 
     boolean hasCartItem(CartItem cartItem);
 
-    boolean addCartItem(CartItem cartItem);
+    void addCartItem(CartItem cartItem) throws InvalidCartItemException;
 
-    boolean updateCartItem(CartItem cartItem);
+    void updateCartItem(CartItem cartItem) throws InvalidCartItemException;
 
-    boolean removeCartItem(CartItem cartItem);
+    void removeCartItem(CartItem cartItem) throws InvalidCartItemException;
 
-    boolean removeAllCartItems();
+    void removeAllCartItems();
 
-    boolean saveToDatabase(PayingMethodValues payingMethod, String username);
+    void saveToDatabase(PayingMethodValues payingMethod, String username) throws InvalidSuppliedArgumentsException,
+            InvalidUserException;
 
     CartItems getCartItems();
 

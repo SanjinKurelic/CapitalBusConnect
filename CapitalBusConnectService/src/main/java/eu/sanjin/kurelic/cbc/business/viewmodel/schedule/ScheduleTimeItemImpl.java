@@ -1,6 +1,3 @@
-/*
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
@@ -10,11 +7,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 class ScheduleTimeItemImpl implements ScheduleItem {
-    
+
+    private static final String DURATION_PATTERN = "%d:%02d";
     private final int scheduleId;
     private final LocalDateTime fromDate;
     private final LocalTime fromTime;
-    private final LocalTime toTime;
+    private final Duration duration;
     private final double price;
     private final double basePrice;
     private final int numberOfAdults;
@@ -25,11 +23,11 @@ class ScheduleTimeItemImpl implements ScheduleItem {
     private final TripTypeValues tripType;
     private boolean disabled;
 
-    ScheduleTimeItemImpl(ScheduleBuilder sb){
+    ScheduleTimeItemImpl(ScheduleBuilder sb) {
         scheduleId = sb.getId();
         fromDate = sb.getDate();
         fromTime = sb.getFromTime();
-        toTime = sb.getToTime();
+        duration = sb.getDuration();
         price = sb.getPrice();
         basePrice = sb.getBasePrice();
         numberOfAdults = sb.getNumberOfAdults();
@@ -40,7 +38,7 @@ class ScheduleTimeItemImpl implements ScheduleItem {
         tripType = sb.getTripType();
         disabled = sb.getDisabled();
     }
-    
+
     @Override
     public String getLeftTitle() {
         return fromTime.withNano(0).toString();
@@ -48,14 +46,13 @@ class ScheduleTimeItemImpl implements ScheduleItem {
 
     @Override
     public String getRightTitle() {
-        return toTime.withNano(0).toString();
+        return fromTime.plus(duration).withNano(0).toString();
     }
 
     // Not in Locale format for given hour, business decision :)
     @Override
     public String getDescription() {
-        Duration duration = Duration.between(fromTime, toTime);
-        return String.format("%d:%02d", duration.toHours(), duration.toMinutes() - 60 * duration.toHours());
+        return String.format(DURATION_PATTERN, duration.toHours(), duration.toMinutesPart());
     }
 
     @Override
@@ -75,7 +72,7 @@ class ScheduleTimeItemImpl implements ScheduleItem {
 
     @Override
     public double getBasePrice() {
-        if(basePrice == 0){
+        if (basePrice == 0) {
             return price;
         }
         return basePrice;

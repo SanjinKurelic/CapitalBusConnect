@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @Service
 public class StatisticServiceImpl implements StatisticService {
@@ -40,6 +41,11 @@ public class StatisticServiceImpl implements StatisticService {
     public InfoItems getTopUsersByTravels(int limit) {
         InfoItems items = new InfoItems();
         InfoItem item;
+        // Check
+        if (limit < 1) {
+            return items;
+        }
+        // Logic
         var usernameCounterTuples = userTravelHistoryDao.getTopUsersByTravels(limit);
         for (var usernameCounterTuple : usernameCounterTuples) {
             item = new InfoItem();
@@ -59,12 +65,22 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     @Transactional
     public InfoItems getTopBusLinesByTravelling(Locale language, int limit) {
+        // Check
+        if (Objects.isNull(language) || limit < 1) {
+            return new InfoItems();
+        }
+        // Logic
         return getBusLineStatisticsInfoItems(tripHistoryDao.getMostTraveledSchedules(limit), language);
     }
 
     @Override
     @Transactional
     public InfoItems getOverbookedBusLines(Locale language, int limit) {
+        // Check
+        if (Objects.isNull(language) || limit < 1) {
+            return new InfoItems();
+        }
+        // Logic
         return getBusLineStatisticsInfoItems(tripHistoryDao.getLastFilledTripHistory(limit), language);
     }
 
@@ -86,11 +102,14 @@ public class StatisticServiceImpl implements StatisticService {
         InfoItem item;
         Pair<String, String> cities;
         String lang = LocaleUtility.getLanguage(language);
-
         for (var data : dataList) {
             item = new InfoItem();
             // get city title
             cities = getCityDescription(((TripHistory) data.get(TUPLE_FIRST_ITEM)), lang);
+            // if something went wrong exit & returned already filled items (if any is filled)
+            if (Objects.isNull(cities)) {
+                return items;
+            }
             // fill info item
             item.addColumn(new InfoItemTextColumn(cities.getFirst()));
             item.addColumn(new InfoItemIconColumn(InfoItemIconType.ARROW_ICON));
@@ -106,6 +125,10 @@ public class StatisticServiceImpl implements StatisticService {
     private Pair<String, String> getCityDescription(TripHistory tripHistory, String language) {
         var city1 = cityDescriptionDao.getCityDescription(tripHistory.getBusSchedule().getBusLine().getCity1().getId(), language);
         var city2 = cityDescriptionDao.getCityDescription(tripHistory.getBusSchedule().getBusLine().getCity2().getId(), language);
+        // if language is wrong
+        if (Objects.isNull(city1) || Objects.isNull(city2)) {
+            return null;
+        }
         if (tripHistory.getTripType().getName().equals(TripTypeValues.B_TO_A.name())) {
             return Pair.of(city2.getTitle(), city1.getTitle());
         }

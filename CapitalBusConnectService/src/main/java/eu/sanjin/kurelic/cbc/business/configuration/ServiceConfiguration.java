@@ -1,10 +1,9 @@
 package eu.sanjin.kurelic.cbc.business.configuration;
 
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
-import org.springframework.context.annotation.*;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 //@EnableLoadTimeWeaving(aspectjWeaving = EnableLoadTimeWeaving.AspectJWeaving.ENABLED)

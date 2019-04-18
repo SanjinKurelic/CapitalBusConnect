@@ -1,11 +1,8 @@
-/*
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
-
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -15,7 +12,7 @@ public class ScheduleBuilder {
     private String fromPlace;
     private String toPlace;
     private LocalTime fromTime;
-    private LocalTime toTime;
+    private Duration duration;
     private LocalDateTime date;
     private double price;
     private double basePrice;
@@ -32,7 +29,7 @@ public class ScheduleBuilder {
         fromPlace = "";
         toPlace = "";
         fromTime = null;
-        toTime = null;
+        duration = null;
         date = null;
         price = 0;
         basePrice = 0;
@@ -61,8 +58,8 @@ public class ScheduleBuilder {
         return fromTime;
     }
 
-    LocalTime getToTime() {
-        return toTime;
+    Duration getDuration() {
+        return duration;
     }
 
     LocalDateTime getDate() {
@@ -125,8 +122,8 @@ public class ScheduleBuilder {
         return this;
     }
 
-    public ScheduleBuilder setToTime(LocalTime toTime) {
-        this.toTime = toTime;
+    public ScheduleBuilder setDuration(Duration duration) {
+        this.duration = duration;
         return this;
     }
 

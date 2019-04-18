@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * This service does not use the database, instead it use hardcoded values.
@@ -31,15 +32,23 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
 
     @Override
     @Transactional
-    public PromotionItems getPromotionItems(CityDescription fromCity, Locale locale) {
+    public PromotionItems getPromotionItems(String fromCityTitle, Locale locale) {
         PromotionItems items = new PromotionItems();
         PromotionItem item;
-
+        // Check
+        if (Objects.isNull(fromCityTitle) || Objects.isNull(locale)) {
+            return items;
+        }
+        // DEBUG: As we hardcoded promotion items and city, this check is required
+        if (!fromCityTitle.equals(DEFAULT_CITY)) {
+            return items;
+        }
+        // Logic
         String language = LocaleUtility.getLanguage(locale);
         List<CityDescription> cities = cityDescriptionDao.getCityDescriptions(language, PROMOTION_ITEMS);
-        for(CityDescription city : cities) {
+        for (CityDescription city : cities) {
             item = new PromotionItem();
-            item.setFromCity(fromCity.getTitle());
+            item.setFromCity(fromCityTitle);
             item.setToCity(city.getTitle());
             item.setImageUrl(city.getCity().getImageName());
             items.add(item);
@@ -47,17 +56,15 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
         return items;
     }
 
-    /*@Override
-    @Transactional
-    public PromotionItems getPromotionItems(CityDescription fromCity) {
-        return getPromotionItems(fromCity, Locale.forLanguageTag(fromCity.getId().getLanguage()));
-    }*/
-
     @Override
     @Transactional
     public PromotionItems getPromotionItems(Locale locale) {
-        var fromCity = cityDescriptionDao.getCityDescription(DEFAULT_CITY, LocaleUtility.getLanguage(locale));
-        return getPromotionItems(fromCity, locale);
+        // Check
+        if (Objects.isNull(locale)) {
+            return new PromotionItems();
+        }
+        // Logic
+        return getPromotionItems(DEFAULT_CITY, locale);
     }
 
 }

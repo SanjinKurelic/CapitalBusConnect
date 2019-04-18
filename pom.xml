@@ -24,6 +24,7 @@
         <cbc.version.log4j>1.7.25</cbc.version.log4j>
         <cbc.version.jstl>1.2</cbc.version.jstl>
         <cbc.version.servlet>4.0.1</cbc.version.servlet>
+        <cbc.version.el>3.0.1-b06</cbc.version.el>
         <cbc.version.jsp>2.3.3</cbc.version.jsp>
         <cbc.version.spring>5.1.3.RELEASE</cbc.version.spring>
         <cbc.version.springdata>2.1.5.RELEASE</cbc.version.springdata>
@@ -43,7 +44,7 @@
     </properties>
 
     <dependencies>
-        <!-- Servlet, JSP, JSTL -->
+        <!-- Servlet, JSP, JSTL, EL -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -60,6 +61,11 @@
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>${cbc.version.jsp}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>${cbc.version.el}</version>
         </dependency>
 
         <!-- Spring -->
@@ -115,13 +121,14 @@
             <artifactId>validation-api</artifactId>
             <version>${cbc.version.validation}</version>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${cbc.version.validator}</version>
         </dependency>
 
-        <!-- AOP, annotations and validator -->
+        <!-- AOP and annotations -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>

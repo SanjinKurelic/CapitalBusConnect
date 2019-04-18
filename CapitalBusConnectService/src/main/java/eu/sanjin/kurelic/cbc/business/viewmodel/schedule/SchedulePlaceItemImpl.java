@@ -1,7 +1,3 @@
-/*
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
-
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
@@ -23,8 +19,8 @@ public class SchedulePlaceItemImpl implements ScheduleItem {
     private final SchedulePayingMethod payingMethod;
     private final TripTypeValues tripType;
     private boolean disabled;
-    
-    SchedulePlaceItemImpl(ScheduleBuilder sb){
+
+    SchedulePlaceItemImpl(ScheduleBuilder sb) {
         id = sb.getId();
         fromPlace = sb.getFromPlace();
         toPlace = sb.getToPlace();
@@ -49,7 +45,7 @@ public class SchedulePlaceItemImpl implements ScheduleItem {
     public String getLeftTitle() {
         return fromPlace;
     }
-    
+
     @Override
     public String getRightTitle() {
         return toPlace;
@@ -77,7 +73,7 @@ public class SchedulePlaceItemImpl implements ScheduleItem {
 
     @Override
     public double getBasePrice() {
-        if(basePrice == 0){
+        if (basePrice == 0) {
             return price;
         }
         return basePrice;

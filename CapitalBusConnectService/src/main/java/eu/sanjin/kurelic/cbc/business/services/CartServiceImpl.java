@@ -1,5 +1,8 @@
 package eu.sanjin.kurelic.cbc.business.services;
 
+import eu.sanjin.kurelic.cbc.business.exception.InvalidCartItemException;
+import eu.sanjin.kurelic.cbc.business.exception.InvalidSuppliedArgumentsException;
+import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.repo.dao.*;
@@ -7,12 +10,14 @@ import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.temporal.ChronoUnit;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import java.util.Objects;
+import java.util.Set;
 
 @Service
 @Scope("singleton")
@@ -25,14 +30,18 @@ public class CartServiceImpl implements CartService {
     private final TripPricesDao tripPricesDao;
     private final UserTravelHistoryDao userTravelHistoryDao;
     private final PayingMethodDao payingMethodDao;
+    private final UserService userService;
 
-    public CartServiceImpl(@Qualifier("busScheduleDaoImpl") BusScheduleDao busScheduleDao, @Qualifier("tripHistoryDaoImpl") TripHistoryDao tripHistoryDao, @Qualifier("tripTypeDaoImpl") TripTypeDao tripTypeDao, @Qualifier("tripPricesDaoImpl") TripPricesDao tripPricesDao, @Qualifier("userTravelHistoryDaoImpl") UserTravelHistoryDao userTravelHistoryDao, @Qualifier("payingMethodDaoImpl") PayingMethodDao payingMethodDao) {
+    public CartServiceImpl(BusScheduleDao busScheduleDao, TripHistoryDao tripHistoryDao, TripTypeDao tripTypeDao,
+                           TripPricesDao tripPricesDao, UserTravelHistoryDao userTravelHistoryDao,
+                           PayingMethodDao payingMethodDao, UserService userService) {
         this.busScheduleDao = busScheduleDao;
         this.tripHistoryDao = tripHistoryDao;
         this.tripTypeDao = tripTypeDao;
         this.tripPricesDao = tripPricesDao;
         this.userTravelHistoryDao = userTravelHistoryDao;
         this.payingMethodDao = payingMethodDao;
+        this.userService = userService;
     }
 
     @Override
@@ -42,70 +51,90 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean hasCartItem(CartItem cartItem) {
+        if (Objects.isNull(cartItem)) {
+            return false;
+        }
         return items.contains(cartItem);
     }
 
     @Override
-    public boolean addCartItem(CartItem cartItem) {
+    public void addCartItem(CartItem cartItem) throws InvalidCartItemException {
+        // Check
+        checkCartItem(cartItem);
+        if (hasCartItem(cartItem)) {
+            throw new InvalidCartItemException();
+        }
+        // Logic
+        items.add(cartItem);
+    }
+
+    @Override
+    public void updateCartItem(CartItem cartItem) throws InvalidCartItemException {
+        // Check
+        checkCartItem(cartItem);
         if (!hasCartItem(cartItem)) {
-            return items.add(cartItem);
+            throw new InvalidCartItemException();
         }
-        return false;
+        // Logic
+        items.set(items.indexOf(cartItem), cartItem);
     }
 
     @Override
-    public boolean updateCartItem(CartItem cartItem) {
-        try {
-            items.set(items.indexOf(cartItem), cartItem);
-            return true;
-        } catch (Exception e) {
-            return false;
+    public void removeCartItem(CartItem cartItem) throws InvalidCartItemException {
+        // Check
+        checkCartItem(cartItem);
+        if (!hasCartItem(cartItem)) {
+            throw new InvalidCartItemException();
         }
+        // Logic
+        items.remove(cartItem);
     }
 
     @Override
-    public boolean removeCartItem(CartItem cartItem) {
-        return items.remove(cartItem);
-    }
-
-    @Override
-    public boolean removeAllCartItems() {
+    public void removeAllCartItems() {
         items.clear();
-        return true;
     }
 
     @Override
     @Transactional
-    public boolean saveToDatabase(PayingMethodValues payingMethod, String username) {
+    public void saveToDatabase(PayingMethodValues payingMethod, String username) throws InvalidSuppliedArgumentsException, InvalidUserException {
         UserTravelHistory travelHistory;
         BusSchedule scheduleItem;
-        int duration;
-
+        // Check
+        if (Objects.isNull(payingMethod) || Objects.isNull(username)) {
+            throw new InvalidSuppliedArgumentsException();
+        }
+        // Check if user is somehow invalid
+        if (!userService.hasUser(username)) {
+            throw new InvalidUserException();
+        }
         for (CartItem item : items) {
             travelHistory = new UserTravelHistory();
             scheduleItem = busScheduleDao.getSchedule(item.getScheduleId());
-
+            // Fill info
             travelHistory.setUsername(username);
             travelHistory.setNumberOfAdults(item.getNumberOfAdults());
             travelHistory.setNumberOfChildren(item.getNumberOfChildren());
             travelHistory.setPayingMethod(payingMethodDao.getPayingMethodByName(payingMethod));
-            //TODO remove ABS function
-            duration = (int) Math.abs(Math.ceil(ChronoUnit.MINUTES.between(scheduleItem.getFromTime(), scheduleItem.getToTime()) / 60.0));
-            travelHistory.setPrice(tripPricesDao.getTripPrice(duration).getPrice());
+            travelHistory.setPrice(tripPricesDao.getTripPrice(scheduleItem.getDuration()).getPrice());
             travelHistory.setTripHistory(getTripHistory(item, scheduleItem));
             // Store user travel history
-            if (!userTravelHistoryDao.addUserTravelHistory(travelHistory)) {
-                return false;
-            }
+            userTravelHistoryDao.addUserTravelHistory(travelHistory);
         }
-        return true;
     }
 
+    @Override
+    public CartItems getCartItems() {
+        return items;
+    }
+
+    // Utility
     private TripHistory getTripHistory(CartItem item, BusSchedule scheduleItem) {
         TripHistory tripHistory;
-        int id = tripHistoryDao.hasTripHistory(scheduleItem, item.getDate().toLocalDate(), tripTypeDao.getTripType(item.getTripType()));
-        int numberOfSeats = 0;
-        if (id != 0) {
+        Integer id = tripHistoryDao.getTripHistoryIdOrNull(scheduleItem, item.getDate().toLocalDate(),
+                tripTypeDao.getTripType(item.getTripType()));
+        int numberOfSeats;
+        if (!Objects.isNull(id)) {
             tripHistory = tripHistoryDao.getTripHistory(id);
             numberOfSeats = tripHistory.getNumberOfSeats();
         } else {
@@ -115,13 +144,21 @@ public class CartServiceImpl implements CartService {
             tripHistory.setBusSchedule(scheduleItem);
             numberOfSeats = scheduleItem.getBusType().getNumberOfSeats();
         }
-        tripHistory.setNumberOfSeats(numberOfSeats  - (item.getNumberOfAdults() + item.getNumberOfChildren()));
+        tripHistory.setNumberOfSeats(numberOfSeats - (item.getNumberOfAdults() + item.getNumberOfChildren()));
         tripHistoryDao.addOrUpdateTripHistory(tripHistory);
         return tripHistory;
     }
 
-    @Override
-    public CartItems getCartItems() {
-        return items;
+    private void checkCartItem(CartItem item) throws InvalidCartItemException {
+        if (Objects.isNull(item)) {
+            throw new InvalidCartItemException();
+        }
+        var validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<CartItem>> violations = validator.validate(item);
+
+        if (!violations.isEmpty()) {
+            throw new InvalidCartItemException(violations);
+        }
     }
+
 }

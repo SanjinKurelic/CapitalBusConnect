@@ -16,13 +16,10 @@ public @interface Password {
 
     boolean requireSpecialCharacters() default false;
 
-    // Error message
     String message() default "Password is not valid.";
 
-    // default groups
     Class<?>[] groups() default {};
 
-    // default playloads
     Class<? extends Payload>[] payload() default {};
 
 }

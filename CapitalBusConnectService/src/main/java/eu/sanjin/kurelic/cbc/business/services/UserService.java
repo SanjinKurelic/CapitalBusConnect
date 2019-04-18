@@ -1,14 +1,14 @@
 package eu.sanjin.kurelic.cbc.business.services;
 
-import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
+import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
+import eu.sanjin.kurelic.cbc.business.exception.InvalidUserFormItemException;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
-import eu.sanjin.kurelic.cbc.repo.entity.UserLoginHistory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
+import java.util.Objects;
 
 @Service
 public interface UserService {
@@ -17,48 +17,22 @@ public interface UserService {
 
     User getUser(String username);
 
-    boolean addUser(UserForm user);
+    void addUser(UserForm user) throws InvalidUserException, InvalidUserFormItemException;
 
-    boolean updateUser(UserForm user);
+    void updateUser(UserForm user) throws InvalidUserException, InvalidUserFormItemException;
 
-    @Transactional
-    default boolean removeUser(UserForm user){
-        return removeUser(user.getEmail());
-    }
-
-    boolean removeUser(String username);
+    //void removeUser(String username | UserForm user) throws Exception;
 
     @Transactional
     default boolean hasUser(UserForm user) {
+        if (Objects.isNull(user)) {
+            return false;
+        }
         return hasUser(user.getEmail());
     }
 
     boolean hasUser(String username);
 
     String[] searchUserByName(String partialName, int numberOfSearchResults);
-
-    // Login history
-    boolean addUserLoginHistory(UserLoginHistory userLoginHistory);
-
-    InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit);
-
-    @Transactional
-    default InfoItems getUserLoginHistory(String username, int pageNumber, int limit) {
-        return getUserLoginHistory(username, null, pageNumber, limit);
-    }
-
-    InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit);
-
-    @Transactional
-    default InfoItems getAllLoginHistory(int pageNumber, int limit) {
-        return getAllLoginHistory(null, pageNumber, limit);
-    }
-
-    int getAllLoginHistoryCount();
-
-    int getUserLoginHistoryCount(String username);
-
-    // Utility
-    User convertUserFormToUser(UserForm userForm);
 
 }

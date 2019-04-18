@@ -8,14 +8,10 @@ import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusLine;
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 public class CityInfoServiceImpl implements CityInfoService {
@@ -24,7 +20,7 @@ public class CityInfoServiceImpl implements CityInfoService {
     private final BusLineDao busLineDao;
 
     @Autowired
-    public CityInfoServiceImpl(@Qualifier("cityDescriptionDaoImpl") CityDescriptionDao destinationDao, @Qualifier("busLineDaoImpl") BusLineDao busLineDao) {
+    public CityInfoServiceImpl(CityDescriptionDao destinationDao, BusLineDao busLineDao) {
         this.destinationDao = destinationDao;
         this.busLineDao = busLineDao;
     }
@@ -32,6 +28,11 @@ public class CityInfoServiceImpl implements CityInfoService {
     @Override
     @Transactional
     public CityInfoItem getCityItem(String cityName, Locale language) {
+        // Check
+        if (Objects.isNull(cityName) || cityName.isBlank() || Objects.isNull(language)) {
+            return null;
+        }
+        // Logic
         var city = destinationDao.getCityDescription(cityName, LocaleUtility.getLanguage(language));
         return convertEntityToViewModel(city);
     }
@@ -39,9 +40,11 @@ public class CityInfoServiceImpl implements CityInfoService {
     @Override
     @Transactional
     public String[] searchByCityName(String partialName, int numberOfSearchResults, Locale language) {
-        if (partialName.isBlank()) {
+        // Check
+        if (Objects.isNull(partialName) || partialName.isBlank() || Objects.isNull(language) || numberOfSearchResults < 1) {
             return new String[0];
         }
+        // Logic
         ArrayList<String> result = new ArrayList<>();
         var cities = destinationDao.searchCityDescription(partialName, numberOfSearchResults, LocaleUtility.getLanguage(language));
         for (CityDescription city : cities) {
@@ -55,12 +58,16 @@ public class CityInfoServiceImpl implements CityInfoService {
     public InfoItems getCityLines(int pageNumber, int limit, Locale language) {
         InfoItems items = new InfoItems();
         InfoItem item;
+        // Check
+        if (Objects.isNull(language) || limit < 0) {
+            return items;
+        }
         // Page number
         pageNumber = (pageNumber - 1) * limit;
         if (pageNumber < 0) {
             return items;
         }
-        // Get all lines
+        // Logic
         var lines = busLineDao.getCityLines(pageNumber, limit);
         // Database optimization
         HashSet<Integer> ids = new HashSet<>();
@@ -69,13 +76,16 @@ public class CityInfoServiceImpl implements CityInfoService {
             ids.add(line.getCity2().getId());
         }
         var cityDescriptions = destinationDao.getCityDescriptions(LocaleUtility.getLanguage(language), ids.toArray(Integer[]::new));
+        // Wrong language
+        if (cityDescriptions.isEmpty()) {
+            return items;
+        }
         for (BusLine line : lines) {
             item = new InfoItem();
             item.addColumn(new InfoItemTextColumn(getCityDesc(cityDescriptions, line.getCity1().getId())));
             item.addColumn(new InfoItemIconColumn(InfoItemIconType.ARROW_ICON));
             item.addColumn(new InfoItemTextColumn(getCityDesc(cityDescriptions, line.getCity2().getId())));
-            item.addColumn(new InfoItemButtonColumn(InfoItemButtonType.EDIT_ROUTE, ""));
-
+            item.addColumn(new InfoItemButtonColumn(InfoItemButtonType.EDIT_ROUTE, line.getId().toString()));
             items.add(item);
         }
         return items;
@@ -83,18 +93,21 @@ public class CityInfoServiceImpl implements CityInfoService {
 
     @Override
     @Transactional
-    public int getNumberOfCityLines() {
+    public Long getNumberOfCityLines() {
         return busLineDao.getNumberOfCityLines();
     }
 
     // Utility
     private CityInfoItem convertEntityToViewModel(CityDescription city) {
+        // Check
+        if (Objects.isNull(city)) {
+            return null;
+        }
+        // Logic
         CityInfoItem item = new CityInfoItem();
-
         item.setName(city.getTitle());
         item.setDescription(city.getDescription());
         item.setImageName(city.getCity().getImageName());
-
         return item;
     }
 

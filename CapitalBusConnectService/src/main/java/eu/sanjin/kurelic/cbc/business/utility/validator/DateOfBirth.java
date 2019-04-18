@@ -16,13 +16,10 @@ public @interface DateOfBirth {
 
     int youngestPerson() default 18;
 
-    // Error message
     String message() default "Date of Birth is not valid.";
 
-    // default groups
     Class<?>[] groups() default {};
 
-    // default playloads
     Class<? extends Payload>[] payload() default {};
 
 }
