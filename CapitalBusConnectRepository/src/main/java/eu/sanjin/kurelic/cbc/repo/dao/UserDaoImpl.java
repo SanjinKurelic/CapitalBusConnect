@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -27,7 +28,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean hasUserInformation(User user) {
-        if (user == null) {
+        if (Objects.isNull(user)) {
             return false;
         }
         return entityManager.unwrap(Session.class).contains(user);

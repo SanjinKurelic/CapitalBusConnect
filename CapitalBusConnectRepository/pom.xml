@@ -12,11 +12,15 @@
     <artifactId>CapitalBusConnectRepository</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <cbc.version.p6spy>3.8.2</cbc.version.p6spy>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
-            <version>3.8.2</version>
+            <version>${cbc.version.p6spy}</version>
         </dependency>
     </dependencies>
 

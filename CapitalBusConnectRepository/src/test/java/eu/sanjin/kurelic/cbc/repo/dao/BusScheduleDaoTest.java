@@ -20,33 +20,33 @@ class BusScheduleDaoTest {
     private BusScheduleDao dao;
 
     @Test
-    void getScheduleInvalid() {
-        Assertions.assertNull(dao.getSchedule(TestConstant.INVALID_ID));
+    void getScheduleWrongId() {
+        Assertions.assertNull(dao.getSchedule(TestConstant.ID_INVALID));
     }
 
     @Test
-    void getScheduleValid() {
-        Assertions.assertNotNull(dao.getSchedule(TestConstant.VALID_ID));
+    void getSchedule() {
+        Assertions.assertNotNull(dao.getSchedule(TestConstant.ID_VALID));
     }
 
     @Test
-    void getSchedulesNull() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getSchedules().size());
+    void getSchedulesWrongIdNull() {
+        Assertions.assertTrue(dao.getSchedules(TestConstant.IDS_NULL).isEmpty());
     }
 
     @Test
-    void getSchedulesEmpty() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getSchedules((new Integer[0])).size());
+    void getSchedulesWrongIdEmpty() {
+        Assertions.assertTrue(dao.getSchedules(TestConstant.IDS_EMPTY).isEmpty());
     }
 
     @Test
-    void getSchedulesValid() {
-        Assertions.assertEquals(TestConstant.VALID_LIST_ID_COUNT, dao.getSchedules(TestConstant.VALID_LIST_ID).size());
+    void getSchedules() {
+        Assertions.assertEquals(TestConstant.IDS_VALID_COUNT, dao.getSchedules(TestConstant.IDS_VALID).size());
     }
 
     @Test
-    void getBusLineSchedulesValidIds() {
-        var result = dao.getBusLineSchedules(TestConstant.VALID_ID, TestConstant.VALID_NEXT_ID);
+    void getBusLineSchedules() {
+        var result = dao.getBusLineSchedules(TestConstant.ID_VALID, TestConstant.ID_VALID_NEXT);
         // If we have multiple results in database, every one of them has to point on same BusLine id
         if (result.size() > 1) {
             int firstId = result.get(0).getBusLine().getId();
@@ -57,12 +57,12 @@ class BusScheduleDaoTest {
     }
 
     @Test
-    void getBusLineSchedulesInvalidFirstId() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getBusLineSchedules(TestConstant.INVALID_ID, TestConstant.VALID_ID).size());
+    void getBusLineSchedulesWrongFirstId() {
+        Assertions.assertTrue(dao.getBusLineSchedules(TestConstant.ID_INVALID, TestConstant.ID_VALID).isEmpty());
     }
 
     @Test
-    void getBusLineSchedulesInvalidSecondId() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getBusLineSchedules(TestConstant.VALID_ID, TestConstant.INVALID_ID).size());
+    void getBusLineSchedulesWrongSecondId() {
+        Assertions.assertTrue(dao.getBusLineSchedules(TestConstant.ID_VALID, TestConstant.ID_INVALID).isEmpty());
     }
 }

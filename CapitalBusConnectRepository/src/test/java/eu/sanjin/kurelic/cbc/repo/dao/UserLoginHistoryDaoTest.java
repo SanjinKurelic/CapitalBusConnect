@@ -20,78 +20,119 @@ class UserLoginHistoryDaoTest {
     private UserLoginHistoryDao dao;
 
     @Test
-    void getUserLoginHistoryValidUser() {
-        Assertions.assertNotNull(dao.getUserLoginHistory(TestConstant.VALID_USERNAME, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT));
+    void getUserLoginHistory() {
+        Assertions.assertNotNull(dao.getUserLoginHistory(
+                TestConstant.USERNAME_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ));
     }
 
     @Test
-    void getUserLoginHistoryInvalidUser() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserLoginHistory(TestConstant.INVALID_USERNAME, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).size());
+    void getUserLoginHistoryWrongUser() {
+        Assertions.assertTrue(dao.getUserLoginHistory(
+                TestConstant.USERNAME_INVALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
-    void getUserLoginHistoryByDateValid() {
+    void getUserLoginHistoryWrongUserNull() {
+        Assertions.assertTrue(dao.getUserLoginHistory(
+                TestConstant.USERNAME_NULL,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
+    }
+
+    @Test
+    void getUserLoginHistoryByDate() {
         Assertions.assertFalse(dao.getUserLoginHistory(
-                TestConstant.VALID_USERNAME,
-                TestConstant.VALID_DATE_LOGIN,
-                TestConstant.VALID_OFFSET,
-                TestConstant.VALID_LIMIT
+                TestConstant.USERNAME_VALID,
+                TestConstant.DATE_LOGIN_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
         ).isEmpty());
     }
 
     @Test
     void getUserLoginHistoryByDateWrongDate() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserLoginHistory(
-                TestConstant.VALID_USERNAME,
-                TestConstant.INVALID_DATE,
-                TestConstant.VALID_OFFSET,
-                TestConstant.VALID_LIMIT
-        ).size());
+        Assertions.assertTrue(dao.getUserLoginHistory(
+                TestConstant.USERNAME_VALID,
+                TestConstant.DATE_INVALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
+    }
+
+    @Test
+    void getUserLoginHistoryByDateWrongUsernameNull() {
+        Assertions.assertTrue(dao.getUserLoginHistory(
+                TestConstant.USERNAME_NULL,
+                TestConstant.DATE_LOGIN_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
     void getUserLoginHistoryByDateWrongUsername() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserLoginHistory(
-                TestConstant.INVALID_USERNAME,
-                TestConstant.VALID_DATE_LOGIN,
-                TestConstant.VALID_OFFSET,
-                TestConstant.VALID_LIMIT
-        ).size());
+        Assertions.assertTrue(dao.getUserLoginHistory(
+                TestConstant.USERNAME_INVALID,
+                TestConstant.DATE_LOGIN_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
-    void getAllLoginHistoryValid() {
-        Assertions.assertNotNull(dao.getAllLoginHistory(TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT));
+    void getAllLoginHistory() {
+        Assertions.assertNotNull(dao.getAllLoginHistory(TestConstant.OFFSET_VALID, TestConstant.LIMIT_VALID));
     }
 
     @Test
     void getAllLoginHistoryWrongOffset() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getAllLoginHistory(TestConstant.INVALID_OFFSET, TestConstant.VALID_LIMIT));
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getAllLoginHistory(TestConstant.OFFSET_INVALID, TestConstant.LIMIT_VALID)
+        );
     }
 
     @Test
     void getAllLoginHistoryWrongLimit() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getAllLoginHistory(TestConstant.VALID_OFFSET, TestConstant.INVALID_LIMIT));
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getAllLoginHistory(TestConstant.OFFSET_VALID, TestConstant.LIMIT_INVALID)
+        );
     }
 
     @Test
-    void getAllLoginHistoryByDateValid() {
-        Assertions.assertFalse(dao.getAllLoginHistory(TestConstant.VALID_DATE_LOGIN, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).isEmpty());
+    void getAllLoginHistoryByDate() {
+        Assertions.assertFalse(dao.getAllLoginHistory(
+                TestConstant.DATE_LOGIN_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
-    void getAllLoginHistoryByDateInvalid() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getAllLoginHistory(TestConstant.INVALID_DATE, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).size());
+    void getAllLoginHistoryByDateWrongDate() {
+        Assertions.assertTrue(dao.getAllLoginHistory(
+                TestConstant.DATE_INVALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
-    void getUserLoginHistoryCountValidUser() {
-        Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.VALID_USERNAME));
+    void getUserLoginHistoryCount() {
+        Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.USERNAME_VALID));
     }
 
     @Test
-    void getUserLoginHistoryCountInvalidUser() {
-        Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.INVALID_USERNAME));
+    void getUserLoginHistoryCountWrongUser() {
+        Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.USERNAME_INVALID));
     }
 
     @Test

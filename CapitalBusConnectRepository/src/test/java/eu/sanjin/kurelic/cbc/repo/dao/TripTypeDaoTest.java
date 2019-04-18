@@ -1,7 +1,7 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.dao.utility.TestConstant;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,12 @@ class TripTypeDaoTest {
     private TripTypeDao dao;
 
     @Test
+    void getTripTypeWrongType() {
+        Assertions.assertThrows(NullPointerException.class, () -> dao.getTripType(TestConstant.TRIP_TYPE_NULL));
+    }
+
+    @Test
     void getTripType() {
-        Assertions.assertNotNull(dao.getTripType(TripTypeValues.A_TO_B));
+        Assertions.assertNotNull(dao.getTripType(TestConstant.TRIP_TYPE));
     }
 }

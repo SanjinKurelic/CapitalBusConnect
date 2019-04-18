@@ -20,78 +20,134 @@ class UserTravelHistoryDaoTest {
     private UserTravelHistoryDao dao;
 
     @Test
-    void getUserTravelHistoryByIdInvalid() {
-        Assertions.assertNull(dao.getUserTravelHistoryById(TestConstant.INVALID_ID));
+    void getUserTravelHistoryByIdWrongId() {
+        Assertions.assertNull(dao.getUserTravelHistoryById(TestConstant.ID_INVALID));
     }
 
     @Test
-    void getUserTravelHistoryByIdValid() {
-        Assertions.assertNotNull(dao.getUserTravelHistoryById(TestConstant.VALID_ID));
+    void getUserTravelHistoryById() {
+        Assertions.assertNotNull(dao.getUserTravelHistoryById(TestConstant.ID_VALID));
     }
 
     @Test
     void getUserTravelHistoryByIdsNull() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserTravelHistoryByIds().size());
+        Assertions.assertTrue(dao.getUserTravelHistoryByIds(TestConstant.IDS_NULL).isEmpty());
     }
 
     @Test
     void getUserTravelHistoryByIdsEmpty() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserTravelHistoryByIds(new Integer[0]).size());
+        Assertions.assertTrue(dao.getUserTravelHistoryByIds(TestConstant.IDS_EMPTY).isEmpty());
     }
 
     @Test
-    void getUserTravelHistoryByIdsValid() {
-        Assertions.assertEquals(TestConstant.VALID_LIST_ID_COUNT, dao.getUserTravelHistoryByIds(TestConstant.VALID_LIST_ID).size());
+    void getUserTravelHistoryByIds() {
+        Assertions.assertEquals(
+                TestConstant.IDS_VALID_COUNT,
+                dao.getUserTravelHistoryByIds(TestConstant.IDS_VALID).size()
+        );
     }
 
     @Test
-    void getUserTravelHistoryValid() {
-        Assertions.assertFalse(dao.getUserTravelHistory(TestConstant.VALID_USERNAME, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).isEmpty());
+    void getUserTravelHistory() {
+        Assertions.assertFalse(dao.getUserTravelHistory(
+                TestConstant.USERNAME_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
     void getUserTravelHistoryWrongUsername() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserTravelHistory(TestConstant.INVALID_USERNAME, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).size());
+        Assertions.assertTrue(dao.getUserTravelHistory(
+                TestConstant.USERNAME_INVALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
     void getUserTravelHistoryWrongOffset() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getUserTravelHistory(TestConstant.VALID_USERNAME, TestConstant.INVALID_OFFSET, TestConstant.VALID_LIMIT));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getUserTravelHistory(
+                TestConstant.USERNAME_VALID,
+                TestConstant.OFFSET_INVALID,
+                TestConstant.LIMIT_VALID
+        ));
     }
 
     @Test
     void getUserTravelHistoryWrongLimit() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getUserTravelHistory(TestConstant.VALID_USERNAME, TestConstant.VALID_OFFSET, TestConstant.INVALID_LIMIT));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getUserTravelHistory(
+                TestConstant.USERNAME_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_INVALID
+        ));
     }
 
     @Test
-    void getUserTravelHistoryByDateValid() {
-        Assertions.assertFalse(dao.getUserTravelHistory(TestConstant.VALID_USERNAME, TestConstant.VALID_DATE_TRIP, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).isEmpty());
+    void getUserTravelHistoryByDate() {
+        Assertions.assertFalse(dao.getUserTravelHistory(
+                TestConstant.USERNAME_VALID,
+                TestConstant.DATE_TRIP_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
     void getUserTravelHistoryByDateWrongUser() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserTravelHistory(TestConstant.INVALID_USERNAME, TestConstant.VALID_DATE_TRIP, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).size());
+        Assertions.assertTrue(dao.getUserTravelHistory(
+                TestConstant.USERNAME_INVALID,
+                TestConstant.DATE_TRIP_VALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
     void getUserTravelHistoryByDateWrongDate() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getUserTravelHistory(TestConstant.VALID_USERNAME, TestConstant.INVALID_DATE, TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).size());
+        Assertions.assertTrue(dao.getUserTravelHistory(
+                TestConstant.USERNAME_VALID,
+                TestConstant.DATE_INVALID,
+                TestConstant.OFFSET_VALID,
+                TestConstant.LIMIT_VALID
+        ).isEmpty());
     }
 
     @Test
     void getUserTravelHistoryByDateWrongOffset() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getUserTravelHistory(TestConstant.VALID_USERNAME, TestConstant.VALID_DATE_TRIP, TestConstant.INVALID_OFFSET, TestConstant.VALID_LIMIT));
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getUserTravelHistory(
+                        TestConstant.USERNAME_VALID,
+                        TestConstant.DATE_TRIP_VALID,
+                        TestConstant.OFFSET_INVALID,
+                        TestConstant.LIMIT_VALID
+                )
+        );
     }
 
     @Test
     void getUserTravelHistoryByDateWrongLimit() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getUserTravelHistory(TestConstant.VALID_USERNAME, TestConstant.VALID_DATE_TRIP, TestConstant.VALID_OFFSET, TestConstant.INVALID_LIMIT));
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getUserTravelHistory(
+                        TestConstant.USERNAME_VALID,
+                        TestConstant.DATE_TRIP_VALID,
+                        TestConstant.OFFSET_VALID,
+                        TestConstant.LIMIT_INVALID
+                )
+        );
+    }
+
+    @Test
+    void getTopUsersByTravelsWrongLimit() {
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> dao.getTopUsersByTravels(TestConstant.LIMIT_INVALID));
     }
 
     @Test
     void getTopUsersByTravels() {
-        Assertions.assertNotNull(dao.getTopUsersByTravels(10));
+        Assertions.assertNotNull(dao.getTopUsersByTravels(TestConstant.LIMIT_VALID));
     }
 
     @Test

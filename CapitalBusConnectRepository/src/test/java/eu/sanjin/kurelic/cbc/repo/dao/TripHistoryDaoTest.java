@@ -2,9 +2,6 @@ package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
 import eu.sanjin.kurelic.cbc.repo.dao.utility.TestConstant;
-import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
-import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
-import eu.sanjin.kurelic.cbc.repo.entity.TripType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,72 +20,82 @@ class TripHistoryDaoTest {
     private TripHistoryDao dao;
 
     @Test
-    void getTripHistoryValid() {
+    void getTripHistory() {
         // require at least one database record
-        var a = dao.getTripHistory(TestConstant.VALID_ID);
-        Assertions.assertNotNull(dao.getTripHistory(TestConstant.VALID_ID));
+        Assertions.assertNotNull(dao.getTripHistory(TestConstant.ID_VALID));
     }
 
     @Test
-    void getTripHistoryInvalid() {
-        Assertions.assertNull(dao.getTripHistory(TestConstant.INVALID_ID));
+    void getTripHistoryWrongId() {
+        Assertions.assertNull(dao.getTripHistory(TestConstant.ID_INVALID));
     }
 
     @Test
     void addOrUpdateTripHistory() {
-        TripHistory tripHistory = new TripHistory();
-        tripHistory.setId(TestConstant.VALID_ID);
-
-        BusSchedule busSchedule = new BusSchedule();
-        busSchedule.setId(TestConstant.VALID_ID);
-        tripHistory.setBusSchedule(busSchedule);
-
-        TripType tripType = new TripType();
-        tripHistory.setId(TestConstant.VALID_ID);
-        tripHistory.setTripType(tripType);
-
-        Assertions.assertDoesNotThrow(() -> dao.addOrUpdateTripHistory(tripHistory));
+        Assertions.assertDoesNotThrow(() -> dao.addOrUpdateTripHistory(TestConstant.TRIP_HISTORY_VALID));
     }
 
     @Test
     void hasTripHistoryWrongBusSchedule() {
-        Assertions.assertNull(dao.getTripHistoryIdOrNull(TestConstant.INVALID_ID, TestConstant.VALID_DATE_TRIP, TestConstant.VALID_ID));
+        Assertions.assertNull(dao.getTripHistoryIdOrNull(
+                TestConstant.ID_INVALID,
+                TestConstant.DATE_TRIP_VALID,
+                TestConstant.ID_VALID
+        ));
     }
 
     @Test
     void hasTripHistoryWrongDate() {
-        Assertions.assertNull(dao.getTripHistoryIdOrNull(TestConstant.VALID_ID, TestConstant.INVALID_DATE, TestConstant.VALID_ID));
+        Assertions.assertNull(dao.getTripHistoryIdOrNull(
+                TestConstant.ID_VALID,
+                TestConstant.DATE_INVALID,
+                TestConstant.ID_VALID
+        ));
     }
 
     @Test
     void hasTripHistoryWrongTripType() {
-        Assertions.assertNull(dao.getTripHistoryIdOrNull(TestConstant.VALID_ID, TestConstant.VALID_DATE_TRIP, TestConstant.INVALID_ID));
+        Assertions.assertNull(dao.getTripHistoryIdOrNull(
+                TestConstant.ID_VALID,
+                TestConstant.DATE_TRIP_VALID,
+                TestConstant.ID_INVALID
+        ));
     }
 
     @Test
-    void hasTripHistoryValid() {
+    void hasTripHistory() {
         // Require exact database record
-        Assertions.assertNotNull(dao.getTripHistoryIdOrNull(TestConstant.VALID_ID, TestConstant.VALID_DATE_TRIP, TestConstant.VALID_NEXT_ID));
+        Assertions.assertNotNull(dao.getTripHistoryIdOrNull(
+                TestConstant.ID_VALID,
+                TestConstant.DATE_TRIP_VALID,
+                TestConstant.ID_VALID_NEXT
+        ));
     }
 
     @Test
-    void getMostTraveledSchedulesValid() {
-        Assertions.assertNotNull(dao.getMostTraveledSchedules(TestConstant.VALID_LIMIT));
+    void getMostTraveledSchedules() {
+        Assertions.assertNotNull(dao.getMostTraveledSchedules(TestConstant.LIMIT_VALID));
     }
 
     @Test
-    void getMostTraveledSchedulesInvalid() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getMostTraveledSchedules(TestConstant.INVALID_LIMIT));
+    void getMostTraveledSchedulesWrongLimit() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getMostTraveledSchedules(TestConstant.LIMIT_INVALID)
+        );
     }
 
     @Test
-    void getLastFilledTripHistoryValid() {
-        Assertions.assertNotNull(dao.getLastFilledTripHistory(TestConstant.VALID_LIMIT));
+    void getLastFilledTripHistory() {
+        Assertions.assertNotNull(dao.getLastFilledTripHistory(TestConstant.LIMIT_VALID));
     }
 
     @Test
-    void getLastFilledTripHistoryInvalid() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getLastFilledTripHistory(TestConstant.INVALID_LIMIT));
+    void getLastFilledTripHistoryWrongLimit() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getLastFilledTripHistory(TestConstant.LIMIT_INVALID)
+        );
     }
 
     @Test

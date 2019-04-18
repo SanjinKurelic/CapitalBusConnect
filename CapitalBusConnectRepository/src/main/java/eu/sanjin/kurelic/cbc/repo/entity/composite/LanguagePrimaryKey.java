@@ -40,7 +40,7 @@ public class LanguagePrimaryKey implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (Objects.isNull(o) || getClass() != o.getClass()) return false;
         LanguagePrimaryKey that = (LanguagePrimaryKey) o;
         return Objects.equals(id, that.id) && Objects.equals(language, that.language);
     }

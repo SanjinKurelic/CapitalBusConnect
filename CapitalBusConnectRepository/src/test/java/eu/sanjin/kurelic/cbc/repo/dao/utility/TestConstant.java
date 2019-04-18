@@ -1,49 +1,84 @@
 package eu.sanjin.kurelic.cbc.repo.dao.utility;
 
+import eu.sanjin.kurelic.cbc.repo.entity.*;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+
 import java.time.Duration;
 import java.time.LocalDate;
 
 public class TestConstant {
 
-    /**
-     * Wrong limit or offset => IllegalArgumentException
-     * Wrong data used in query:
-     * 1. if result is List => empty list
-     * 2. if result is one object => null
-     * 3. if it is update or add query => IllegalArgumentException (if data is null, other checks should be done in business layer)
-     * 4. exception for above rule is TripPricesDao which return NoResultException exception for no result - buying items with price of unknown is forbidden
-     */
+    // Limit and offset
+    public static final int LIMIT_VALID = 10;
+    public static final int LIMIT_INVALID = -10;
+    public static final int LIMIT_ZERO = 0;
+    public static final int OFFSET_VALID = 0;
+    public static final int OFFSET_INVALID = -1;
+    public static final int OFFSET_LARGE = 10000;
 
-    public static final int VALID_LIMIT = 10;
-    public static final int INVALID_LIMIT = -10;
-    public static final int ZERO_LIMIT = 0;
-    public static final int LARGE_LIMIT = 10000;
-    public static final int VALID_OFFSET = 0;
-    public static final int INVALID_OFFSET = -1;
-    public static final int LARGE_OFFSET = 10000;
-    public static final int EMPTY_RESULT_SIZE = 0;
-    public static final int INVALID_ID = -1;
-    public static final int VALID_ID = 1;
-    public static final int VALID_NEXT_ID = 2;
-    public static final int VALID_LIST_ID_COUNT = 3;
-    public static final Duration VALID_TRIP_DURATION = Duration.ofHours(2);
-    public static final Duration INVALID_TRIP_DURATION = Duration.ofHours(-2);
-    public static final Integer[] VALID_LIST_ID = {1, 2, 3};
-    public static final Object NULL_VALUE = null;
-    public static final String VALID_LANGUAGE = "en";
-    public static final String INVALID_LANGUAGE = "";
-    public static final String INVALID_LANGUAGE_NULL = null;
-    public static final String VALID_CITY = "London";
-    public static final String INVALID_CITY = "London123";
-    public static final String SEARCH_CITY_WITH_RESULT = "Lo";
-    public static final String SEARCH_CITY_NO_RESULT = "zz";
-    public static final String VALID_USERNAME = "user@example.com";
-    public static final String INVALID_USERNAME = "abc";
-    public static final String SEARCH_USER_WITH_RESULT = "user";
-    public static final String SEARCH_USER_NO_RESULT = "@@";
-    public static final LocalDate VALID_DATE = LocalDate.now();
-    public static final LocalDate INVALID_DATE = null;
-    public static final LocalDate VALID_DATE_TRIP = LocalDate.of(2015, 12, 20);
-    public static final LocalDate VALID_DATE_LOGIN = LocalDate.of(2017, 5, 20);
+    // Id
+    public static final int ID_INVALID = -1;
+    public static final int ID_VALID = 1;
+    public static final int ID_VALID_NEXT = 2;
+    public static final int IDS_VALID_COUNT = 3;
+    public static final Integer[] IDS_VALID = {1, 2, 3};
+    public static final Integer[] IDS_NULL = null;
+    public static final Integer[] IDS_EMPTY = new Integer[0];
+
+    // Authority
+    public static final Authorities AUTHORITIES_NULL = null;
+    public static final Authorities AUTHORITIES_VALID;
+
+    // Trip type
+    public static final TripTypeValues TRIP_TYPE_NULL = null;
+    public static final TripTypeValues TRIP_TYPE = TripTypeValues.A_TO_B;
+    public static final TripHistory TRIP_HISTORY_VALID;
+
+    // Date & time
+    public static final Duration TRIP_DURATION_VALID = Duration.ofHours(2);
+    public static final Duration TRIP_DURATION_INVALID = Duration.ofHours(-2);
+    public static final LocalDate DATE_VALID = LocalDate.now();
+    public static final LocalDate DATE_INVALID = null;
+    public static final LocalDate DATE_TRIP_VALID = LocalDate.of(2015, 12, 20);
+    public static final LocalDate DATE_LOGIN_VALID = LocalDate.of(2017, 5, 20);
+
+    // Language
+    public static final String LANGUAGE_VALID = "en";
+    public static final String LANGUAGE_EMPTY = "";
+    public static final String LANGUAGE_NULL = null;
+
+    // City
+    public static final String CITY_VALID = "London";
+    public static final String CITY_INVALID = "London123";
+    public static final String SEARCH_CITY_VALID = "Lo";
+    public static final String SEARCH_CITY_INVALID = "zz";
+
+    // User
+    public static final String USERNAME_VALID = "user@example.com";
+    public static final String USERNAME_INVALID = "zzz";
+    public static final String USERNAME_NULL = null;
+    public static final String SEARCH_USER_VALID = "user";
+    public static final String SEARCH_USER_INVALID = "@@";
+
+    // Fill information
+    static {
+        // Authorities
+        AUTHORITIES_VALID = new Authorities();
+        var u = new User();
+        u.setUsername(TestConstant.USERNAME_VALID);
+        AUTHORITIES_VALID.setUsername(u);
+        AUTHORITIES_VALID.setAuthority(AuthoritiesValues.USER.getValue());
+
+        // Trip history
+        TRIP_HISTORY_VALID = new TripHistory();
+        TRIP_HISTORY_VALID.setId(TestConstant.ID_VALID);
+        BusSchedule busSchedule = new BusSchedule();
+        busSchedule.setId(TestConstant.ID_VALID);
+        TRIP_HISTORY_VALID.setBusSchedule(busSchedule);
+        TripType tripType = new TripType();
+        TRIP_HISTORY_VALID.setId(TestConstant.ID_VALID);
+        TRIP_HISTORY_VALID.setTripType(tripType);
+    }
 
 }

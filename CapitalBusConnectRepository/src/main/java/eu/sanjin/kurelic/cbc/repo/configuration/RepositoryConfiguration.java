@@ -77,10 +77,10 @@ public class RepositoryConfiguration {
 
     @PreDestroy
     public void closeDatasource() {
-        if (_dataSource != null) {
+        if (!Objects.isNull(_dataSource)) {
             _dataSource.close();
         }
-        if (_sessionFactory != null) {
+        if (!Objects.isNull(_sessionFactory)) {
             _sessionFactory.destroy();
         }
     }

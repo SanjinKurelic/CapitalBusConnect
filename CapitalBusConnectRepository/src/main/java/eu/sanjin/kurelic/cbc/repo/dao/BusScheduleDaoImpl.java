@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class BusScheduleDaoImpl implements BusScheduleDao {
@@ -25,7 +26,7 @@ public class BusScheduleDaoImpl implements BusScheduleDao {
     @Override
     public List<BusSchedule> getSchedules(Integer... ids) {
         // If there is no ID-s supplied
-        if (ids == null || ids.length < 1) {
+        if (Objects.isNull(ids) || ids.length < 1) {
             return new ArrayList<>();
         }
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -40,7 +41,7 @@ public class BusScheduleDaoImpl implements BusScheduleDao {
     @Override
     public List<BusSchedule> getBusLineSchedules(Integer fromCityId, Integer toCityId) {
         // If there are no cities supplied
-        if (fromCityId == null | toCityId == null) {
+        if (Objects.isNull(fromCityId) || Objects.isNull(toCityId)) {
             return new ArrayList<>();
         }
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();

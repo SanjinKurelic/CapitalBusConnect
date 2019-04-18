@@ -20,7 +20,10 @@ class PayingMethodDaoTest {
     private PayingMethodDao dao;
 
     @Test
-    void getPayingMethodByNameValid() {
-        Assertions.assertEquals(PayingMethodValues.MONEY.name(), dao.getPayingMethodByName(PayingMethodValues.MONEY).getName());
+    void getPayingMethodByName() {
+        Assertions.assertEquals(
+                PayingMethodValues.MONEY.name(),
+                dao.getPayingMethodByName(PayingMethodValues.MONEY).getName()
+        );
     }
 }

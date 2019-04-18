@@ -20,34 +20,38 @@ class BusLineDaoTest {
     BusLineDao dao;
 
     @Test
-    void getCityLinesNegativeFirstParameterTest() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getCityLines(TestConstant.INVALID_OFFSET, TestConstant.VALID_LIMIT));
+    void getCityLinesWrongOffset() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getCityLines(TestConstant.OFFSET_INVALID, TestConstant.LIMIT_VALID)
+        );
     }
 
     @Test
-    void getCityLinesNegativeSecondParameterTest() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getCityLines(TestConstant.VALID_OFFSET, TestConstant.INVALID_LIMIT));
+    void getCityLinesWrongOffsetLarge() {
+        Assertions.assertTrue(dao.getCityLines(TestConstant.OFFSET_LARGE, TestConstant.LIMIT_VALID).isEmpty());
     }
 
     @Test
-    void getCityLinesNegativeBothParametersTest() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> dao.getCityLines(TestConstant.INVALID_OFFSET, TestConstant.VALID_LIMIT));
+    void getCityLinesWrongLimit() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_INVALID)
+        );
     }
 
     @Test
-    void getCityLinesZeroFirstParameterTest() {
+    void getCityLinesWrongLimitEmpty() {
+        Assertions.assertTrue(dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_ZERO).isEmpty());
+    }
+
+    @Test
+    void getCityLines() {
         // Database should be filled for this test
-        Assertions.assertEquals(TestConstant.VALID_LIMIT, dao.getCityLines(TestConstant.VALID_OFFSET, TestConstant.VALID_LIMIT).size());
-    }
-
-    @Test
-    void getCityLinesZeroSecondParameterTest() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getCityLines(TestConstant.VALID_OFFSET, TestConstant.ZERO_LIMIT).size());
-    }
-
-    @Test
-    void getCityLinesBigBothParametersTest() {
-        Assertions.assertEquals(TestConstant.EMPTY_RESULT_SIZE, dao.getCityLines(TestConstant.LARGE_OFFSET, TestConstant.LARGE_LIMIT).size());
+        Assertions.assertEquals(
+                TestConstant.LIMIT_VALID,
+                dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_VALID).size()
+        );
     }
 
     @Test

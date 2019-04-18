@@ -14,6 +14,7 @@ import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class UserTravelHistoryDaoImpl implements UserTravelHistoryDao {
@@ -28,7 +29,7 @@ public class UserTravelHistoryDaoImpl implements UserTravelHistoryDao {
 
     @Override
     public List<UserTravelHistory> getUserTravelHistoryByIds(Integer... ids) {
-        if (ids == null || ids.length == 0) {
+        if (Objects.isNull(ids) || ids.length == 0) {
             return new ArrayList<>();
         }
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();

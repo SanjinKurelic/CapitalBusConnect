@@ -22,16 +22,19 @@ class TripPricesDaoTest {
 
     @Test
     void getTripPriceWrongDate() {
-        Assertions.assertThrows(NoResultException.class, () -> dao.getTripPrice(TestConstant.VALID_TRIP_DURATION, TestConstant.INVALID_DATE));
+        Assertions.assertThrows(
+                NoResultException.class,
+                () -> dao.getTripPrice(TestConstant.TRIP_DURATION_VALID, TestConstant.DATE_INVALID)
+        );
     }
 
     @Test
     void getTripPriceWrongDuration() {
-        Assertions.assertThrows(NoResultException.class, () -> dao.getTripPrice(TestConstant.INVALID_TRIP_DURATION));
+        Assertions.assertThrows(NoResultException.class, () -> dao.getTripPrice(TestConstant.TRIP_DURATION_INVALID));
     }
 
     @Test
     void getTripPriceValid() {
-        Assertions.assertNotNull(dao.getTripPrice(TestConstant.VALID_TRIP_DURATION));
+        Assertions.assertNotNull(dao.getTripPrice(TestConstant.TRIP_DURATION_VALID));
     }
 }

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class UserLoginHistoryDaoImpl implements UserLoginHistoryDao {
@@ -121,8 +122,8 @@ public class UserLoginHistoryDaoImpl implements UserLoginHistoryDao {
     }
 
     private Predicate datePredicate(CriteriaBuilder builder, Root<UserLoginHistory> root, LocalDate date) {
-        LocalDateTime fromDate = (date == null ? LocalDateTime.MIN : date.atStartOfDay());
-        LocalDateTime toDate = (date == null ? LocalDateTime.MIN : date.atTime(LocalTime.MAX));
+        LocalDateTime fromDate = (Objects.isNull(date) ? LocalDateTime.MIN : date.atStartOfDay());
+        LocalDateTime toDate = (Objects.isNull(date) ? LocalDateTime.MIN : date.atTime(LocalTime.MAX));
         return builder.between(root.get(UserLoginHistory_.id).get(LoginHistoryPrimaryKey_.dateTime), fromDate, toDate);
     }
 
