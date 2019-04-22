@@ -1,4 +1,4 @@
-package eu.sanjin.kurelic.cbc.business.viewmodel.menu;
+package eu.sanjin.kurelic.cbc.view.components.menu;
 
 import java.util.ArrayList;
 

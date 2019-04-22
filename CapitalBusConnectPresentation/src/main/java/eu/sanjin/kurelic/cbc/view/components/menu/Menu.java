@@ -1,10 +1,6 @@
-/*
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
-package eu.sanjin.kurelic.cbc.business.viewmodel.menu;
+package eu.sanjin.kurelic.cbc.view.components.menu;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class Menu {
 
@@ -12,15 +8,11 @@ public class Menu {
     private String menuTitle;
     private MenuItems menuItems;
 
-    public Menu(MenuType menuType) {
-        this(menuType, "", new MenuItems());
+    Menu(MenuType menuType) {
+        this(menuType, StringUtils.EMPTY, new MenuItems());
     }
 
-    public Menu(MenuType menuType, MenuItems menuItems) {
-        this(menuType, "", menuItems);
-    }
-
-    public Menu(MenuType menuType, String menuTitle, MenuItems menuItems) {
+    Menu(MenuType menuType, String menuTitle, MenuItems menuItems) {
         this.menuItems = menuItems;
         this.menuTitle = menuTitle;
         this.menuType = menuType;
