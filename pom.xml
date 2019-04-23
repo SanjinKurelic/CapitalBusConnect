@@ -36,7 +36,7 @@
         <cbc.version.validator>6.0.15.Final</cbc.version.validator>
         <cbc.version.mysql>8.0.14</cbc.version.mysql>
         <cbc.version.hibernate>5.4.1.Final</cbc.version.hibernate>
-        <cbc.version.c3po>0.9.5.3</cbc.version.c3po>
+        <cbc.version.c3po>0.9.5.4</cbc.version.c3po>
         <cbc.version.warplugin>3.2.2</cbc.version.warplugin>
         <cbc.version.frontend>1.6</cbc.version.frontend>
         <cbc.version.node>v10.14.1</cbc.version.node>
