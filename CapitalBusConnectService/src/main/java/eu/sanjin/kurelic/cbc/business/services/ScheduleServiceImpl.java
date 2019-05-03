@@ -95,8 +95,16 @@ public class ScheduleServiceImpl implements ScheduleService {
             return new ScheduleItems();
         }
         // Logic
-        var fromCity = cityDescriptionDao.getCityDescription(fromCityName.trim(), LocaleUtility.getLanguage(language));
-        var toCity = cityDescriptionDao.getCityDescription(toCityName.trim(), LocaleUtility.getLanguage(language));
+        var fromCity = cityDescriptionDao.getCityDescription(
+                fromCityName,
+                LocaleUtility.getLanguage(language),
+                LocaleUtility.getUrlDefaultLanguage()
+        );
+        var toCity = cityDescriptionDao.getCityDescription(
+                toCityName,
+                LocaleUtility.getLanguage(language),
+                LocaleUtility.getUrlDefaultLanguage()
+        );
         if (Objects.isNull(fromCity) || Objects.isNull(toCity)) {
             return new ScheduleItems();
         }
@@ -163,7 +171,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language) {
+    public ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit,
+                                              Locale language) {
         List<UserTravelHistory> travelItems;
         ScheduleItems items = new ScheduleItems();
         ScheduleBuilder sb = new ScheduleBuilder();
@@ -254,8 +263,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     private Pair<String, String> getCityDescription(BusSchedule busSchedule, Locale language) {
-        var city1 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(), LocaleUtility.getLanguage(language));
-        var city2 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(), LocaleUtility.getLanguage(language));
+        var city1 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(),
+                LocaleUtility.getLanguage(language));
+        var city2 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(),
+                LocaleUtility.getLanguage(language));
         if (Objects.isNull(city1) || Objects.isNull(city2)) {
             return null;
         }

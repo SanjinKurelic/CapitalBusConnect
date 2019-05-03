@@ -21,15 +21,17 @@ import java.util.Objects;
 @Service
 public class StatisticServiceImpl implements StatisticService {
 
-    private final int TUPLE_FIRST_ITEM = 0;
-    private final int TUPLE_SECOND_ITEM = 1;
-
     private final UserTravelHistoryDao userTravelHistoryDao;
     private final UserDao userDao;
     private final TripHistoryDao tripHistoryDao;
     private final CityDescriptionDao cityDescriptionDao;
 
-    public StatisticServiceImpl(UserTravelHistoryDao userTravelHistoryDao, UserDao userDao, TripHistoryDao tripHistoryDao, CityDescriptionDao cityDescriptionDao) {
+    public StatisticServiceImpl(
+            UserTravelHistoryDao userTravelHistoryDao,
+            UserDao userDao,
+            TripHistoryDao tripHistoryDao,
+            CityDescriptionDao cityDescriptionDao
+    ) {
         this.userTravelHistoryDao = userTravelHistoryDao;
         this.userDao = userDao;
         this.tripHistoryDao = tripHistoryDao;
@@ -50,12 +52,16 @@ public class StatisticServiceImpl implements StatisticService {
         for (var usernameCounterTuple : usernameCounterTuples) {
             item = new InfoItem();
             // get user info - database query in for loop (statistics are not something heavily requested)
-            var user = userDao.getUserInformation(usernameCounterTuple.get(TUPLE_FIRST_ITEM).toString());
+            var user = userDao.getUserInformation(
+                    usernameCounterTuple.get(UserTravelHistoryDao.TUPLE_USERNAME).toString()
+            );
             // fill info item
             item.addColumn(new InfoItemTextColumn(user.getUsername()));
             item.addColumn(new InfoItemTextColumn(user.getName()));
             item.addColumn(new InfoItemTextColumn(user.getSurname()));
-            item.addColumn(new InfoItemTextColumn(usernameCounterTuple.get(TUPLE_SECOND_ITEM).toString()));
+            item.addColumn(new InfoItemTextColumn(
+                    usernameCounterTuple.get(UserTravelHistoryDao.TUPLE_NUMBER_OF_TRAVELS).toString()
+            ));
             // add to items
             items.add(item);
         }
@@ -105,7 +111,7 @@ public class StatisticServiceImpl implements StatisticService {
         for (var data : dataList) {
             item = new InfoItem();
             // get city title
-            cities = getCityDescription(((TripHistory) data.get(TUPLE_FIRST_ITEM)), lang);
+            cities = getCityDescription(((TripHistory) data.get(TripHistoryDao.TUPLE_TRIP_HISTORY)), lang);
             // if something went wrong exit & returned already filled items (if any is filled)
             if (Objects.isNull(cities)) {
                 return items;
@@ -115,7 +121,7 @@ public class StatisticServiceImpl implements StatisticService {
             item.addColumn(new InfoItemIconColumn(InfoItemIconType.ARROW_ICON));
             item.addColumn(new InfoItemTextColumn(cities.getSecond()));
             item.addColumn(new InfoItemTextColumn(((TripHistory) data.get(0)).getBusSchedule().getFromTime().format(DateTimeFormatter.ISO_TIME)));
-            item.addColumn(new InfoItemTextColumn(data.get(TUPLE_SECOND_ITEM).toString()));
+            item.addColumn(new InfoItemTextColumn(data.get(TripHistoryDao.TUPLE_COUNTER).toString()));
             // add to items
             items.add(item);
         }
@@ -123,8 +129,14 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     private Pair<String, String> getCityDescription(TripHistory tripHistory, String language) {
-        var city1 = cityDescriptionDao.getCityDescription(tripHistory.getBusSchedule().getBusLine().getCity1().getId(), language);
-        var city2 = cityDescriptionDao.getCityDescription(tripHistory.getBusSchedule().getBusLine().getCity2().getId(), language);
+        var city1 = cityDescriptionDao.getCityDescription(
+                tripHistory.getBusSchedule().getBusLine().getCity1().getId(),
+                language
+        );
+        var city2 = cityDescriptionDao.getCityDescription(
+                tripHistory.getBusSchedule().getBusLine().getCity2().getId(),
+                language
+        );
         // if language is wrong
         if (Objects.isNull(city1) || Objects.isNull(city2)) {
             return null;

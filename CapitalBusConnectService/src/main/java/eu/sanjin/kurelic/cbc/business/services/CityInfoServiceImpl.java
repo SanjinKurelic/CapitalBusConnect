@@ -3,6 +3,8 @@ package eu.sanjin.kurelic.cbc.business.services;
 import eu.sanjin.kurelic.cbc.business.utility.LocaleUtility;
 import eu.sanjin.kurelic.cbc.business.viewmodel.city.CityInfoItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.*;
+import eu.sanjin.kurelic.cbc.business.viewmodel.search.CitySearchResult;
+import eu.sanjin.kurelic.cbc.business.viewmodel.search.CitySearchResults;
 import eu.sanjin.kurelic.cbc.repo.dao.BusLineDao;
 import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusLine;
@@ -10,18 +12,22 @@ import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 @Service
 public class CityInfoServiceImpl implements CityInfoService {
 
-    private final CityDescriptionDao destinationDao;
+    private final CityDescriptionDao cityDescriptionDao;
     private final BusLineDao busLineDao;
 
     @Autowired
-    public CityInfoServiceImpl(CityDescriptionDao destinationDao, BusLineDao busLineDao) {
-        this.destinationDao = destinationDao;
+    public CityInfoServiceImpl(CityDescriptionDao cityDescriptionDao, BusLineDao busLineDao) {
+        this.cityDescriptionDao = cityDescriptionDao;
         this.busLineDao = busLineDao;
     }
 
@@ -33,24 +39,36 @@ public class CityInfoServiceImpl implements CityInfoService {
             return null;
         }
         // Logic
-        var city = destinationDao.getCityDescription(cityName, LocaleUtility.getLanguage(language));
+        var city = cityDescriptionDao.getCityDescription(
+                cityName,
+                LocaleUtility.getLanguage(language),
+                LocaleUtility.getUrlDefaultLanguage()
+        );
         return convertEntityToViewModel(city);
     }
 
     @Override
     @Transactional
-    public String[] searchByCityName(String partialName, int numberOfSearchResults, Locale language) {
+    public CitySearchResults searchByCityName(String partialName, int numberOfSearchResults, Locale language) {
+        CitySearchResults results = new CitySearchResults();
+        CitySearchResult result;
         // Check
         if (Objects.isNull(partialName) || partialName.isBlank() || Objects.isNull(language) || numberOfSearchResults < 1) {
-            return new String[0];
+            return results;
         }
         // Logic
-        ArrayList<String> result = new ArrayList<>();
-        var cities = destinationDao.searchCityDescription(partialName, numberOfSearchResults, LocaleUtility.getLanguage(language));
-        for (CityDescription city : cities) {
-            result.add(city.getTitle());
+        var cities = cityDescriptionDao.searchCityDescription(
+                partialName,
+                numberOfSearchResults,
+                LocaleUtility.getLanguage(language),
+                LocaleUtility.getUrlDefaultLanguage());
+        for (Tuple city : cities) {
+            result = new CitySearchResult();
+            result.setFriendlyCityName(((CityDescription) city.get(CityDescriptionDao.TUPLE_CITY_DESCRIPTION)).getTitle());
+            result.setUrlCityName((String) city.get(CityDescriptionDao.TUPLE_CITY_NAME));
+            results.add(result);
         }
-        return result.toArray(String[]::new);
+        return results;
     }
 
     @Override
@@ -69,13 +87,17 @@ public class CityInfoServiceImpl implements CityInfoService {
         }
         // Logic
         var lines = busLineDao.getCityLines(pageNumber, limit);
+        if (lines.isEmpty()) {
+            return items;
+        }
         // Database optimization
         HashSet<Integer> ids = new HashSet<>();
         for (BusLine line : lines) {
             ids.add(line.getCity1().getId());
             ids.add(line.getCity2().getId());
         }
-        var cityDescriptions = destinationDao.getCityDescriptions(LocaleUtility.getLanguage(language), ids.toArray(Integer[]::new));
+        var cityDescriptions = cityDescriptionDao.getCityDescriptions(LocaleUtility.getLanguage(language),
+                ids.toArray(Integer[]::new));
         // Wrong language
         if (cityDescriptions.isEmpty()) {
             return items;

@@ -40,7 +40,7 @@ public class TestConstant {
     public static final LocalDateTime DATE_TIME_INVALID = null;
     public static final LocalDate DATE_VALID = LocalDate.now();
     public static final LocalDate DATE_INVALID = null;
-    public static final LocalDate LOGIN_HISTORY_DATE_VALID = LocalDate.of(2019, 4, 5);
+    public static final LocalDate LOGIN_HISTORY_DATE_VALID = LocalDate.of(2017, 5, 20);
     public static final LocalDate LOGIN_HISTORY_DATE_INVALID = LocalDate.of(1992, 4, 5);
     public static final LocalDate TRIP_HISTORY_DATE_VALID = LocalDate.of(2015, 12, 20);
     public static final LocalDate TRIP_HISTORY_DATE_INVALID = LocalDate.of(1992, 12, 20);

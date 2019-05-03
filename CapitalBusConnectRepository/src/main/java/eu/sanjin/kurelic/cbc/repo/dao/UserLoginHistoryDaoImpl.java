@@ -20,8 +20,6 @@ import java.util.Objects;
 @Repository
 public class UserLoginHistoryDaoImpl implements UserLoginHistoryDao {
 
-    // see userNotAdministrator method for reason using this final field
-    private static final String ADMINISTRATOR = "admin@cbc";
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -60,8 +58,7 @@ public class UserLoginHistoryDaoImpl implements UserLoginHistoryDao {
         CriteriaQuery<UserLoginHistory> criteria = builder.createQuery(UserLoginHistory.class);
         Root<UserLoginHistory> root = criteria.from(UserLoginHistory.class);
 
-        // HQL = FROM UserLoginHistory WHERE id.username.username != 'admin@cbc' ORDER BY id.dateTime DESC
-        criteria.where(usernameNotAdministratorPredicate(builder, root));
+        // HQL = FROM UserLoginHistory ORDER BY id.dateTime DESC
         criteria.orderBy(orderByDateTime(builder, root));
 
         return entityManager.createQuery(criteria).setFirstResult(offset).setMaxResults(limit).getResultList();
@@ -74,8 +71,8 @@ public class UserLoginHistoryDaoImpl implements UserLoginHistoryDao {
         CriteriaQuery<UserLoginHistory> criteria = builder.createQuery(UserLoginHistory.class);
         Root<UserLoginHistory> root = criteria.from(UserLoginHistory.class);
 
-        // HQL = FROM UserLoginHistory WHERE id.username.username != 'admin@cbc' AND id.dateTime BETWEEN :startDate AND :endDate ORDER BY id.dateTime DESC
-        criteria.where(builder.and(usernameNotAdministratorPredicate(builder, root), datePredicate(builder, root, date)));
+        // HQL = FROM UserLoginHistory WHERE id.dateTime BETWEEN :startDate AND :endDate ORDER BY id.dateTime DESC
+        criteria.where(datePredicate(builder, root, date));
         criteria.orderBy(orderByDateTime(builder, root));
 
         return entityManager.createQuery(criteria).setFirstResult(offset).setMaxResults(limit).getResultList();
@@ -107,18 +104,6 @@ public class UserLoginHistoryDaoImpl implements UserLoginHistoryDao {
     // Utility
     private Predicate usernameEqualPredicate(CriteriaBuilder builder, Root<UserLoginHistory> root, String username) {
         return builder.equal(root.get(UserLoginHistory_.id).get(LoginHistoryPrimaryKey_.username).get(User_.username), username);
-    }
-
-    /**
-     * For more complex system we should implement getAllUsersWithRole and getAllUsersWithoutRole in AuthoritiesDAO
-     * Here we are hard coding non-user users (admin roles in this case) because of simplicity and performance for small systems
-     *
-     * @param builder - criteria builder
-     * @param root    - root table
-     * @return - returning username != administrator
-     */
-    private Predicate usernameNotAdministratorPredicate(CriteriaBuilder builder, Root<UserLoginHistory> root) {
-        return builder.notEqual(root.get(UserLoginHistory_.id).get(LoginHistoryPrimaryKey_.username).get(User_.username), ADMINISTRATOR);
     }
 
     private Predicate datePredicate(CriteriaBuilder builder, Root<UserLoginHistory> root, LocalDate date) {

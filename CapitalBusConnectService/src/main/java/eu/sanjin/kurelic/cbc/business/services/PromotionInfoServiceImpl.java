@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * This service does not use the database, instead it use hardcoded values.
@@ -23,7 +21,7 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
     private final CityDescriptionDao cityDescriptionDao;
     // Hardcoded items, as this is the only example of system
     private static final Integer[] PROMOTION_ITEMS = {15, 19, 20, 26, 28, 37};
-    private static final String DEFAULT_CITY = "Zagreb";
+    private static final String DEFAULT_CITY = "zagreb";
 
     @Autowired
     public PromotionInfoServiceImpl(CityDescriptionDao cityDescriptionDao) {
@@ -32,24 +30,35 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
 
     @Override
     @Transactional
-    public PromotionItems getPromotionItems(String fromCityTitle, Locale locale) {
+    public PromotionItems getPromotionItems(String fromCityUrl, Locale locale) {
         PromotionItems items = new PromotionItems();
         PromotionItem item;
         // Check
-        if (Objects.isNull(fromCityTitle) || Objects.isNull(locale)) {
+        if (Objects.isNull(fromCityUrl) || Objects.isNull(locale)) {
             return items;
         }
         // DEBUG: As we hardcoded promotion items and city, this check is required
-        if (!fromCityTitle.equals(DEFAULT_CITY)) {
+        if (!fromCityUrl.equals(DEFAULT_CITY)) {
             return items;
         }
         // Logic
         String language = LocaleUtility.getLanguage(locale);
+        var fromCityName = cityDescriptionDao.getCityDescription(
+                fromCityUrl,
+                language,
+                LocaleUtility.getUrlDefaultLanguage()
+        );
+        if (Objects.isNull(fromCityName)) {
+            return items;
+        }
         List<CityDescription> cities = cityDescriptionDao.getCityDescriptions(language, PROMOTION_ITEMS);
+        HashMap<Integer, String> urls = getCitiesUrl(cities);
         for (CityDescription city : cities) {
             item = new PromotionItem();
-            item.setFromCity(fromCityTitle);
+            item.setFromCity(fromCityName.getTitle());
+            item.setFromCityUrl(fromCityUrl.toLowerCase());
             item.setToCity(city.getTitle());
+            item.setToCityUrl(urls.get(city.getId().getId()));
             item.setImageUrl(city.getCity().getImageName());
             items.add(item);
         }
@@ -65,6 +74,24 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
         }
         // Logic
         return getPromotionItems(DEFAULT_CITY, locale);
+    }
+
+    // Utility
+    private HashMap<Integer, String> getCitiesUrl(List<CityDescription> cities) {
+        HashMap<Integer, String> result = new HashMap<>();
+        // Database optimization
+        HashSet<Integer> ids = new HashSet<>();
+        for (CityDescription city : cities) {
+            ids.add(city.getId().getId());
+        }
+        var defaultCities = cityDescriptionDao.getCityDescriptions(
+                LocaleUtility.getUrlDefaultLanguage(),
+                ids.toArray(Integer[]::new)
+        );
+        for (CityDescription city : defaultCities) {
+            result.put(city.getId().getId(), city.getTitle());
+        }
+        return result;
     }
 
 }

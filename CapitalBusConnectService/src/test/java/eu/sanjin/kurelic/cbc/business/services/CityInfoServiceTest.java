@@ -39,56 +39,56 @@ class CityInfoServiceTest {
 
     @Test
     void searchByCityNameWrongLanguage() {
-        Assertions.assertEquals(TestConstant.EMPTY_LIST, service.searchByCityName(
+        Assertions.assertTrue(service.searchByCityName(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_VALID,
                 TestConstant.LANGUAGE_INVALID
-        ).length);
+        ).isEmpty());
     }
 
     @Test
     void searchByCityNameWrongLanguageNull() {
-        Assertions.assertEquals(TestConstant.EMPTY_LIST, service.searchByCityName(
+        Assertions.assertTrue(service.searchByCityName(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_VALID,
                 TestConstant.LANGUAGE_NULL
-        ).length);
+        ).isEmpty());
     }
 
     @Test
     void searchByCityNameWrongLimit() {
-        Assertions.assertEquals(TestConstant.EMPTY_LIST, service.searchByCityName(
+        Assertions.assertTrue(service.searchByCityName(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_INVALID,
                 TestConstant.LANGUAGE_VALID
-        ).length);
+        ).isEmpty());
     }
 
     @Test
     void searchByCityNameWrongCityName() {
-        Assertions.assertEquals(TestConstant.EMPTY_LIST, service.searchByCityName(
+        Assertions.assertTrue(service.searchByCityName(
                 TestConstant.SEARCH_CITY_NULL,
                 TestConstant.LIMIT_VALID,
                 TestConstant.LANGUAGE_VALID
-        ).length);
+        ).isEmpty());
     }
 
     @Test
     void searchByCityNameNoResult() {
-        Assertions.assertEquals(TestConstant.EMPTY_LIST, service.searchByCityName(
+        Assertions.assertTrue(service.searchByCityName(
                 TestConstant.SEARCH_CITY_EMPTY,
                 TestConstant.LIMIT_VALID,
                 TestConstant.LANGUAGE_VALID
-        ).length);
+        ).isEmpty());
     }
 
     @Test
     void searchByCityName() {
-        Assertions.assertTrue(service.searchByCityName(
+        Assertions.assertFalse(service.searchByCityName(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_VALID,
                 TestConstant.LANGUAGE_VALID
-        ).length > TestConstant.EMPTY_LIST);
+        ).isEmpty());
     }
 
     @Test

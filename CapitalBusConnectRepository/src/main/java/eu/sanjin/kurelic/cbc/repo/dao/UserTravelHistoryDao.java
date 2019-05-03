@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface UserTravelHistoryDao {
 
+    int TUPLE_USERNAME = 0;
+    int TUPLE_NUMBER_OF_TRAVELS = 1;
+
     UserTravelHistory getUserTravelHistoryById(int id);
 
     List<UserTravelHistory> getUserTravelHistoryByIds(Integer... ids);

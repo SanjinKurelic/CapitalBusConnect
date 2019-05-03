@@ -2,6 +2,7 @@ package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
 import eu.sanjin.kurelic.cbc.repo.dao.utility.TestConstant;
+import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,6 +64,60 @@ class CityDescriptionDaoTest {
     }
 
     @Test
+    void getCityDescriptionByNameAndLanguage() {
+        Assertions.assertEquals(TestConstant.CITY_VALID, dao.getCityDescription(
+                TestConstant.CITY_VALID,
+                TestConstant.LANGUAGE_VALID,
+                TestConstant.LANGUAGE_VALID
+        ).getTitle());
+    }
+
+    @Test
+    void getCityDescriptionByNameAndLanguageWrongCity() {
+        Assertions.assertNull(dao.getCityDescription(
+                TestConstant.CITY_INVALID,
+                TestConstant.LANGUAGE_VALID,
+                TestConstant.LANGUAGE_VALID
+        ));
+    }
+
+    @Test
+    void getCityDescriptionByNameAndLanguageWrongLanguage() {
+        Assertions.assertNull(dao.getCityDescription(
+                TestConstant.CITY_VALID,
+                TestConstant.LANGUAGE_EMPTY,
+                TestConstant.LANGUAGE_VALID
+        ));
+    }
+
+    @Test
+    void getCityDescriptionByNameAndLanguageWrongLanguageNull() {
+        Assertions.assertNull(dao.getCityDescription(
+                TestConstant.CITY_VALID,
+                TestConstant.LANGUAGE_NULL,
+                TestConstant.LANGUAGE_VALID
+        ));
+    }
+
+    @Test
+    void getCityDescriptionByNameAndLanguageWrongSecondLanguage() {
+        Assertions.assertNull(dao.getCityDescription(
+                TestConstant.CITY_VALID,
+                TestConstant.LANGUAGE_VALID,
+                TestConstant.LANGUAGE_EMPTY
+        ));
+    }
+
+    @Test
+    void getCityDescriptionByNameAndLanguageWrongSecondLanguageNull() {
+        Assertions.assertNull(dao.getCityDescription(
+                TestConstant.CITY_VALID,
+                TestConstant.LANGUAGE_VALID,
+                TestConstant.LANGUAGE_NULL
+        ));
+    }
+
+    @Test
     void getCityDescriptionsWrongLanguage() {
         Assertions.assertTrue(dao.getCityDescriptions(TestConstant.LANGUAGE_EMPTY).isEmpty());
     }
@@ -99,7 +154,8 @@ class CityDescriptionDaoTest {
         Assertions.assertTrue(dao.searchCityDescription(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_VALID,
-                TestConstant.LANGUAGE_NULL
+                TestConstant.LANGUAGE_NULL,
+                TestConstant.LANGUAGE_VALID
         ).isEmpty());
     }
 
@@ -108,6 +164,27 @@ class CityDescriptionDaoTest {
         Assertions.assertTrue(dao.searchCityDescription(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_VALID,
+                TestConstant.LANGUAGE_EMPTY,
+                TestConstant.LANGUAGE_VALID
+        ).isEmpty());
+    }
+
+    @Test
+    void searchCityDescriptionWrongSecondLanguageNull() {
+        Assertions.assertTrue(dao.searchCityDescription(
+                TestConstant.SEARCH_CITY_VALID,
+                TestConstant.LIMIT_VALID,
+                TestConstant.LANGUAGE_VALID,
+                TestConstant.LANGUAGE_NULL
+        ).isEmpty());
+    }
+
+    @Test
+    void searchCityDescriptionWrongSecondLanguage() {
+        Assertions.assertTrue(dao.searchCityDescription(
+                TestConstant.SEARCH_CITY_VALID,
+                TestConstant.LIMIT_VALID,
+                TestConstant.LANGUAGE_VALID,
                 TestConstant.LANGUAGE_EMPTY
         ).isEmpty());
     }
@@ -117,6 +194,7 @@ class CityDescriptionDaoTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> dao.searchCityDescription(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_INVALID,
+                TestConstant.LANGUAGE_VALID,
                 TestConstant.LANGUAGE_VALID
         ));
     }
@@ -126,10 +204,13 @@ class CityDescriptionDaoTest {
         var cities = dao.searchCityDescription(
                 TestConstant.SEARCH_CITY_VALID,
                 TestConstant.LIMIT_VALID,
-                TestConstant.LANGUAGE_VALID
+                TestConstant.LANGUAGE_VALID,
+                TestConstant.LANGUAGE_VALID // same language as search
         );
+        Assertions.assertFalse(cities.isEmpty());
         for (var city : cities) {
-            Assertions.assertTrue(city.getTitle().toLowerCase().startsWith(TestConstant.SEARCH_CITY_VALID.toLowerCase()));
+            Assertions.assertTrue(((String) city.get(0)).startsWith(TestConstant.SEARCH_CITY_VALID));
+            Assertions.assertTrue(((CityDescription) city.get(1)).getTitle().toLowerCase().startsWith(TestConstant.SEARCH_CITY_VALID.toLowerCase()));
         }
     }
 
@@ -138,6 +219,7 @@ class CityDescriptionDaoTest {
         Assertions.assertTrue(dao.searchCityDescription(
                 TestConstant.SEARCH_CITY_INVALID,
                 TestConstant.LIMIT_VALID,
+                TestConstant.LANGUAGE_VALID,
                 TestConstant.LANGUAGE_VALID
         ).isEmpty());
     }

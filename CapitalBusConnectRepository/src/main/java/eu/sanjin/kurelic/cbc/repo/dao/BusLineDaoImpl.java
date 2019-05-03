@@ -26,7 +26,7 @@ public class BusLineDaoImpl implements BusLineDao {
         criteria.select(root);
 
         TypedQuery<BusLine> query = entityManager.createQuery(criteria);
-        query.setFirstResult(offset * limit);
+        query.setFirstResult(offset);
         query.setMaxResults(limit);
         return query.getResultList();
     }

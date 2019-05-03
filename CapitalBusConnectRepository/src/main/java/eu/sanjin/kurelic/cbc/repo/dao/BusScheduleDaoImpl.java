@@ -66,7 +66,7 @@ public class BusScheduleDaoImpl implements BusScheduleDao {
         Predicate searchAbTrip = builder.and(abTrip, orderedCheck);
         // HQL => tripType.name = 'TripTypeValues.B_TO_A' AND <opposite check>
         Predicate searchBaTrip = builder.and(baTrip, oppositeCheck);
-        // HQL => tripType.name = 'TripTypeValues.B_TO_A' AND <ordered check> OR <opposite check>
+        // HQL => tripType.name = 'TripTypeValues.ROUND_TRIP' AND <ordered check> OR <opposite check>
         Predicate searchRoundTrip = builder.and(roundTrip, builder.or(orderedCheck, oppositeCheck));
 
         // HQL => <search AB trip> OR <search BA trip> OR <search ROUND trip>

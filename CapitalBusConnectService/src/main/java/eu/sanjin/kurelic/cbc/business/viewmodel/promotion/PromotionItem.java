@@ -3,16 +3,12 @@ package eu.sanjin.kurelic.cbc.business.viewmodel.promotion;
 public class PromotionItem {
 
     private String fromCity;
+    private String fromCityUrl;
     private String toCity;
+    private String toCityUrl;
     private String imageUrl;
 
     public PromotionItem() {
-    }
-
-    public PromotionItem(String fromCity, String toCity, double price, String imageUrl) {
-        this.fromCity = fromCity;
-        this.toCity = toCity;
-        this.imageUrl = imageUrl;
     }
 
     public String getFromCity() {
@@ -39,4 +35,19 @@ public class PromotionItem {
         this.imageUrl = imageUrl;
     }
 
+    public String getToCityUrl() {
+        return toCityUrl;
+    }
+
+    public void setToCityUrl(String toCityUrl) {
+        this.toCityUrl = toCityUrl;
+    }
+
+    public String getFromCityUrl() {
+        return fromCityUrl;
+    }
+
+    public void setFromCityUrl(String fromCityUrl) {
+        this.fromCityUrl = fromCityUrl;
+    }
 }

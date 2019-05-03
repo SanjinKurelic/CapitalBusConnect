@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface TripHistoryDao {
 
+    int TUPLE_TRIP_HISTORY = 0;
+    int TUPLE_COUNTER = 1;
+
     TripHistory getTripHistory(int id);
 
     void addOrUpdateTripHistory(TripHistory tripHistory);
