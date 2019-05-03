@@ -1,25 +1,23 @@
-<%-- 
-    Document   : trafficItem
-    Created on : Nov 5, 2018, 9:45:28 AM
-    Author     : Sanjin Kurelic
---%>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
+<%@ tag description="Tag for displaying traffic information item" pageEncoding="UTF-8" %>
 
 <%-- Imports: --%>
-<%@ tag description="Show text and icon about the traffic information" pageEncoding="UTF-8" %>
 <%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.traffic.TrafficWarningType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cbcf" uri="/WEB-INF/tlds/functions" %>
 
 <%-- Attributes: --%>
-<%@ attribute name="trafficInfoItem" type="eu.sanjin.kurelic.cbc.business.viewmodel.traffic.TrafficInfoItem" required="true" %>
+<%@ attribute name="trafficInfoItem" required="true"
+              type="eu.sanjin.kurelic.cbc.business.viewmodel.traffic.TrafficInfoItem"
+%>
 
 <%-- Local Variables: --%>
 <c:choose>
     <c:when test="${trafficInfoItem.warningType eq TrafficWarningType.NOTICE}">
-        <c:set var="iconColor" value="warningText" />
+        <c:set var="iconColor" value="warningText"/>
     </c:when>
     <c:when test="${trafficInfoItem.warningType eq TrafficWarningType.IMPORTANT}">
-        <c:set var="iconColor" value="errorText" />
+        <c:set var="iconColor" value="errorText"/>
     </c:when>
     <c:otherwise>
         <c:set var="iconColor" value="shadowText"/>

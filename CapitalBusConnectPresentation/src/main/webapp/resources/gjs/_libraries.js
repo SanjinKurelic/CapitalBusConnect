@@ -1,10 +1,10 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
 /*global Function */
 
 /**
  * Get element by id from document
- * @param {String} id
+ * @param {string} id
  * @returns {Element}
  */
 function $(id) {
@@ -14,8 +14,8 @@ function $(id) {
 
 /**
  * Query selector all from parent (default = window)
- * @param {String} element
- * @param {Element} parent
+ * @param {string} element
+ * @param {Element} [parent]
  * @returns {NodeList}
  */
 function $$(element, parent) {
@@ -27,13 +27,13 @@ function $$(element, parent) {
 /**
  * Find parent node with tag name
  * @param {Element} elem
- * @param {String} tag
+ * @param {string} tag
  * @returns {Element}
  */
 function cbc_findUpTag(elem, tag) {
     "use strict";
-    while (elem.parentNode) {
-        elem = elem.parentNode;
+    while (elem.parentElement) {
+        elem = elem.parentElement;
         if (elem.tagName.toUpperCase() === tag.toUpperCase()) {
             return elem;
         }
@@ -44,7 +44,7 @@ function cbc_findUpTag(elem, tag) {
 /**
  * Remove class from element
  * @param {Element} element
- * @param {String} className
+ * @param {string} className
  * @returns {void}
  */
 function cbc_removeClass(element, className) {
@@ -55,7 +55,7 @@ function cbc_removeClass(element, className) {
 /**
  * Return true if element has class
  * @param {Element} element
- * @param {String} className
+ * @param {string} className
  * @returns {Boolean}
  */
 function cbc_hasClass(element, className) {
@@ -66,7 +66,7 @@ function cbc_hasClass(element, className) {
 /**
  * Add class to element
  * @param {Element} element
- * @param {String} className
+ * @param {string} className
  * @returns {void}
  */
 function cbc_addClass(element, className) {
@@ -79,28 +79,28 @@ function cbc_addClass(element, className) {
 /**
  * Add or remove class from element
  * @param {Element} element
- * @param {String} className
+ * @param {string} className
  * @returns {void}
- */
-function cbc_toggleClass(element, className) {
+ *
+ function cbc_toggleClass(element, className) {
     "use strict";
     if (cbc_hasClass(element, className)) {
         cbc_removeClass(element, className);
     } else {
         cbc_addClass(element, className);
     }
-}
+}*/
 
 /**
  * Find parent node with class name
  * @param {Element} elem
- * @param {String} className
+ * @param {string} className
  * @returns {Element}
  */
 function cbc_findUpClass(elem, className) {
     "use strict";
-    while (elem.parentNode) {
-        elem = elem.parentNode;
+    while (elem.parentElement) {
+        elem = elem.parentElement;
         if (cbc_hasClass(elem, className)) {
             return elem;
         }
@@ -110,7 +110,7 @@ function cbc_findUpClass(elem, className) {
 
 /**
  * Add event listener
- * @param {event} event
+ * @param {string} event
  * @param {function} func
  * @param {Element} element
  * @returns {void}
@@ -127,13 +127,22 @@ function cbc_addEventListener(event, element, func) {
 
 /**
  * Add onclick
- * @param {Element} element
+ * @param {Element | Document} element
  * @param {function} func
  * @returns {void}
  */
 function cbc_addClickEventListener(element, func) {
     "use strict";
     cbc_addEventListener("click", element, func);
+}
+
+/**
+ * Remove all event listeners
+ * @param {Element} element
+ */
+function cbc_removeEventListeners(element) {
+    "use strict";
+    element.parentElement.replaceChild(element.cloneNode(true), element);
 }
 
 /**
@@ -174,6 +183,15 @@ function cbc_voidFunction() {
 }
 
 /**
+ * Async call to function
+ * @param {function} func
+ */
+function cbc_async(func) {
+    "use strict";
+    setTimeout(func, 0);
+}
+
+/**
  * Convert decimal number to visible format
  * @param decimalNumber
  * @returns {string}
@@ -186,20 +204,23 @@ function cbc_formatDecimal(decimalNumber) {
 /**
  * Convert HRL currency to Euro, yeah we should use some central bank api :)
  * @param value
- * @returns {number}
+ * @returns {string}
  */
 function cbc_hrkToEuro(value) {
     "use strict";
-    return value / 7.5;
+    var euro = value / 7.5;
+    return euro.toFixed(2);
 }
 
 /**
  * ECMAScript 5 property.bind polyfill
  * @type type
  */
+// noinspection JSLint
 if (!Function.prototype.bind) {
+    // noinspection JSLint
     Function.prototype.bind = function (oThis) {
-        "use strict"; //for jslint
+        "use strict";
         var aArgs, fToBind, FNOP, fBound;
         if (typeof this !== "function") {
             throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
@@ -208,6 +229,7 @@ if (!Function.prototype.bind) {
         fToBind = this;
         FNOP = cbc_voidFunction();
         fBound = function () {
+            // noinspection JSLint
             return fToBind.apply(this instanceof FNOP
                 ? this
                 : oThis,
@@ -227,8 +249,8 @@ if (!Function.prototype.bind) {
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (elt, num) {
         "use strict";
-        var from, len;
-        len = parseInt(Math.abs(this.length), 10);
+        var from, len, radix = 10;
+        len = parseInt(Math.abs(this.length).toString(radix), radix);
         from = num || 0;
         if (from < 0) {
             from = Math.ceil(from);
@@ -238,6 +260,7 @@ if (!Array.prototype.indexOf) {
         if (from < 0) {
             from += len;
         }
+        // noinspection JSLint
         for (from; from < len; from += 1) {
             if (this.hasOwnProperty(from) && this[from] === elt) {
                 return from;

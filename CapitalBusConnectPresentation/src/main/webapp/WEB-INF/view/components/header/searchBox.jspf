@@ -1,17 +1,18 @@
-<%-- 
-    Document   : search
-    Created on : Oct 16, 2018, 1:46:44 PM
-    Author     : Sanjin Kurelic
---%>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
 
-<%-- Local variables --%>
+<%-- Imports: --%>
+<%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
+<%@ page import="eu.sanjin.kurelic.cbc.view.controller.api.SearchController" %>
+
+<%-- Local variables: --%>
 <c:set var="searchCityIcon" value='<span class="icon">&#xf041;</span>'/>
 <c:set var="searchArrowIcon" value='<span class="icon">&#xf061;</span>'/>
 <c:set var="searchDateIcon" value='<span class="icon">&#xf073;</span>'/>
 <c:set var="searchButtonIcon" value='<span class="icon">&#xf002;</span>'/>
 <c:set var="placeholder" value=""/>
 
+<%-- Content: --%>
 <div class="searchBox">
     <div class="center">
         <div class="searchBox-content">
@@ -23,10 +24,14 @@
                             <td>
                                 <label>
                                     <spring:message code='searchBox.fromCity.placeholder' var="placeholder"/>
-                                        <%--@elvariable id="searchFromCity" type="java.lang.String"--%>
-                                    <cbc:searchComponent searchUrl="api/search/city" inputName="fromCitySearch"
-                                                         inputExtraAttribute="required" inputValue="${searchFromCity}"
-                                                         inputPlaceholder="${placeholder}"/>
+                                    <cbc:searchComponent
+                                            searchUrl="${SearchController.SEARCH_CITY_FULL_URL}"
+                                            inputName="fromCitySearch"
+                                            required="true"
+                                            inputValue="${requestScope[AttributeNames.SEARCH_FROM_CITY]}"
+                                            searchValue="${requestScope[AttributeNames.SEARCH_FROM_CITY_URL]}"
+                                            inputPlaceholder="${placeholder}"
+                                    />
                                 </label>
                             </td>
                             <c:if test="${cssClass.contains('-full')}">
@@ -36,10 +41,14 @@
                             <td>
                                 <label>
                                     <spring:message code='searchBox.toCity.placeholder' var="placeholder"/>
-                                        <%--@elvariable id="searchToCity" type="java.lang.String"--%>
-                                    <cbc:searchComponent searchUrl="api/search/city" inputName="toCitySearch"
-                                                         inputExtraAttribute="required" inputValue="${searchToCity}"
-                                                         inputPlaceholder="${placeholder}"/>
+                                    <cbc:searchComponent
+                                            searchUrl="${SearchController.SEARCH_CITY_FULL_URL}"
+                                            inputName="toCitySearch"
+                                            required="true"
+                                            inputValue="${requestScope[AttributeNames.SEARCH_TO_CITY]}"
+                                            searchValue="${requestScope[AttributeNames.SEARCH_TO_CITY_URL]}"
+                                            inputPlaceholder="${placeholder}"
+                                    />
                                 </label>
                             </td>
                             <c:if test="${cssClass.contains('-compact')}">
@@ -48,11 +57,13 @@
                             <td>${searchDateIcon}</td>
                             <td>
                                 <label>
-                                        <%--@elvariable id="searchDate" type="java.time.LocalDate"--%>
-                                    <input data-type="date"
-                                           data-min="<fmt:formatDate value='${currentDate}' pattern='yyyy-MM-dd'/>"
-                                           required name="dateSearch" value="${searchDate}"
-                                           placeholder="<spring:message code='searchBox.date.placeholder' />"/>
+                                    <input
+                                            data-type="date"
+                                            data-min="<fmt:formatDate value='${currentDate}' pattern='yyyy-MM-dd'/>"
+                                            required name="dateSearch"
+                                            value="${requestScope[AttributeNames.SEARCH_DATE]}"
+                                            placeholder="<spring:message code='searchBox.date.placeholder' />"
+                                    />
                                 </label>
                             </td>
                             <c:choose>
@@ -73,7 +84,6 @@
                     </table>
                 </div>
             </c:forTokens>
-
         </div>
     </div>
 </div>

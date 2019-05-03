@@ -1,7 +1,7 @@
-<!-- Created by Sanjin Kurelić (kurelic@sanjin.eu) -->
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
+<%@ tag description="Show user information for editing current user or for registering new user" pageEncoding="UTF-8" %>
 
 <%-- Imports: --%>
-<%@ tag description="Show user information for editing current user or for registering new user" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="cbcf" uri="/WEB-INF/tlds/functions" %>
 <%@ taglib prefix="cbc" tagdir="/WEB-INF/tags" %>
@@ -46,7 +46,7 @@
     <tr class="userBox-content-item">
         <td colspan="2">
             <p class="userBox-content-item-error">
-                <form:errors path="*" cssClass="userBox-content-item-error" />
+                <form:errors path="*" cssClass="userBox-content-item-error"/>
             </p>
         </td>
     </tr>
@@ -72,7 +72,9 @@
         </td>
         <td>
             <input name="dateOfBirth" id="dateOfBirth" type="text" required
-                   data-type="date" data-max="${maxDOB}" data-min="${minDOB}" data-default="${empty userData.dateOfBirth ? maxDOB : userData.dateOfBirth}"/>
+                   data-type="date" data-max="${maxDOB}" data-min="${minDOB}"
+                   data-default="${empty userData.dateOfBirth ? maxDOB : userData.dateOfBirth}"
+            />
         </td>
     </tr>
     <tr class="userBox-content-item">
@@ -89,7 +91,7 @@
                 <label for="identification"><spring:message code="userData.password.text"/></label>
             </td>
             <td>
-                <%--suppress XmlDuplicatedId --%>
+                    <%--suppress XmlDuplicatedId --%>
                 <input name="identification" id="identification" type="password" required/>
             </td>
         </tr>
@@ -100,7 +102,7 @@
         </td>
         <td>
             <cbc:switchElement checked="${not empty userData.newsletter and userData.newsletter eq true}"
-                               name="newsletter" />
+                               name="newsletter"/>
         </td>
     </tr>
     <c:if test="${userFormType eq UserFormType.SETTINGS}">
@@ -109,7 +111,7 @@
                 <label for="identification"><spring:message code="userData.newPassword.text"/></label>
             </td>
             <td>
-                <%--suppress XmlDuplicatedId --%>
+                    <%--suppress XmlDuplicatedId --%>
                 <input name="identification" id="identification" type="password" required/>
             </td>
         </tr>
@@ -130,7 +132,9 @@
                     <input class="button" type="submit" value="<spring:message code='navigation.saveButton.text' />"/>
                 </c:when>
                 <c:when test="${userFormType eq UserFormType.REGISTRATION}">
-                    <input class="button" type="submit" value="<spring:message code='navigation.registerButton.text' />"/>
+                    <input class="button" type="submit"
+                           value="<spring:message code='navigation.registerButton.text' />"
+                    />
                 </c:when>
             </c:choose>
         </td>

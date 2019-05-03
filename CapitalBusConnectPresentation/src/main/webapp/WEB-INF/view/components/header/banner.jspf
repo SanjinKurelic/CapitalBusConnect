@@ -1,41 +1,57 @@
-<%--
-  Created by Sanjin Kurelic.
-  Date: 2018-10-15
---%>
-<%@ include file="head.jspf" %>
+<%-- Created by Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
+
+<%-- Imports: --%>
+<%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.AdminController" %>
+<%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.UserController" %>
+<%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.WebController" %>
 <%@ page import="java.util.Locale" %>
+<%@ include file="head.jspf" %>
 
 <%-- Local variables --%>
-<c:set var="sessionLocale" value="${ cbcf:getCurrentLocale() }"/>
+<c:set var="currentLang" value="${ cbcf:getCurrentLocale() }"/>
 <security:authorize url="/admin/" var="isAdmin"/>
 
+<%-- Content: --%>
 <header class="header">
     <div class="center">
-        <a href="<spring:url value='/'/>"> <img class="header-logo"
-                                                src="<spring:url value='/resources/images/logoBig.png' />" height="100%"
-                                                alt="Capital Bus Connect"/>
+        <a href="<spring:url value='${WebController.HOME_URL_ALTERNATIVE}'/>">
+            <img
+                    class="header-logo"
+                    src="<spring:url value='${cbcf:getImageResourceUrl("logoBig.png")}' />"
+                    height="100%"
+                    alt="Capital Bus Connect"
+            />
         </a>
         <nav class="header-buttons">
-            <a title="<spring:message code='navigation.cartButton.title'/>" class="icon" href="<spring:url value='cart'/>">&#xf0f2;</a>&nbsp;
+            <a
+                    title="<spring:message code='navigation.cartButton.title'/>"
+                    class="icon"
+                    href="<spring:url value='${WebController.CART_URL}'/>"
+            >&#xf0f2;</a>&nbsp;
             <c:choose>
                 <c:when test="${isAdmin}">
-                    <a title="<spring:message code='navigation.adminButton.title'/>" class="icon"
-                       href="<spring:url value='admin/stats'/>">&#xf007;</a>
+                    <a
+                            title="<spring:message code='navigation.adminButton.title'/>"
+                            class="icon"
+                            href="<spring:url value='${AdminController.STATISTICS_FULL_URL_ALTERNATIVE}'/>"
+                    >&#xf007;</a>
                 </c:when>
                 <c:otherwise>
-                    <a title="<spring:message code='navigation.userButton.title'/>" class="icon"
-                       href="<spring:url value='user/travels'/>">&#xf007;</a>
+                    <a
+                            title="<spring:message code='navigation.userButton.title'/>"
+                            class="icon"
+                            href="<spring:url value='${UserController.TRAVELS_FULL_URL}'/>"
+                    >&#xf007;</a>
                 </c:otherwise>
             </c:choose>
             <form:form method="get">
-                <label for="language" style="display:none">${sessionLocale}</label>
+                <%--suppress HtmlFormInputWithoutLabel --%>
                 <select data-size="select-tiny" id="language" name="language" onchange="submit()">
-                    <option value="hr" ${sessionLocale.equals(Locale.forLanguageTag("hr-HR")) ? 'selected' : ''}>HR
-                    </option>
-                    <option value="en" ${sessionLocale.equals(Locale.ENGLISH) ? 'selected' : ''}>EN</option>
-                    <option value="de" ${sessionLocale.equals(Locale.GERMAN) ? 'selected' : ''}>DE</option>
-                    <option value="it" ${sessionLocale.equals(Locale.ITALIAN) ? 'selected' : ''}>IT</option>
+                    <option value="hr" ${currentLang.equals(Locale.forLanguageTag("hr-HR")) ? 'selected':''}>HR</option>
+                    <option value="en" ${currentLang.equals(Locale.ENGLISH) ? 'selected' : ''}>EN</option>
+                    <option value="de" ${currentLang.equals(Locale.GERMAN) ? 'selected' : ''}>DE</option>
+                    <option value="it" ${currentLang.equals(Locale.ITALIAN) ? 'selected' : ''}>IT</option>
                 </select>
             </form:form>
         </nav>

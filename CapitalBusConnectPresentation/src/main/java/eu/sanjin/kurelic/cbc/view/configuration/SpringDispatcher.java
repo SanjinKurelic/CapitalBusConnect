@@ -1,12 +1,13 @@
 package eu.sanjin.kurelic.cbc.view.configuration;
 
-import eu.sanjin.kurelic.cbc.view.filter.CompressResponseFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 public class SpringDispatcher extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    private static final String THROW_EXCEPTION_IF_NO_HANDLER = "throwExceptionIfNoHandlerFound";
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return null;
@@ -24,7 +25,7 @@ public class SpringDispatcher extends AbstractAnnotationConfigDispatcherServletI
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+        registration.setInitParameter(THROW_EXCEPTION_IF_NO_HANDLER, Boolean.TRUE.toString());
     }
 
     @Override

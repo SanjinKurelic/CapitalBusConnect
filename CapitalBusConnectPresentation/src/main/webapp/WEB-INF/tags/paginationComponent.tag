@@ -1,9 +1,5 @@
-<%--
-    Document   : menu
-    Created on : Oct 27, 2018, 10:23:47 AM
-    Author     : Sanjin Kurelic
---%>
-<%@ tag description="Tag for displaying menu item" pageEncoding="UTF-8" %>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
+<%@ tag description="Tag for displaying pagination component" pageEncoding="UTF-8" %>
 
 <%-- Imports: --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

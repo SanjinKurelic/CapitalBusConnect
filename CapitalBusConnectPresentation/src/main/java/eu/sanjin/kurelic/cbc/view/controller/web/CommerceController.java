@@ -1,22 +1,18 @@
 package eu.sanjin.kurelic.cbc.view.controller.web;
 
+import eu.sanjin.kurelic.cbc.business.exception.InvalidSuppliedArgumentsException;
+import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
 import eu.sanjin.kurelic.cbc.business.services.CartService;
 import eu.sanjin.kurelic.cbc.business.services.ScheduleService;
 import eu.sanjin.kurelic.cbc.business.services.TicketService;
-import eu.sanjin.kurelic.cbc.business.viewmodel.menu.Menu;
-import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuItems;
-import eu.sanjin.kurelic.cbc.business.viewmodel.menu.MenuType;
-import eu.sanjin.kurelic.cbc.business.viewmodel.ticket.Ticket;
-import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
-import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
 import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
 import eu.sanjin.kurelic.cbc.view.aspect.ReadFromSession;
 import eu.sanjin.kurelic.cbc.view.aspect.SaveToSession;
+import eu.sanjin.kurelic.cbc.view.components.AttributeNames;
 import eu.sanjin.kurelic.cbc.view.components.SessionKey;
 import eu.sanjin.kurelic.cbc.view.components.TicketGenerator;
-import org.dom4j.rule.Mode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import eu.sanjin.kurelic.cbc.view.components.menu.MenuBuilder;
+import eu.sanjin.kurelic.cbc.view.components.menu.MenuTitleKey;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,53 +29,69 @@ public class CommerceController {
     private final CartService cartService;
     private final ScheduleService scheduleService;
     private final TicketService ticketService;
+    // Urls
+    public static final String BUY_URL = "/buy/{payingMethod}"; // cart.jsp
+    public static final String TICKET_IMAGE_URL = "/ticket/image/{text}"; // ticket.jsp
+    // Views
+    private static final String BUY_PAGE = "commerce/bought";
+    private static final String TICKET_PAGE = "commerce/ticket";
+    private static final String REDIRECT_EMPTY_CART = "redirect:" + WebController.CART_URL;
+    private static final String TICKET_URL = "/ticket/{id}";
+    // Helpers
+    private static final String PAYING_METHOD_URL_MINUS_CHARACTER = "-";
+    private static final String PAYING_METHOD_JAVA_UNDERSCORE_CHARACTER = "_";
 
-    public CommerceController(@Qualifier("cartServiceImpl") CartService cartService, @Qualifier("scheduleServiceImpl") ScheduleService scheduleService, @Qualifier("ticketServiceImpl") TicketService ticketService) {
+    public CommerceController(CartService cartService, ScheduleService scheduleService, TicketService ticketService) {
         this.cartService = cartService;
         this.scheduleService = scheduleService;
         this.ticketService = ticketService;
     }
 
-    @GetMapping("/buy/{payingMethod}")
-    @ReadFromSession(sessionKey = SessionKey.CART_ID)
-    @SaveToSession(sessionKey = SessionKey.CART_ID)
-    public ModelAndView bought(@PathVariable String payingMethod) {
-        var viewModel = new ModelAndView("commerce/bought");
+    @GetMapping(BUY_URL)
+    @ReadFromSession(value = SessionKey.CART_ID)
+    @SaveToSession(value = SessionKey.CART_ID)
+    public ModelAndView bought(@PathVariable String payingMethod) throws InvalidSuppliedArgumentsException,
+            InvalidUserException {
+        var viewModel = new ModelAndView(BUY_PAGE);
         var items = cartService.getCartItems();
         // Nothing is bought
         if (items.isEmpty()) {
-            return new ModelAndView("redirect:/cart");
+            return new ModelAndView(REDIRECT_EMPTY_CART);
         }
         // Menu
-        var menu = new Menu(MenuType.SIMPLE, "navigation.boughtTitle.text", new MenuItems());
-        viewModel.addObject("menuItem", menu);
+        viewModel.addObject(AttributeNames.MENU_ITEM, MenuBuilder.getEmptySimpleMenu(MenuTitleKey.BOUGHT_TITLE));
         // Items
-        viewModel.addObject("scheduleItems", scheduleService.getCartItemSchedules(items, true, LocaleContextHolder.getLocale()));
+        viewModel.addObject(AttributeNames.SCHEDULE_ITEMS, scheduleService.getCartItemSchedules(
+                items,
+                true,
+                LocaleContextHolder.getLocale()
+        ));
         // Store to DB
-        PayingMethodValues payingMethodValue = PayingMethodValues.valueOf(payingMethod.toUpperCase().replace('-', '_'));
-        boolean successful = false;
-        if (cartService.saveToDatabase(payingMethodValue, SecurityContextHolder.getContext().getAuthentication().getName())) {
-            // Remove cart items
-            successful = cartService.removeAllCartItems();
-        }
-        if (!successful) {
-            //TODO make bad error page
-            return new ModelAndView("redirect:/bad");
-        }
+        var payingMethodCleaned = payingMethod.toUpperCase().replace(
+                PAYING_METHOD_URL_MINUS_CHARACTER,
+                PAYING_METHOD_JAVA_UNDERSCORE_CHARACTER
+        );
+        PayingMethodValues payingMethodValue = PayingMethodValues.valueOf(payingMethodCleaned);
+        cartService.saveToDatabase(payingMethodValue, SecurityContextHolder.getContext().getAuthentication().getName());
+        // If no exception, empty cart item
+        cartService.removeAllCartItems();
         return viewModel;
     }
 
-    @GetMapping("/ticket/{id}")
-    public ModelAndView boughtTicked(@PathVariable Integer id) {
-        ModelAndView viewModel = new ModelAndView("commerce/ticket");
+    @GetMapping(TICKET_URL)
+    public ModelAndView boughtTicket(@PathVariable Integer id) {
+        ModelAndView viewModel = new ModelAndView(TICKET_PAGE);
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        viewModel.addObject("ticket", ticketService.getTicket(username, LocaleContextHolder.getLocale(), id));
+        viewModel.addObject(
+                AttributeNames.TICKET,
+                ticketService.getTicket(username, LocaleContextHolder.getLocale(), id)
+        );
         return viewModel;
     }
 
-    @GetMapping("/ticket/image/{text}")
+    @GetMapping(TICKET_IMAGE_URL)
     public void ticketBarcodeImage(HttpServletResponse response, @PathVariable String text) throws IOException {
-        response.setContentType("image/" + TicketGenerator.IMAGE_FORMAT);
+        response.setContentType(TicketGenerator.IMAGE_TYPE.toString());
         var out = response.getOutputStream();
         out.write(TicketGenerator.getQrImage(text));
         out.flush();

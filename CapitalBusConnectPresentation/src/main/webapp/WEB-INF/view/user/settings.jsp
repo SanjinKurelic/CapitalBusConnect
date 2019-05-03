@@ -1,10 +1,8 @@
-<%--
-  Document   : settings
-  Created on : 28.02.2019
-  Author     : Sanjin Kurelic
---%>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
-<%-- Imports --%>
+
+<%-- Imports: --%>
+<%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.temporal.ChronoUnit" %>
 <%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
@@ -12,25 +10,28 @@
 <%-- Local Variables: --%>
 <c:set var="maxDOB" value="${LocalDate.now().minus(18, ChronoUnit.YEARS)}"/>
 <c:set var="minDOB" value="${LocalDate.now().minus(18 + 120, ChronoUnit.YEARS)}"/>
-<spring:message code='userData.password.placeholder' var="passwordPlaceholder" />
+<spring:message code='userData.password.placeholder' var="passwordPlaceholder"/>
 
-<%-- Content --%>
+<%-- Content: --%>
 <article>
-    <cbc:menuComponent menu="${menuItem}" />
+    <cbc:menuComponent menu="${requestScope[AttributeNames.MENU_ITEM]}"/>
     <div class="center" style="padding-bottom: 20px;">
-        <%--@elvariable id="user" type="eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm"--%>
-        <form:form action="user/settings" method="post" modelAttribute="user">
+        <%--@elvariable id="${AttributeNames.USER_DATA}" type="eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm"--%>
+        <form:form action="user/settings" method="post" modelAttribute="${AttributeNames.USER_DATA}">
             <%-- Only for validation, this field is not used in code behind! --%>
             <form:input path="email" cssStyle="display: none;"/>
             <table class="userBox-content">
                 <tr class="userBox-content-item">
                     <td colspan="2">
-                            <%--@elvariable id="saveErrors" type="java.util.List"--%>
-                        <c:if test="${not empty saveErrors && saveErrors.size() > 0}">
+                        <c:if test="${not empty requestScope[AttributeNames.ERROR]}">
                             <p class="userBox-content-item-error">
                                     <%--@elvariable id="saveError" type="org.springframework.validation.ObjectError"--%>
-                                <c:forEach items="${saveErrors}" var="saveError">
-                                    <spring:message code="${saveError.defaultMessage}" text="${saveError.defaultMessage}"/><br/>
+                                <c:forEach items="${requestScope[AttributeNames.ERROR]}" var="saveError">
+                                    <spring:message
+                                            code="${saveError.defaultMessage}"
+                                            text="${saveError.defaultMessage}"
+                                    />
+                                    <br/>
                                 </c:forEach>
                             </p>
                         </c:if>
@@ -57,9 +58,16 @@
                         <form:label path="dateOfBirth"><spring:message code="userData.dateOfBirth.text"/></form:label>
                     </td>
                     <td>
-                        <form:input path="dateOfBirth" required="required"
-                                    data-type="date" data-max="${maxDOB}" data-min="${minDOB}"
-                                    data-default="${empty user.dateOfBirth ? maxDOB : user.dateOfBirth}"/>
+                        <form:input
+                                path="dateOfBirth"
+                                required="required"
+                                data-type="date"
+                                data-max="${maxDOB}"
+                                data-min="${minDOB}"
+                                data-default="${empty requestScope[AttributeNames.USER_DATA].dateOfBirth
+                                                ? maxDOB
+                                                : requestScope[AttributeNames.USER_DATA].dateOfBirth}"
+                        />
                     </td>
                 </tr>
                 <tr class="userBox-content-item">
@@ -67,18 +75,25 @@
                         <form:label path="newsletter"><spring:message code="userData.newsletter.text"/></form:label>
                     </td>
                     <td>
-                        <cbc:switchElement checked="${not empty user.newsletter and user.newsletter eq true}"
-                                           name="newsletter"/>
+                        <cbc:switchElement
+                                checked="${not empty requestScope[AttributeNames.USER_DATA].newsletter
+                                            and requestScope[AttributeNames.USER_DATA].newsletter eq true}"
+                                name="newsletter"
+                        />
                     </td>
                 </tr>
                 <tr class="userBox-content-title">
                     <td colspan="2">
-                        <h4 class="userBox-content-title-content"><spring:message code="userData.changePassword.text"/></h4>
+                        <h4 class="userBox-content-title-content">
+                            <spring:message code="userData.changePassword.text"/>
+                        </h4>
                     </td>
                 </tr>
                 <tr class="userBox-content-item">
                     <td>
-                        <form:label path="identification"><spring:message code="userData.newPassword.text"/></form:label>
+                        <form:label path="identification">
+                            <spring:message code="userData.newPassword.text"/>
+                        </form:label>
                     </td>
                     <td>
                         <form:password path="identification" placeholder="${passwordPlaceholder}"/>
@@ -86,7 +101,9 @@
                 </tr>
                 <tr class="userBox-content-item">
                     <td>
-                        <form:label path="confirmedIdentification"><spring:message code="userData.repeatPassword.text"/></form:label>
+                        <form:label path="confirmedIdentification">
+                            <spring:message code="userData.repeatPassword.text"/>
+                        </form:label>
                     </td>
                     <td>
                         <form:password path="confirmedIdentification" placeholder="${passwordPlaceholder}"/>
@@ -95,29 +112,30 @@
                 <tr class="userBox-content-buttons">
                     <td></td>
                     <td>
-                        <input class="button" type="submit" value="<spring:message code='navigation.saveButton.text' />"/>
+                        <input
+                                class="button"
+                                type="submit"
+                                value="<spring:message code='navigation.saveButton.text' />"
+                        />
                     </td>
                 </tr>
             </table>
         </form:form>
     </div>
 </article>
-
-<c:if test="${not empty successfully}">
+<c:if test="${not empty requestScope[AttributeNames.SUCCESS]}">
     <c:choose>
-        <c:when test="${successfully eq true}">
-            <c:set var="dialogText" value="DialogMessage.USER_SAVE_SUCCESS" />
+        <c:when test="${requestScope[AttributeNames.SUCCESS] eq true}">
+            <c:set var="dialogText" value="DialogMessage.USER_SAVE_SUCCESS"/>
         </c:when>
         <c:otherwise>
-            <c:set var="dialogText" value="DialogMessage.USER_SAVE_ERROR" />
+            <c:set var="dialogText" value="DialogMessage.USER_SAVE_ERROR"/>
         </c:otherwise>
     </c:choose>
     <script>
-        window.onload = function() {
-            var dialog = new Dialog(DialogType.TOAST, ${dialogText}, DialogMessageType.NOTICE);
-            dialog.show();
+        window.onload = function () {
+            (new Dialog(DialogType.TOAST, ${dialogText}, DialogMessageType.NOTICE)).show();
         };
     </script>
 </c:if>
-
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>

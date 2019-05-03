@@ -1,30 +1,29 @@
-<%--
-  Document   : travels
-  Created on : 28.02.2019
-  Author     : Sanjin Kurelic
---%>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
+
+<%-- Imports: --%>
+<%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 <%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
 
+<%-- Local variables: --%>
+
+<%-- Content: --%>
 <article>
-    <cbc:menuComponent menu="${menuItem}"/>
+    <cbc:menuComponent menu="${requestScope[AttributeNames.MENU_ITEM]}"/>
     <div class="center">
-        <table class="scheduleBox">
-            <c:forEach var="scheduleItem" items="${scheduleItems}">
-                <cbc:scheduleItem scheduleItem="${scheduleItem}"/>
-            </c:forEach>
-        </table>
+        <cbc:scheduleItems scheduleItems="${requestScope[AttributeNames.SCHEDULE_ITEMS]}"/>
         <c:choose>
-            <c:when test="${empty scheduleItems}">
+            <c:when test="${empty requestScope[AttributeNames.SCHEDULE_ITEMS]}">
                 <p><spring:message code="empty.travel.text"/></p>
             </c:when>
             <c:otherwise>
-                <cbc:paginationItem numberOfItems="${numberOfPages}" currentPageNumber="${currentPage}" leftUrlPart="${leftUrlPart}"/>
+                <cbc:paginationComponent
+                        numberOfItems="${requestScope[AttributeNames.PAGINATION_NUMBER_OF_ITEMS]}"
+                        currentPageNumber="${requestScope[AttributeNames.PAGINATION_CURRENT_PAGE]}"
+                        leftUrlPart="${requestScope[AttributeNames.PAGINATION_LEFT_URL_PART]}"
+                />
             </c:otherwise>
         </c:choose>
-        <c:if test="${empty scheduleItems}">
-            <p><spring:message code="empty.travel.text"/></p>
-        </c:if>
     </div>
 </article>
 <%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>

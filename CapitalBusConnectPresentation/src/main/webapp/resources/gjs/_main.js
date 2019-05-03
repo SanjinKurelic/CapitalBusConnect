@@ -1,9 +1,6 @@
-/* 
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
-/*jslint browser: true */
-/*global $$, SelectItem, cbc_addEventListener */
+/*global window, $$, SelectItem, cbc_addEventListener, setDatePicker, initMap, cbc_async */
 
 /**
  * On resize
@@ -11,7 +8,6 @@
  */
 function cbc_setDomOnResize() {
     "use strict";
-    // Custom stuff
     $$("article")[0].style.paddingBottom = $$("footer")[0].clientHeight + "px";
 }
 
@@ -21,12 +17,15 @@ function cbc_setDomOnResize() {
  */
 function cbc_setDom() {
     "use strict";
+    // Resize event
+    cbc_addEventListener("resize", window, cbc_setDomOnResize);
+    cbc_setDomOnResize();
     // Custom stuff
     SelectItem.setSelectItems();
     setDatePicker();
-
-    // Resize event
-    cbc_addEventListener('resize', window, cbc_setDomOnResize);
-    cbc_setDomOnResize();
+    cbc_async(initMap);
 }
-cbc_addEventListener('load', window, cbc_setDom);
+
+cbc_addEventListener("load", window, cbc_setDom);
+// Firefox FIX
+cbc_addEventListener("load", $$("footer")[0], cbc_setDomOnResize);

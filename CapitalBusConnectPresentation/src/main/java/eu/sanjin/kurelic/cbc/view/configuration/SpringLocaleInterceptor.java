@@ -4,7 +4,6 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
@@ -17,12 +16,11 @@ public class SpringLocaleInterceptor extends LocaleChangeInterceptor {
     private final List<String> supportedLocales = Arrays.asList("hr", "en", "de", "it");
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String newLocale = request.getParameter(this.getParamName());
-
-        if(newLocale != null && supportedLocales.contains(newLocale)) {
+        if (newLocale != null && supportedLocales.contains(newLocale)) {
             LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-            if(localeResolver == null) {
+            if (localeResolver == null) {
                 throw new IllegalStateException(LOCALE_RESOLVER_NOT_SET);
             }
             localeResolver.setLocale(request, response, Locale.forLanguageTag(newLocale));

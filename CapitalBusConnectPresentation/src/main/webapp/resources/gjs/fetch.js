@@ -1,4 +1,4 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
 /*global cbc_enum, cbc_voidFunction, $$ */
 
@@ -12,7 +12,8 @@ var FetchHttpMethods = cbc_enum({
 var Fetch = function (url) {
     "use strict";
     this.method = FetchHttpMethods.GET;
-    this.url = url;
+    // noinspection JSLint
+    this.url = url.startsWith("/") ? url.slice(1) : url;
     this.username = null;
     this.password = null;
     this.bodyParameters = null; // JSON

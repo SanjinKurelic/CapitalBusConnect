@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ReadFromSession {
 
-    String sessionKey();
+    String value();
 
 }

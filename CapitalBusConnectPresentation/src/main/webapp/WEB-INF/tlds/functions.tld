@@ -49,7 +49,9 @@
     <function>
         <name>getCurrentLocale</name>
         <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
-        <function-signature>java.util.Locale getCurrentLocale()</function-signature>
+        <function-signature>
+            java.util.Locale getCurrentLocale()
+        </function-signature>
     </function>
     <function>
         <name>formatDate</name>
@@ -76,7 +78,7 @@
         <name>getPageList</name>
         <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
         <function-signature>
-            java.lang.Integer[] getPageList(int,int)
+            java.lang.Integer[] getPageList(int,java.lang.Long)
         </function-signature>
     </function>
     <function>
@@ -90,7 +92,21 @@
         <name>getNumberOfPages</name>
         <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
         <function-signature>
-            int getNumberOfPages(int)
+            int getNumberOfPages(java.lang.Long)
+        </function-signature>
+    </function>
+    <function>
+        <name>buildUrl</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String buildUrl1(java.lang.String,java.lang.String)
+        </function-signature>
+    </function>
+    <function>
+        <name>buildUrl2</name>
+        <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>
+        <function-signature>
+            java.lang.String buildUrl2(java.lang.String,java.lang.String, java.lang.String)
         </function-signature>
     </function>
 </taglib>

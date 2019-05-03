@@ -1,8 +1,4 @@
-<%--
-    Document   : menu
-    Created on : Oct 27, 2018, 10:23:47 AM
-    Author     : Sanjin Kurelic
---%>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ tag description="Tag for search input and results" pageEncoding="UTF-8" %>
 
 <%-- Imports: --%>
@@ -15,15 +11,21 @@
 <%@ attribute name="inputName" required="false" type="java.lang.String" %>
 <%@ attribute name="inputValue" required="false" type="java.lang.String" %>
 <%@ attribute name="inputPlaceholder" required="false" type="java.lang.String" %>
-<%@ attribute name="inputExtraAttribute" required="false" type="java.lang.String" %>
+<%@ attribute name="required" required="false" type="java.lang.Boolean" %>
 <%@ attribute name="inputId" required="false" type="java.lang.String" %>
+<%@ attribute name="searchValue" required="false" type="java.lang.String" %>
 
 <%-- Local Variables: --%>
+<c:set var="realValue" value=""/>
+<c:if test="${not empty searchValue}">
+    <c:set var="realValue" value='data-value="${searchValue}"'/>
+</c:if>
 
 <%-- Content: --%>
 <div class="searchContainer">
+    <%--suppress HtmlFormInputWithoutLabel --%>
     <input class="searchContainer-searchInput" value="${inputValue}" id="${inputId}"
-           placeholder="${inputPlaceholder}" ${inputExtraAttribute} name="${inputName}"
+           placeholder="${inputPlaceholder}" ${required} name="${inputName}" ${realValue}
            onkeyup="Search.search(this, '${searchUrl}')"/>
     <ul class="searchContainer-elements"></ul>
     <%-- <li class="searchContainer-elements-element"></li> --%>

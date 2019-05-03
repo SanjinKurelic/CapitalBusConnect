@@ -1,8 +1,5 @@
-/* 
- * Created by Sanjin Kurelic (kurelic@sanjin.eu)
- */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
-/*jslint browser: true */
 /*global FB */
 
-// Removed becouse it's slow, implement it on your own from facebook documentation :)
+// Removed because it's slow, implement it on your own from facebook documentation :)

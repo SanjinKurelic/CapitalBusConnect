@@ -6,13 +6,13 @@ public class MenuItem {
     private String onClick;
     private String extraClass;
 
-    public MenuItem(String name, String onClick) {
+    MenuItem(String name, String onClick) {
         this.name = name;
         this.onClick = onClick;
         this.extraClass = "";
     }
 
-    public MenuItem(String name, String onClick, String... extraClasses) {
+    MenuItem(String name, String onClick, String... extraClasses) {
         this.name = name;
         this.onClick = onClick;
         buildClasses(extraClasses);
@@ -32,23 +32,11 @@ public class MenuItem {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getOnClick() {
         return onClick;
     }
 
-    public void setOnClick(String onClick) {
-        this.onClick = onClick;
-    }
-
     public String getExtraClass() {
         return extraClass;
-    }
-
-    public void setExtraClass(String extraClass) {
-        this.extraClass = extraClass;
     }
 }

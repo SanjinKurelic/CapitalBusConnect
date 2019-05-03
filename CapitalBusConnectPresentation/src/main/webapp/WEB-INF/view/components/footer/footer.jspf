@@ -1,8 +1,11 @@
-<%--
-  Created by Sanjin Kurelic.
-  Date: 2018-10-15
---%>
+<%-- Created by Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
+
+<%-- Imports: --%>
+
+<%-- Local variables: --%>
+
+<%-- Content: --%>
 <footer class="footer">
     <div class="center">
         <div class="footer-contactInfo">
@@ -17,7 +20,7 @@
                 </tr>
                 <tr>
                     <td><span class="icon">&#xf041;</span></td>
-                    <td>Avenija Marina Držića 4, Zagreb, <spring:message code="footer.croatia" /></td>
+                    <td>Avenija Marina Držića 4, Zagreb, <spring:message code="footer.croatia"/></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -29,8 +32,16 @@
                 </tr>
                 <tr>
                     <td class="footer-contactInfo-applicationStore" colspan="2">
-                        <img alt="Google play" width="150" height="58" src="<spring:url value='${cbcf:getImageResourceUrl(\'googlePlay.png\')}' />"/>
-                        <img alt="Apple store" width="150" height="58" src="<spring:url value='${cbcf:getImageResourceUrl(\'appStore.png\')}' />"/>
+                        <img
+                                alt="Google play"
+                                width="150" height="58"
+                                src="<spring:url value='${cbcf:getImageResourceUrl(\'googlePlay.png\')}' />"
+                        />
+                        <img
+                                alt="Apple store"
+                                width="150" height="58"
+                                src="<spring:url value='${cbcf:getImageResourceUrl(\'appStore.png\')}' />"
+                        />
                     </td>
                 </tr>
             </table>
@@ -42,5 +53,3 @@
     <%@ include file="copyright.jspf" %>
 </footer>
 <%@ include file="dialog.jspf" %>
-</body>
-</html>

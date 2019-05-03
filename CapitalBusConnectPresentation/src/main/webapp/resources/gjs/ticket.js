@@ -1,9 +1,11 @@
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
+
 /*global window, cbc_findUpTag */
 
 var Ticket = {
     url: "ticket/",
     width: 320,
-    height: 430,
+    height: 480,
     show: function (element) {
         "use strict";
         var id, dualScreenLeft, dualScreenTop, width, height, left, top, systemZoom, position;

@@ -1,4 +1,4 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
 /*global $$, cbc_addClass, cbc_removeClass, cbc_findUpClass */
 
@@ -12,6 +12,7 @@ var RadioBox = {
         radios = $$("input[type=radio]", parent);
         for (i = 0; i < radios.length; i += 1) {
             if (radios[i].value === selectionName) {
+                // noinspection JSUndefinedPropertyAssignment
                 radios[i].checked = true;
                 radios[i].onchange();
                 break;

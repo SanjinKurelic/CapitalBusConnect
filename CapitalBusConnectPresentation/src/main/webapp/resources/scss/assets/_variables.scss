@@ -1,4 +1,4 @@
-// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+// Created by Sanjin Kurelić (kurelic@sanjin.eu)
 
 // Variables
 $cbc_colors: (
@@ -34,8 +34,7 @@ $cbc_mobileBP: 500px;
     }
 }
 
-@mixin cbc_absolute($top, $right, $bottom, $left){
-    position: absolute;
+@mixin cbc_position($top, $right, $bottom, $left) {
     @if $top > -1 {
         top: $top;
     }
@@ -48,6 +47,16 @@ $cbc_mobileBP: 500px;
     @if $left > -1 {
         left: $left;
     }
+}
+
+@mixin cbc_absolute($top, $right, $bottom, $left) {
+  position: absolute;
+  @include cbc_position($top, $right, $bottom, $left);
+}
+
+@mixin cbc_fixed($top, $right, $bottom, $left) {
+  position: fixed;
+  @include cbc_position($top, $right, $bottom, $left);
 }
 
 @mixin cbc_tablet {

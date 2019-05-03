@@ -1,18 +1,21 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Sanjin
-  Date: 1.3.2019.
-  Time: 15:22
-  To change this template use File | Settings | File Templates.
---%>
+<%-- Created by Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
+
+<%-- Imports: --%>
+<%@ page import="eu.sanjin.kurelic.cbc.view.configuration.SpringSecurityConfiguration" %>
 <%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
+
+<%-- Local variables: --%>
+
+<%-- Content: --%>
 <article>
     <section class="errorPage center">
-        <h2 class="errorPage-title"><spring:message code="errorPage.accessDenied.title.text" /></h2>
-        <p class="errorPage-content"><spring:message code="errorPage.accessDenied.content.text" /></p>
+        <h2 class="errorPage-title"><spring:message code="errorPage.accessDenied.title.text"/></h2>
+        <p class="errorPage-content"><spring:message code="errorPage.accessDenied.content.text"/></p>
         <div class="errorPage-buttons">
-            <a class="button" href="<spring:url value="/login" />"><spring:message code="navigation.loginButton.text" /></a>
+            <a class="button" href="<spring:url value="${SpringSecurityConfiguration.LOGIN_PAGE_URL}" />">
+                <spring:message code="navigation.loginButton.text"/>
+            </a>
         </div>
     </section>
 </article>

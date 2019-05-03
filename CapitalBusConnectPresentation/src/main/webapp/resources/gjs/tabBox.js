@@ -1,4 +1,4 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
 /*global $$, $, cbc_addClass, cbc_removeClass */
 
@@ -8,7 +8,7 @@ function tabItemOpen(elem) {
     // Id of opened tab
     id = elem.getAttribute("data-tabId");
     // Parent containing tab menu selector
-    parent = elem.parentNode;
+    parent = elem.parentElement;
     // List of all tabs in menu selector
     tabs = $$("[data-tabId]", parent);
     // Close all tabs and open right one + style menu with active class

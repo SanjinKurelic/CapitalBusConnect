@@ -1,29 +1,26 @@
-<%-- 
-    Document   : scheduleItem
-    Created on : Nov 1, 2018, 11:53:28 AM
-    Author     : Sanjin Kurelic
---%>
-<%@ tag description="put the tag description here" pageEncoding="UTF-8" %>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
+<%@ tag description="Tag for displaying schedule item" pageEncoding="UTF-8" %>
 
 <%-- Imports: --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItemType" %>
 <%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleButtonType" %>
-<%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleUpdateType" %>
+<%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItemType" %>
 <%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.SchedulePayingMethod" %>
+<%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleUpdateType" %>
 
 <%-- Attributes: --%>
-<%@ attribute name="scheduleItem" type="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItem"
-              required="true" %>
+<%@ attribute name="scheduleItem" required="true"
+              type="eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItem" %>
 
-<%-- Local variables --%>
+<%-- Local variables: --%>
 <c:set var="disabled" value="${scheduleItem.disabled() ? 'disabled' : ''}" />
 <c:set var="selectDisabled" value="${scheduleItem.button eq ScheduleButtonType.VIEW_TICKET ? 'disabled' : ''}" />
 
 <%-- Content: --%>
-<tr class="scheduleBox-item ${disabled}" data-id-param="${scheduleItem.id}" data-date-param="${scheduleItem.date}" data-trip-param="${scheduleItem.tripType.name()}">
+<tr class="scheduleBox-item ${disabled}" data-id-param="${scheduleItem.id}" data-date-param="${scheduleItem.date}"
+    data-trip-param="${scheduleItem.tripType.name()}">
     <td class="scheduleBox-item-title">
         <div class="scheduleBox-item-title-main">
             ${scheduleItem.leftTitle}
@@ -71,10 +68,12 @@
     <td class="scheduleBox-item-price" data-base-price="${scheduleItem.basePrice}">
         <c:choose>
             <c:when test="${scheduleItem.payingMethod eq SchedulePayingMethod.PAY_PAL}">
-                <span title="<spring:message code='schedule.payingMethod.payPal.tooltip'/>" class="scheduleBox-item-price-payingMethod icon">&#xf1ed;</span>
+                <span title="<spring:message code='schedule.payingMethod.payPal.tooltip'/>"
+                      class="scheduleBox-item-price-payingMethod icon">&#xf1ed;</span>
             </c:when>
             <c:when test="${scheduleItem.payingMethod eq SchedulePayingMethod.MONEY}">
-                <span title="<spring:message code='schedule.payingMethod.money.tooltip'/>" class="scheduleBox-item-price-payingMethod icon">&#xf155;</span>
+                <span title="<spring:message code='schedule.payingMethod.money.tooltip'/>"
+                      class="scheduleBox-item-price-payingMethod icon">&#xf155;</span>
             </c:when>
         </c:choose>
         <fmt:formatNumber value="${scheduleItem.price}" type="currency" currencySymbol="kn" pattern="#,##0.00 ¤"/>

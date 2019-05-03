@@ -1,6 +1,6 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
-/*global $$, Pikaday */
+/*global $, $$, Pikaday */
 
 function setDatePicker() {
     "use strict";
@@ -56,11 +56,11 @@ function setDatePicker() {
             yearSuffix: ".",
             firstDay: 1,
             i18n: {
-                previousMonth: "Previous Month",
-                nextMonth: "Next Month",
-                months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                weekdaysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+                previousMonth: $("datePicker-ui-previousMonth").innerHTML,
+                nextMonth: $("datePicker-ui-nextMonth").innerHTML,
+                months: $("datePicker-ui-months").innerHTML.split(","),
+                weekdays: $("datePicker-ui-weekdays").innerHTML.split(","),
+                weekdaysShort: $("datePicker-ui-weekdaysShort").innerHTML.split(",")
             }
         });
         picker.hide();

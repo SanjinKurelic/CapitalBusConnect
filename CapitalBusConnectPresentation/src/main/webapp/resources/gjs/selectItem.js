@@ -1,6 +1,5 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
-/*jslint browser: true */
 /*global $$, cbc_addClass, cbc_removeClass, cbc_hasClass, cbc_addClickEventListener */
 
 var SelectItem = {
@@ -8,7 +7,7 @@ var SelectItem = {
     wrapSelectItem: function (selectTag) {
         "use strict";
         var parentElement, wrapElement;
-        parentElement = selectTag.parentNode;
+        parentElement = selectTag.parentElement;
         wrapElement = document.createElement("DIV");
         // Copy attributes from select tag to class list of wrapper
         if (selectTag.hasAttribute("data-size")) {
@@ -34,14 +33,16 @@ var SelectItem = {
         for (i = 0; i < selectElements.length; i += 1) {
             selectElement = selectElements[i];
             // Wrap around select element
+            // noinspection JSLint
             SelectItem.wrapSelectItem(selectElement);
 
             // Area for holding text of selected item (and opening select items)
             newSelectElement = document.createElement("DIV");
             newSelectElement.setAttribute("class", "select-selected");
             newSelectElement.innerHTML = selectElement.options[selectElement.selectedIndex].innerHTML;
+            // noinspection JSLint
             cbc_addClickEventListener(newSelectElement, SelectItem.showSelectItem);
-            selectElement.parentNode.appendChild(newSelectElement);
+            selectElement.parentElement.appendChild(newSelectElement);
 
             // Area for holding select items
             newItemsElement = document.createElement("DIV");
@@ -51,29 +52,32 @@ var SelectItem = {
                 // Attribute data-index is used on click - that index is set on real select component
                 newItemElement.setAttribute("data-index", j);
                 newItemElement.innerHTML = selectElement.options[j].innerHTML;
+                // noinspection JSLint
                 cbc_addClickEventListener(newItemElement, SelectItem.selectSelectItem);
                 newItemsElement.appendChild(newItemElement);
             }
-            selectElement.parentNode.appendChild(newItemsElement);
+            selectElement.parentElement.appendChild(newItemsElement);
         }
+        // noinspection JSLint
         cbc_addClickEventListener(document, SelectItem.closeAllSelectItems);
     },
 
     selectSelectItem: function (e) {
         "use strict";
-        var selectNode, items, i, element;
+        var selectElement, items, i, element;
         // Sender element
+        // noinspection JSDeprecatedSymbols
         element = e.target || e.srcElement;
         // Select element and fire onchange if exists
-        selectNode = element.parentNode.parentNode.getElementsByTagName("select")[0];
-        selectNode.selectedIndex = parseInt(element.getAttribute("data-index"));
-        if (selectNode.hasAttribute("onchange")) {
-            selectNode.onchange(e);
+        selectElement = element.parentElement.parentElement.getElementsByTagName("select")[0];
+        selectElement.selectedIndex = parseInt(element.getAttribute("data-index"));
+        if (selectElement.hasAttribute("onchange")) {
+            selectElement.onchange(e);
         }
         // Copy value to selected box
-        element.parentNode.previousSibling.innerHTML = element.innerHTML;
+        element.parentElement.previousSibling.innerHTML = element.innerHTML;
         // Add selected styling to select items
-        items = $$(".select-items-selected", element.parentNode);
+        items = $$(".select-items-selected", element.parentElement);
         for (i = 0; i < items.length; i += 1) {
             cbc_removeClass(items[i], "select-items-selected");
         }
@@ -84,11 +88,13 @@ var SelectItem = {
         "use strict";
         var element, isOpened, isDisabled;
         // Sender element (select component)
+        // noinspection JSDeprecatedSymbols
         element = e.target || e.srcElement;
         isOpened = cbc_hasClass(element, "select-arrow-active");
-        isDisabled = cbc_hasClass(element.parentNode, "disabled");
+        isDisabled = cbc_hasClass(element.parentElement, "disabled");
         e.stopPropagation();
         // Close all select components on page
+        // noinspection JSLint
         SelectItem.closeAllSelectItems();
         // Show this component
         if (!isOpened && !isDisabled) {

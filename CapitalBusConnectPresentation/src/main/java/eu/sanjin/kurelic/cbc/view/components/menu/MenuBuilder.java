@@ -1,12 +1,11 @@
 package eu.sanjin.kurelic.cbc.view.components.menu;
 
 import eu.sanjin.kurelic.cbc.view.components.ActiveTabItem;
+import eu.sanjin.kurelic.cbc.view.configuration.SpringSecurityConfiguration;
 import org.apache.commons.lang3.StringUtils;
 
 public class MenuBuilder {
 
-    // Common
-    private static final String LOGOUT_URL = "/logout";
     // Admin
     private static final String ADMIN_STATISTICS_URL = "admin/stats";
     private static final String ADMIN_USERS_URL = "admin/users";
@@ -25,7 +24,7 @@ public class MenuBuilder {
         menuItems.add(new MenuItem(MenuTitleKey.ADMIN_STATISTICS_ITEM, ADMIN_STATISTICS_URL));
         menuItems.add(new MenuItem(MenuTitleKey.ADMIN_USERS_ITEM, ADMIN_USERS_URL));
         menuItems.add(new MenuItem(MenuTitleKey.ADMIN_ROUTES_ITEM, ADMIN_ROUTES_URL));
-        menuItems.add(new MenuItem(MenuTitleKey.LOGOUT_ITEM, LOGOUT_URL));
+        menuItems.add(new MenuItem(MenuTitleKey.LOGOUT_ITEM, SpringSecurityConfiguration.LOGOUT_PAGE_URL));
         return getMenu(MenuType.LINK_BASED, menuItems);
     }
 
@@ -34,7 +33,7 @@ public class MenuBuilder {
         menuItems.add(new MenuItem(MenuTitleKey.USER_SETTINGS_ITEM, USER_SETTINGS_URL));
         menuItems.add(new MenuItem(MenuTitleKey.USER_TRAVELS_ITEM, USER_TRAVELS_URL));
         menuItems.add(new MenuItem(MenuTitleKey.USER_DISCOUNTS_ITEM, USER_DISCOUNTS_URL));
-        menuItems.add(new MenuItem(MenuTitleKey.LOGOUT_ITEM, LOGOUT_URL));
+        menuItems.add(new MenuItem(MenuTitleKey.LOGOUT_ITEM, SpringSecurityConfiguration.LOGOUT_PAGE_URL));
         return getMenu(MenuType.LINK_BASED, menuItems);
     }
 

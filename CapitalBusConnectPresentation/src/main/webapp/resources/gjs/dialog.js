@@ -1,6 +1,6 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
-/*global $, $$, cbc_removeClass, cbc_addClass, cbc_addClickEventListener, cbc_enum, cbc_voidFunction */
+/*global $, $$, cbc_removeClass, cbc_addClass, cbc_addClickEventListener, cbc_removeEventListeners, cbc_enum, cbc_voidFunction */
 
 var DialogType = cbc_enum({
     TOAST: "toast",
@@ -38,19 +38,6 @@ var Dialog = function (dialogType, text, messageType) {
     this.onCancel = cbc_voidFunction();
 };
 
-Dialog.prototype.setDialogMessage = function () {
-    "use strict";
-    var messages, i;
-    messages = $("dialog-content").children; // do not use comments inside dialog messages for IE6-8 error
-    for (i = 0; i < messages.length; i += 1) {
-        if (messages[i].id === this.text) {
-            messages[i].style.display = "block";
-        } else {
-            messages[i].style.display = "none";
-        }
-    }
-};
-
 Dialog.prototype.show = function () {
     "use strict";
     var element, ok, cancel, onOk, onCancel, close, dialog, id;
@@ -58,7 +45,7 @@ Dialog.prototype.show = function () {
     element.open = true;
     element.style.display = "block";
     cbc_addClass(element, this.messageType);
-    this.setDialogMessage();
+    $(this.dialogType + "-content").innerHTML = $(this.text).innerHTML;
 
     if (this.dialogType === DialogType.DIALOG) {
         // Block scroll
@@ -70,11 +57,12 @@ Dialog.prototype.show = function () {
         if (typeof this.onOk === "function") {
             onOk = this.onOk;
         } else {
-            onOk = cbc_voidFunction();
+            onOk = cbc_voidFunction;
         }
         cbc_addClickEventListener(ok, function () {
             onOk();
             close();
+            cbc_removeEventListeners(ok);
         });
 
         if (this.buttonType === DialogButtonType.OK_CANCEL) {
@@ -89,6 +77,7 @@ Dialog.prototype.show = function () {
             cbc_addClickEventListener(cancel, function () {
                 onCancel();
                 close();
+                cbc_removeEventListeners(cancel);
             });
         }
     } else if (this.dialogType === DialogType.TOAST) {
@@ -107,7 +96,6 @@ Dialog.prototype.close = function () {
     element.open = false;
     element.style.display = "none";
     cbc_removeClass(element, this.messageType);
-    $(this.dialogType + "-content").innerHTML = "";
     if (this.dialogType === DialogType.DIALOG) {
         // Unblock scroll
         document.body.style.overflowY = "auto";

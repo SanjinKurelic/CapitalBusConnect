@@ -1,4 +1,4 @@
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
+/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
 
 /*global window, cbc_addClass, $, $$, cbc_findUpTag, cbc_addClickEventListener, cbc_blockEvents, Fetch, FetchHttpMethods, Dialog, DialogType, DialogMessageType, DialogButtonType, DialogMessage, cbc_formatDecimal */
 
@@ -39,8 +39,10 @@ var Cart = {
         var itemElement, fetch, selectItems, i;
         itemElement = cbc_findUpTag(buttonElement, "tr");
         // fetch
+        // noinspection JSLint
         fetch = new Fetch(Cart.url);
         fetch.method = FetchHttpMethods.POST;
+        // noinspection JSLint
         fetch.bodyParameters = Cart.getItem(itemElement);
         fetch.onSuccess = function () {
             // disable
@@ -69,13 +71,15 @@ var Cart = {
             var itemElement, fetch;
             itemElement = cbc_findUpTag(buttonElement, "tr");
             // fetch
+            // noinspection JSLint
             fetch = new Fetch(Cart.url);
             fetch.method = FetchHttpMethods.DELETE;
+            // noinspection JSLint
             fetch.bodyParameters = Cart.getItem(itemElement);
             fetch.onSuccess = function () {
-                var parent = itemElement.parentNode;
+                var parent = itemElement.parentElement;
                 parent.removeChild(itemElement);
-                if (parent.children.length <= 0) { // hasChildNodes also return non Element nodes!!!
+                if (parent.children.length <= 1) { // hasChildNodes also return non Element nodes!!!
                     window.location.reload();
                 }
             };
@@ -93,8 +97,10 @@ var Cart = {
         var itemElement, fetch;
         itemElement = cbc_findUpTag(updatedValue, "tr");
         // fetch
+        // noinspection JSLint
         fetch = new Fetch(Cart.url);
         fetch.method = FetchHttpMethods.PUT;
+        // noinspection JSLint
         fetch.bodyParameters = Cart.getItem(itemElement);
         // no onSuccess
         fetch.onError = function () {
@@ -106,6 +112,7 @@ var Cart = {
             // Get price box
             priceBox = $$(".scheduleBox-item-price", itemElement)[0];
             // Get item data
+            // noinspection JSLint
             item = Cart.getItem(itemElement);
             basePrice = priceBox.getAttribute("data-base-price");
             // Set price and currency
@@ -113,6 +120,7 @@ var Cart = {
             priceElements = priceBox.innerHTML.trim().split(" ");
             currency = priceElements[priceElements.length - 1];
             priceBox.innerHTML = cbc_formatDecimal(price) + " " + currency;
+            // noinspection JSLint
             Cart.calculateTotal(cbc_findUpTag(itemElement, "table"), currency);
         };
         fetch.fetch();

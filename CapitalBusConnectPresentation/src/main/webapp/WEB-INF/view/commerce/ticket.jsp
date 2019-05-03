@@ -1,66 +1,77 @@
-<%-- Created by Sanjin Kurelić (kurelic@sanjin.eu) --%>
-
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
-<%-- Imports --%>
-<%@ include file="/WEB-INF/view/components/header/head.jspf" %>
-<%@ page import="eu.sanjin.kurelic.cbc.view.components.TicketGenerator" %>
 
-<%-- Content --%>
+<%-- Imports: --%>
+<%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
+<%@ page import="eu.sanjin.kurelic.cbc.view.components.TicketGenerator" %>
+<%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.CommerceController" %>
+<%@ include file="/WEB-INF/view/components/header/head.jspf" %>
+
+<%-- Local variables: --%>
+
+<%-- Content: --%>
+<%--@elvariable id="requestScope[AttributeNames.TICKET]" type="eu.sanjin.kurelic.cbc.business.viewmodel.ticket.Ticket"--%>
 <div class="ticket">
-    <form:form modelAttribute="ticket">
-        <h3><spring:message code="ticket.title.text"/></h3>
-        <table class="ticket-content">
-            <tr>
-                <td><form:label path="fromCity"><spring:message code="ticket.fromCity.text"/></form:label></td>
-                <td><form:label path="toCity"><spring:message code="ticket.toCity.text"/></form:label></td>
-            </tr>
-            <tr>
-                <td><form:input path="fromCity" disabled="true"/></td>
-                <td><form:input path="toCity" disabled="true"/></td>
-            </tr>
-            <tr>
-                <td><form:label path="date"><spring:message code="ticket.date.text"/></form:label></td>
-                <td><form:label path="time"><spring:message code="ticket.time.text"/></form:label></td>
-            </tr>
-            <tr>
-                <td>
-                    <fmt:parseDate pattern="yyyy-MM-dd" value="${ticket.date}" var="ticketDate" />
-                    <fmt:formatDate value="${ticketDate}" pattern="dd-MM-yyyy" var="formatedDate" />
-                    <form:input path="date" value="${formatedDate}" disabled="true"/>
-                </td>
-                <td>
-                    <fmt:parseDate pattern="HH:mm" value="${ticket.time}" var="ticketTime" />
-                    <fmt:formatDate value="${ticketTime}" pattern="HH:mm" var="formatedTime" />
-                    <form:input path="time" disabled="true" value="${formatedTime}"/>
-                </td>
-            </tr>
-            <tr>
-                <td><form:label path="name"><spring:message code="ticket.passengerName.text"/></form:label></td>
-                <td><form:label path="surname"><spring:message code="ticket.passengerSurname.text"/></form:label></td>
-            </tr>
-            <tr>
-                <td><form:input path="name" disabled="true"/></td>
-                <td><form:input path="surname" disabled="true"/></td>
-            </tr>
-            <tr>
-                <td><form:label path="numberOfAdults"><spring:message
-                        code="ticket.numberOfAdults.text"/></form:label></td>
-                <td><form:label path="numberOfChildren"><spring:message
-                        code="ticket.numberOfChildren.text"/></form:label></td>
-            </tr>
-            <tr>
-                <td><form:input path="numberOfAdults" disabled="true"/></td>
-                <td><form:input path="numberOfChildren" disabled="true"/></td>
-            </tr>
-            <tr>
-                <td colspan="2" class="center"><span><spring:message code="ticket.qr.text"/></span></td>
-            </tr>
-            <tr>
-                <td colspan="2" class="center">
-                    <img width="${TicketGenerator.QR_IMAGE_WIDTH}" height="${TicketGenerator.QR_IMAGE_HEIGHT}"
-                         src="<spring:url value='/ticket/image/${ticket.code}'/>" alt="${ticket.code}">
-                </td>
-            </tr>
-        </table>
-    </form:form>
+    <h3><spring:message code="ticket.title.text"/></h3>
+    <table class="ticket-content">
+        <tr>
+            <td><label for="fromCity"><spring:message code="ticket.fromCity.text"/></label></td>
+            <td><label for="toCity"><spring:message code="ticket.toCity.text"/></label></td>
+        </tr>
+        <tr>
+            <td><input id="fromCity" value="${requestScope[AttributeNames.TICKET].fromCity}" disabled/></td>
+            <td><input id="toCity" value="${requestScope[AttributeNames.TICKET].toCity}" disabled/></td>
+        </tr>
+        <tr>
+            <td><label for="date"><spring:message code="ticket.date.text"/></label></td>
+            <td><label for="time"><spring:message code="ticket.time.text"/></label></td>
+        </tr>
+        <tr>
+            <td>
+                <fmt:parseDate pattern="yyyy-MM-dd"
+                               value="${requestScope[AttributeNames.TICKET].date}"
+                               var="ticketDate"
+                />
+                <fmt:formatDate value="${ticketDate}" pattern="dd-MM-yyyy" var="formattedDate"/>
+                <input id="date" value="${formattedDate}" disabled/>
+            </td>
+            <td>
+                <fmt:parseDate pattern="HH:mm"
+                               value="${requestScope[AttributeNames.TICKET].time}"
+                               var="ticketTime"
+                />
+                <fmt:formatDate value="${ticketTime}" pattern="HH:mm" var="formattedTime"/>
+                <input id="time" value="${formattedTime}" disabled/>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="name"><spring:message code="ticket.passengerName.text"/></label></td>
+            <td><label for="surname"><spring:message code="ticket.passengerSurname.text"/></label></td>
+        </tr>
+        <tr>
+            <td><input id="name" value="${requestScope[AttributeNames.TICKET].name}" disabled/></td>
+            <td><input id="surname" value="${requestScope[AttributeNames.TICKET].surname}" disabled/></td>
+        </tr>
+        <tr>
+            <td><label for="adults"><spring:message code="ticket.numberOfAdults.text"/></label></td>
+            <td><label for="children"><spring:message code="ticket.numberOfChildren.text"/></label></td>
+        </tr>
+        <tr>
+            <td><input id="adults" value="${requestScope[AttributeNames.TICKET].numberOfAdults}" disabled/></td>
+            <td><input id="children" value="${requestScope[AttributeNames.TICKET].numberOfChildren}" disabled/></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="center"><span><spring:message code="ticket.qr.text"/></span></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="center">
+                <c:set var="ticketCode" value="${requestScope[AttributeNames.TICKET].code}"/>
+                <img width="${TicketGenerator.QR_IMAGE_WIDTH}"
+                     height="${TicketGenerator.QR_IMAGE_HEIGHT}"
+                     src="<spring:url value='${cbcf:buildUrl(CommerceController.TICKET_IMAGE_URL, ticketCode)}'/>"
+                     alt="${ticketCode}"
+                >
+            </td>
+        </tr>
+    </table>
 </div>

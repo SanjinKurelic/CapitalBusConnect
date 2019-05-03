@@ -1,38 +1,50 @@
-<%-- Created by Sanjin Kurelić (kurelic@sanjin.eu) --%>
+<%-- Created by: Sanjin Kurelić (kurelic@sanjin.eu) --%>
 <%@ page pageEncoding="UTF-8" %>
+
+<%-- Imports: --%>
+<%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 <%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
 
+<%-- Local variables: --%>
+
+<%-- Content: --%>
 <article>
-    <cbc:menuComponent menu="${menuItem}"/>
+    <cbc:menuComponent menu="${requestScope[AttributeNames.MENU_ITEM]}"/>
     <div class="center">
         <br>
-        <p><spring:message code="statistics.numberOfPassengers.text"/>: ${numberOfPassengers}</p>
-        <p><spring:message code="statistics.numberOfTrips.text"/>: ${numberOfTrips}</p>
-        <h2 class="article-title">Users with highest number of travels</h2>
+        <p>
+            <spring:message code="statistics.numberOfPassengers.text"/>:
+            ${requestScope[AttributeNames.NUMBER_OF_PASSENGERS]}
+        </p>
+        <p>
+            <spring:message code="statistics.numberOfTrips.text"/>:
+            ${requestScope[AttributeNames.NUMBER_OF_LINE_ITEMS]}
+        </p>
+        <h2 class="article-title"><spring:message code="statistics.topTravelUser.title.text"/></h2>
         <c:choose>
-            <c:when test="${userItems.size() < 1}">
+            <c:when test="${empty requestScope[AttributeNames.USER_ITEMS]}">
                 <spring:message code="empty.login.text"/>
             </c:when>
             <c:otherwise>
-                <cbc:infoItem infoItems="${userItems}"/>
+                <cbc:infoItems infoItems="${requestScope[AttributeNames.USER_ITEMS]}"/>
             </c:otherwise>
         </c:choose>
-        <h2 class="article-title">Bus lines with highest number of operating</h2>
+        <h2 class="article-title"><spring:message code="statistics.topBusLines.title.text"/></h2>
         <c:choose>
-            <c:when test="${lineItems.size() < 1}">
+            <c:when test="${empty requestScope[AttributeNames.LINE_ITEMS]}">
                 <spring:message code="empty.travel.criteria.text"/>
             </c:when>
             <c:otherwise>
-                <cbc:infoItem infoItems="${lineItems}"/>
+                <cbc:infoItems infoItems="${requestScope[AttributeNames.LINE_ITEMS]}"/>
             </c:otherwise>
         </c:choose>
-        <h2 class="article-title">Overbooked bus lines</h2>
+        <h2 class="article-title"><spring:message code="statistics.overbookedLines.title.text"/></h2>
         <c:choose>
-            <c:when test="${overbookedItems.size() < 1}">
+            <c:when test="${empty requestScope[AttributeNames.OVERBOOKED_ITEMS]}">
                 <spring:message code="empty.travel.criteria.text"/>
             </c:when>
             <c:otherwise>
-                <cbc:infoItem infoItems="${overbookedItems}"/>
+                <cbc:infoItems infoItems="${requestScope[AttributeNames.OVERBOOKED_ITEMS]}"/>
             </c:otherwise>
         </c:choose>
     </div>

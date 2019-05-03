@@ -1,4 +1,4 @@
-// Created by Sanjin Kurelic (kurelic@sanjin.eu)
+// Created by Sanjin Kurelić (kurelic@sanjin.eu)
 
 %cityInfo-inline{
     display:inline-block;
@@ -23,8 +23,7 @@
             padding-left:40px;
             margin:15px 0;
             @include cbc_mobile {
-                padding:0;
-                padding-top:20px;
+              padding: 20px 0 0;
             }
         }
     }
