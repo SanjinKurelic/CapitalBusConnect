@@ -27,7 +27,7 @@
                     <c:forEach var="scheduleItem" items="${requestScope[AttributeNames.SCHEDULE_ITEMS]}">
                         <cbc:scheduleItem scheduleItem="${scheduleItem}"/>
                     </c:forEach>
-                    <tr>
+                    <tr class="scheduleBox-item">
                         <td></td>
                         <td></td>
                         <td class="totalBox">

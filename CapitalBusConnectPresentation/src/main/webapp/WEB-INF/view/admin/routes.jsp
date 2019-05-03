@@ -11,7 +11,7 @@
 <article>
     <cbc:menuComponent menu="${requestScope[AttributeNames.MENU_ITEM]}"/>
     <div class="center">
-        <div class="searchBar">
+        <div class="searchBar wrap">
             <table class="searchBar-content">
                 <tr>
                     <td><label for="fromCity"><spring:message code="searchBox.fromCity.placeholder"/></label></td>

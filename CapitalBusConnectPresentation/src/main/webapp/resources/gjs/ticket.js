@@ -3,7 +3,7 @@
 /*global window, cbc_findUpTag */
 
 var Ticket = {
-    url: "ticket/",
+    url: "ticket/item/",
     width: 320,
     height: 480,
     show: function (element) {

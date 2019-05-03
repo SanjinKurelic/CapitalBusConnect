@@ -15,7 +15,7 @@
 <%-- Content: --%>
 <article>
     <cbc:menuComponent menu="${requestScope[AttributeNames.MENU_ITEM]}"/>
-    <div class="center" style="padding-bottom: 20px;">
+    <div class="center paddingBottom">
         <%--@elvariable id="${AttributeNames.USER_DATA}" type="eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm"--%>
         <form:form action="user/settings" method="post" modelAttribute="${AttributeNames.USER_DATA}">
             <%-- Only for validation, this field is not used in code behind! --%>

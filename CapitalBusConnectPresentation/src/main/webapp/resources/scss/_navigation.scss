@@ -38,6 +38,9 @@ $navigation-height: 64px;
     &-simple {
         &-buttons {
             min-width: 120px;
+          @include cbc_mobile {
+            min-width: 0;
+          }
         }
         
         &-button {

@@ -107,6 +107,22 @@
             @extend %search-button;
         }
     }
+
+    &.wrap {
+        @include cbc_tablet {
+            td {
+                display: inline-block;
+                width: 40%;
+                margin: 5px;
+                text-align: left;
+            }
+
+            td:last-of-type {
+                width: 95%;
+                text-align: right;
+            }
+        }
+    }
 }
 
 .searchContainer {

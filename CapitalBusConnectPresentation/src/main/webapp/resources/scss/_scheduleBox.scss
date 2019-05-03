@@ -30,6 +30,12 @@
             @include cbc_tablet {
                 border:0;
                 display:block;
+              text-align: center;
+
+              &.scheduleBox-item-adults, &.scheduleBox-item-children {
+                display: inline-block;
+                width: 50%;
+              }
             }
 
             &:first-of-type, &:last-of-type {

@@ -12,11 +12,11 @@
     <cbc:menuComponent menu="${requestScope[AttributeNames.MENU_ITEM]}"/>
     <div class="center">
         <br>
-        <p>
+        <p class="marginLeft">
             <spring:message code="statistics.numberOfPassengers.text"/>:
             ${requestScope[AttributeNames.NUMBER_OF_PASSENGERS]}
         </p>
-        <p>
+        <p class="marginLeft">
             <spring:message code="statistics.numberOfTrips.text"/>:
             ${requestScope[AttributeNames.NUMBER_OF_LINE_ITEMS]}
         </p>

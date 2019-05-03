@@ -18,6 +18,9 @@
     &-description {
         @extend %cityInfo-inline;
         width:69%;
+      @include cbc_mobile {
+        width: 100%;
+      }
 
         p {
             padding-left:40px;
@@ -32,6 +35,11 @@
         @extend %cityInfo-inline;
         width:30%;
         margin-top:15px;
+      @include cbc_mobile {
+        width: 100%;
+        max-width: 400px;
+        margin: 15px auto;
+      }
     }
 
     &-buttons {

@@ -34,6 +34,9 @@
 
     &-text {
       vertical-align: middle;
+      @include cbc_tablet {
+        display: none;
+      }
     }
 
   }
@@ -49,7 +52,7 @@
       max-width: 450px;
       margin: 0 auto;
 
-      & a{
+      & a {
         display: block;
         height: 45px;
         line-height: 45px;
