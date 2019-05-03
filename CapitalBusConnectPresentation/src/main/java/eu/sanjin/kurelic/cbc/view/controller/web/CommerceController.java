@@ -36,7 +36,7 @@ public class CommerceController {
     private static final String BUY_PAGE = "commerce/bought";
     private static final String TICKET_PAGE = "commerce/ticket";
     private static final String REDIRECT_EMPTY_CART = "redirect:" + WebController.CART_URL;
-    private static final String TICKET_URL = "/ticket/{id}";
+    private static final String TICKET_URL = "/ticket/item/{id}";
     // Helpers
     private static final String PAYING_METHOD_URL_MINUS_CHARACTER = "-";
     private static final String PAYING_METHOD_JAVA_UNDERSCORE_CHARACTER = "_";

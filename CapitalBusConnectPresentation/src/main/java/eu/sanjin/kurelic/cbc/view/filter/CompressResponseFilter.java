@@ -2,6 +2,7 @@ package eu.sanjin.kurelic.cbc.view.filter;
 
 import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
 import eu.sanjin.kurelic.cbc.view.configuration.SpringConfiguration;
+import eu.sanjin.kurelic.cbc.view.controller.web.CommerceController;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 @WebFilter(urlPatterns = "/*")
 public class CompressResponseFilter implements Filter {
 
+    private static final String SLASH = "/";
     private static final String HTML_ELEMENTS_WITHOUT_SURROUNDING_SPACES = "a,div";
     private HtmlCompressor htmlCompressor;
 
@@ -28,18 +30,22 @@ public class CompressResponseFilter implements Filter {
         htmlCompressor.setCompressJavaScript(false);
     }
 
+    private boolean isUrlCompressible(String url) {
+        var ticketImage = CommerceController.TICKET_IMAGE_URL;
+        ticketImage = ticketImage.substring(0, ticketImage.lastIndexOf(SLASH));
+        return !(url.contains(SpringConfiguration.RESOURCES_LOCATION) || url.contains(ticketImage));
+    }
+
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
         var request = (HttpServletRequest) req;
         var response = new EditableResponseWrapper((HttpServletResponse) res);
-        // Skip resource url
-        var url = request.getRequestURL().toString();
         // Do stuff
         chain.doFilter(request, response);
         // Trim HTML
         String html = response.getOutput();
-        if (!url.contains(SpringConfiguration.RESOURCES_LOCATION)) {
+        if (isUrlCompressible(request.getRequestURL().toString())) {
             html = htmlCompressor.compress(html);
         }
         // Output HTML - notice auto flush is not needed
