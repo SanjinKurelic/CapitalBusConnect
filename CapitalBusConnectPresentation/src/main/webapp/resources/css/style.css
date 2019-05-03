@@ -1,4 +1,3 @@
-@charset "UTF-8";
 .cityInfoBox-description, .cityInfoBox-image {
   display: inline-block;
   vertical-align: top; }
@@ -12,16 +11,31 @@
   padding: 10px 10px 30px; }
   .cityInfoBox-description {
     width: 69%; }
+
+@media (max-width: 500px) {
+    .cityInfoBox-description {
+        width: 100%;
+    }
+}
     .cityInfoBox-description p {
       padding-left: 40px;
       margin: 15px 0; }
       @media (max-width: 500px) {
         .cityInfoBox-description p {
-          padding: 0;
-          padding-top: 20px; } }
+            padding: 20px 0 0;
+        }
+      }
   .cityInfoBox-image {
     width: 30%;
     margin-top: 15px; }
+
+@media (max-width: 500px) {
+    .cityInfoBox-image {
+        width: 100%;
+        max-width: 400px;
+        margin: 15px auto;
+    }
+}
   .cityInfoBox-buttons {
     text-align: right;
     margin-top: 30px; }
@@ -186,6 +200,7 @@
   border: 0;
   margin: 0;
   width: 100%;
+    height: 100%;
   padding: 0;
   text-align: center; }
   .dialog-box {
@@ -205,9 +220,9 @@
       border-color: #FFC107;
       color: #424242; }
       .dialog-box-title h4 {
-        margin: 0;
         display: none;
-        margin-left: 10px; }
+          margin: 0 0 0 10px;
+      }
       .notice .dialog-box-title-notice {
         display: inline-block; }
       .warning .dialog-box-title {
@@ -222,9 +237,9 @@
           display: inline-block; }
     .dialog-box-content {
       font-size: 0.9em;
-      padding: 0 10px; }
+        padding: 10px;
+    }
     .dialog-box-buttons {
-      padding-top: 10px;
       text-align: right;
       font-size: 0.8em;
       text-transform: uppercase;
@@ -240,23 +255,37 @@
 
 .toast {
   display: none;
-  position: absolute;
-  bottom: 0;
+    position: fixed;
+    top: 0;
   border: 0;
-  margin: 0 auto 30px;
+    margin: 30px 0 0 -webkit-calc(100% - 330px);
+    margin: 30px 0 0 -moz-calc(100% - 330px);
+    margin: 30px 0 0 calc(100% - 330px);
   width: 300px;
   padding: 20px 15px;
   background: #424242;
   color: #F0F0F0;
   border-radius: 2px;
   -webkit-box-shadow: 0 2px 5px 0 #424242;
-          box-shadow: 0 2px 5px 0 #424242; }
+    box-shadow: 0 2px 5px 0 #424242;
+    opacity: 0.9;
+}
   .toast.error {
-    color: #DC3545; }
+      background: #DC3545;
+  }
   .toast.warning {
-    color: #FFC107; }
+      background: #FFC107;
+      color: #424242;
+  }
 
-/* Created by Sanjin Kurelić (kurelic@sanjin.eu) */
+.messages-dialog-toast {
+    display: none;
+}
+
+.messages-datepicker {
+    display: none;
+}
+
 .discount {
   display: -webkit-box;
   display: -webkit-flex;
@@ -391,7 +420,6 @@ h2 {
   .select.disabled {
     cursor: default; }
 
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 .errorPage {
   text-align: center; }
   .errorPage-content {
@@ -430,7 +458,6 @@ h2 {
       margin: 5px; }
     .footer-contactInfo-applicationStore {
       padding: 0;
-      /* hack for 700-705px screen resolutions */
       cursor: pointer; }
   @media (max-width: 700px) {
     .footer-locationInfo {
@@ -479,23 +506,51 @@ h2 {
       .header-buttons form .select-selected {
         border-bottom: 0; }
 
+.infoBox-item-column, .infoBox-item-button {
+    padding: 10px 0;
+    border-bottom: 1px solid #DEDEDE;
+}
+
 .infoBox {
   margin: 25px 0;
   width: 100%;
   padding: 0 10px;
   border-collapse: collapse;
   table-layout: fixed; }
+
+@media (max-width: 700px) {
+    .infoBox-item {
+        display: block;
+        border: 2px solid #DEDEDE;
+        margin: 20px;
+    }
+
+    .infoBox-item td {
+        display: block;
+        border: none;
+    }
+}
   .infoBox-item:hover {
     background: #BEBEBE; }
-  .infoBox-item td {
-    padding: 10px 0;
-    border-bottom: 1px solid #DEDEDE;
+
+.infoBox-item-column {
     text-align: center; }
-    .infoBox-item td:first-of-type, .infoBox-item td:last-of-type {
+
+.infoBox-item-column:first-of-type, .infoBox-item-column:last-of-type {
       padding: 10px; }
-  td.infoBox-item-button {
-    text-align: right; }
-    td.infoBox-item-button .button {
+
+.infoBox-item-button {
+    text-align: right;
+    padding-right: 20px;
+}
+
+@media (max-width: 700px) {
+    .infoBox-item-button {
+        margin-right: 10px;
+    }
+}
+
+.infoBox-item-button .button {
       min-width: 0; }
 
 @font-face {
@@ -540,6 +595,14 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   position: relative; }
+
+.paddingBottom {
+    padding-bottom: 20px;
+}
+
+.marginLeft {
+    margin-left: 20px;
+}
 
 .errorText {
   color: #DC3545; }
@@ -589,6 +652,12 @@ body {
                 justify-content: center; } }
   .navigation-simple-buttons {
     min-width: 120px; }
+
+@media (max-width: 500px) {
+    .navigation-simple-buttons {
+        min-width: 0;
+    }
+}
   .navigation-simple-button {
     background: #FFC107; }
     .navigation-simple-button:hover {
@@ -647,6 +716,12 @@ body {
       margin: 0 5px; }
     .paginationBox-button-text {
       vertical-align: middle; }
+
+@media (max-width: 700px) {
+    .paginationBox-button-text {
+        display: none;
+    }
+}
   .paginationBox-numbers {
     display: inline-block;
     width: 59%;
@@ -774,7 +849,15 @@ body {
     @media (max-width: 700px) {
       .scheduleBox-item td {
         border: 0;
-        display: block; } }
+          display: block;
+          text-align: center;
+      }
+
+        .scheduleBox-item td.scheduleBox-item-adults, .scheduleBox-item td.scheduleBox-item-children {
+            display: inline-block;
+            width: 50%;
+        }
+    }
     .scheduleBox-item td:first-of-type, .scheduleBox-item td:last-of-type {
       padding: 10px; }
   .scheduleBox-item-title-main {
@@ -884,6 +967,20 @@ body {
       text-align: right;
       padding: 0 10px; }
 
+@media (max-width: 700px) {
+    .searchBar.wrap td {
+        display: inline-block;
+        width: 40%;
+        margin: 5px;
+        text-align: left;
+    }
+
+    .searchBar.wrap td:last-of-type {
+        width: 95%;
+        text-align: right;
+    }
+}
+
 .searchContainer {
   position: relative; }
   .searchContainer-elements {
@@ -906,7 +1003,6 @@ body {
         cursor: pointer;
         background: #DEDEDE; }
 
-/* Created by Sanjin Kurelic (kurelic@sanjin.eu) */
 .successPage {
   text-align: center; }
   .successPage-content {
@@ -1009,8 +1105,8 @@ body {
       max-width: 400px; }
   .trafficInfoBox-text {
     width: 64%;
-    padding: 2%;
-    padding-top: 0; }
+      padding: 0 2% 2%;
+  }
     @media (max-width: 700px) {
       .trafficInfoBox-text {
         width: 74%; } }
