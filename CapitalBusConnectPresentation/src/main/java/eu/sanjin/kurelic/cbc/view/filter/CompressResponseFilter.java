@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 // Classic servlet filter for compressing HTML output
-//@WebFilter(urlPatterns = "/*")
+@WebFilter(urlPatterns = "/*")
 public class CompressResponseFilter implements Filter {
 
     private static final String HTML_ELEMENTS_WITHOUT_SURROUNDING_SPACES = "a,div";
@@ -29,7 +29,8 @@ public class CompressResponseFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
         var request = (HttpServletRequest) req;
         var response = new EditableResponseWrapper((HttpServletResponse) res);
         // Skip resource url
@@ -38,11 +39,11 @@ public class CompressResponseFilter implements Filter {
         chain.doFilter(request, response);
         // Trim HTML
         String html = response.getOutput();
-        if(!url.contains(SpringConfiguration.RESOURCES_LOCATION)) {
-            html = new String(htmlCompressor.compress(html).getBytes(), StandardCharsets.UTF_8);
+        if (!url.contains(SpringConfiguration.RESOURCES_LOCATION)) {
+            html = htmlCompressor.compress(html);
         }
-        // Output HTML
-        PrintWriter out = new PrintWriter(response.getOutputStream());
+        // Output HTML - notice auto flush is not needed
+        PrintWriter out = new PrintWriter(response.getOutputStream(), false, StandardCharsets.UTF_8);
         out.write(html);
         out.flush();
     }

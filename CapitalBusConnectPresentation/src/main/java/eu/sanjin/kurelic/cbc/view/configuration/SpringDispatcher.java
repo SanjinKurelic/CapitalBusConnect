@@ -1,7 +1,9 @@
 package eu.sanjin.kurelic.cbc.view.configuration;
 
+import eu.sanjin.kurelic.cbc.view.filter.CompressResponseFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 public class SpringDispatcher extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -18,10 +20,10 @@ public class SpringDispatcher extends AbstractAnnotationConfigDispatcherServletI
         return new Class[]{SpringConfiguration.class};
     }
 
-    /*@Override
+    @Override
     protected Filter[] getServletFilters() {
         return new Filter[]{new CompressResponseFilter()};
-    }*/
+    }
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
