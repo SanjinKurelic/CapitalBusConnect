@@ -2,7 +2,6 @@
 <%@ page pageEncoding="UTF-8" %>
 
 <%-- Imports: --%>
-<%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 
 <%-- Local variables: --%>
 
@@ -24,7 +23,7 @@
                 <div class="userBox-content-title-decoration"></div>
             </td>
         </tr>
-        <c:if test="${not empty requestScope[AttributeNames.ERROR]}">
+        <c:if test="${param.error != null}">
             <tr class="userBox-content-item">
                 <td colspan="2">
                     <p class="userBox-content-item-error">

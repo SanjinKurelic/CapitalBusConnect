@@ -8,23 +8,36 @@ import java.util.List;
 
 public class ErrorMessagesOrder {
 
+    // Could be done with meta model
+    private static final String OBJECT_NAME_APPENDER = "object_";
     private static final List<String> REGISTRATION_ORDER = List.of(
             "name", "surname", "dateOfBirth", "email", "identification", "newsletter"
     );
     private static final List<String> SETTINGS_ORDER = List.of(
-            "name", "surname", "dateOfBirth", "email", "newsletter", "identification", "confirmedIdentification"
+            "name", "surname", "dateOfBirth", "email", "newsletter", "identification", OBJECT_NAME_APPENDER + "user"
     );
 
     private static int compareRegistrationOrder(ObjectError o1, ObjectError o2) {
-        int i1 = REGISTRATION_ORDER.indexOf(((FieldError) o1).getField());
-        int i2 = REGISTRATION_ORDER.indexOf(((FieldError) o2).getField());
-        return Integer.compare(i1, i2);
+        return compareOrder(REGISTRATION_ORDER, o1, o2);
     }
 
     private static int compareSettingsOrder(ObjectError o1, ObjectError o2) {
-        int i1 = SETTINGS_ORDER.indexOf(((FieldError) o1).getField());
-        int i2 = SETTINGS_ORDER.indexOf(((FieldError) o2).getField());
+        return compareOrder(SETTINGS_ORDER, o1, o2);
+    }
+
+    private static int compareOrder(List<String> order, ObjectError o1, ObjectError o2) {
+        String o1Name = getObjectOrFieldName(o1);
+        String o2Name = getObjectOrFieldName(o2);
+        int i1 = order.indexOf(o1Name);
+        int i2 = order.indexOf(o2Name);
         return Integer.compare(i1, i2);
+    }
+
+    private static String getObjectOrFieldName(ObjectError objectError) {
+        if (objectError instanceof FieldError) {
+            return ((FieldError) objectError).getField();
+        }
+        return OBJECT_NAME_APPENDER + objectError.getObjectName();
     }
 
     public static List<ObjectError> sortErrorsInRegistrationForm(List<ObjectError> errors) {

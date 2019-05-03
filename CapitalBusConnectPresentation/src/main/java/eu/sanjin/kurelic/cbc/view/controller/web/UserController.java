@@ -84,8 +84,10 @@ public class UserController {
     }
 
     @PostMapping(SETTINGS_URL)
-    public ModelAndView saveSettings(@Valid @ModelAttribute(AttributeNames.USER_DATA) SettingsUserForm user,
-                                     BindingResult result) {
+    public ModelAndView saveSettings(
+            @Valid @ModelAttribute(AttributeNames.USER_DATA) SettingsUserForm user,
+            BindingResult result
+    ) {
         var viewModel = new ModelAndView(SETTINGS_PAGE);
         viewModel.addObject(AttributeNames.USER_DATA, user);
         // Menu

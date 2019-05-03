@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidUserException();
         }
         // Logic
-        var u = convertUserFormToUser(user);
+        var u = convertUserFormToUser(user, new User());
         // Store user information
         userDao.addUserInformation(u);
         // Build user authority
@@ -134,7 +134,10 @@ public class UserServiceImpl implements UserService {
 
     // Utility
     private User convertUserFormToUser(UserForm userForm) {
-        User user = new User();
+        return convertUserFormToUser(userForm, getUser(userForm.getEmail()));
+    }
+
+    private User convertUserFormToUser(UserForm userForm, User user) {
         user.setUsername(userForm.getEmail());
         user.setName(userForm.getName());
         user.setSurname(userForm.getSurname());
