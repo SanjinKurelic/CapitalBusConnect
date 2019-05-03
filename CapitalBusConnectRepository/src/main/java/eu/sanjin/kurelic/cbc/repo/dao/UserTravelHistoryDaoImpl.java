@@ -113,6 +113,7 @@ public class UserTravelHistoryDaoImpl implements UserTravelHistoryDao {
     @Override
     public void addUserTravelHistory(UserTravelHistory userTravelHistory) {
         entityManager.unwrap(Session.class).save(userTravelHistory);
+        entityManager.flush();
     }
 
     // Utility
