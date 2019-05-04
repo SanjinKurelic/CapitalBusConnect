@@ -67,9 +67,15 @@ Before running the project you could also run **gulpfile.js** (script and style 
 
 ### Running
 
-After everything is set if you run project you'll get home page.
+After everything is set if you run project you'll get home page. 
 
-![alt text](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/home.jpg "")
+![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/home.jpg)
+
+Home page is consisted of several parts: header with menu (cart link, user page link and selector for changing web page language), banner with search box, special offers list, traffic information box and footer with contact information (which is common to all pages).
+
+There are several languages already included in this project: English, German, Italian and Croatian.
+
+![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/language.jpg)
 
 testing_method :: wrong_parameter :: reason (null | empty)
 testing_method :: reason (no result)
