@@ -69,7 +69,7 @@ Before running the project you could also run **gulpfile.js** (script and style 
 
 After everything is set if you run project you'll get home page.
 
-![alt text](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/home.jpg, """)
+![alt text](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/home.jpg "")
 
 testing_method :: wrong_parameter :: reason (null | empty)
 testing_method :: reason (no result)
