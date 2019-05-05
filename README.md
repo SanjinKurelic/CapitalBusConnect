@@ -44,9 +44,13 @@ After installing everything, open project as the Maven project and run Maven. Ma
 
 There are two accounts already registered with the downloaded project which you can use for testing. Credentials of those users are:
 
-Administrator - username: **admin@cbc** password: **password**
+*Administrator*:<br> 
+username: **admin@cbc**<br> 
+password: **password**
 
-User - username: **user@example.com** password: **password**
+*User*:<br>
+username: **user@example.com**<br> 
+password: **password**
 
 #### Home page
 
