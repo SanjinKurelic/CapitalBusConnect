@@ -42,6 +42,12 @@ After installing everything, open project as the Maven project and run Maven. Ma
 
 ## Running
 
+There are two accounts already registered with the downloaded project which you can use for testing. Credentials of those users are:
+
+Administrator - username: **admin@cbc** password: **password**
+
+User - username: **user@example.com** password: **password**
+
 #### Home page
 
 After everything is set if you run the project you'll get to the home page. On the image below you can see how the page looks like on the big screen (ex. desktop PC) and small screen (ex. mobile phone). The web page is fully supported on mobile devices (aka responsive).
