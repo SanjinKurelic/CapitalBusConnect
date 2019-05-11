@@ -1,10 +1,10 @@
 # Capital Bus Connect
 
-Capital Bus Connect (CBC) is a website for buying bus tickets using PayPal or bills with ability of viewing travel history and generating tickets with QR code. CBC is written in Java using Spring and Hibernate framework. CBC is separated in 3 Maven modules which separate repository, business and presentation layer. 
+Capital Bus Connect (CBC) is a website for buying bus tickets using PayPal or cash with ability of viewing travel history. CBC is written in Java using Spring and Hibernate framework. CBC is separated into 3 Maven modules that separate repository, business and presentation layer. 
 
 ## Getting started
 
-Directory *packed* contains a compiled version of the project (WAR file). The database is still required for a running project.
+Directory *packed* contains a compiled version of the project (WAR file). The database is still required for running a project.
 
 ### Prerequisites
 
@@ -30,7 +30,7 @@ Keep everything as default only set the username and the password as follow:
 - database username: **cbcadmin**
 - database password: **cbcadmin**
  
-**Important: Setting time zone in hibernate.properties is crucial!** If you are not in **UTC** time zone, then you need to change the time zone in CBC project. In the project, go to:
+**Important: Setting time zone in hibernate.properties is crucial!** If you are not in **Europe/Zagreb** time zone, then you need to change the time zone in CBC project. In the project, go to:
  
  ```
 CapitalBusConnect > CapitalBusConnectRepository > src > main > resources > hibernate.properties
@@ -42,7 +42,7 @@ After installing everything, open project as the Maven project and run Maven. Ma
 
 ## Running
 
-There are two accounts already registered with the downloaded project which you can use for testing. Credentials of those users are:
+There are two accounts already registered with the downloaded project, which you can use for testing. Credentials of those users are:
 
 *Administrator*:<br> 
 username: **admin@cbc**<br> 
@@ -58,7 +58,7 @@ After everything is set if you run the project you'll get to the home page. On t
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/home.jpg)
 
-The home page consists of several parts: header with menu (cart link, user page link and selector for changing web page language), banner with search box, special offers list, traffic information box and footer with contact information (which is common to all pages).
+The home page consists of several parts: header with a menu (cart link, user page link and selector for changing web page language), banner with a search box, special offers list, traffic information box and a footer with a contact information (which is common to all pages).
 
 There are several languages already included in this project: English, German, Italian and Croatian.
 
@@ -70,13 +70,13 @@ Search bar offers the user ability to search the lines between two cities by a g
 
 #### Special offer page
 
-Except search bar the user can find his/her trip by clicking some of the available special offers. If user clicks on "more" button in special offers list, he or she will be presented with a small description of the destination and buy ticket button.
+Except search bar the user can find his or her trip by clicking some of the available special offers. If user clicks on "more" button in special offer list, he or she will be presented with a small description of the destination and buy ticket button.
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/offer.jpg)
 
 #### Schedule page
 
-When a user search for the desired destination by a given date, he or she is presented with the bus schedule as shown in the images below. The left image is the desktop version and the right is a mobile site version (note: some schedule items are **removed** from image **for cosmetic purposes**). From this page user can add items to cart.
+When a user search for the desired destination by a given date, he or she is presented with the bus schedule as shown in the images below. The left image is a desktop version and the right is a mobile site version (note: some schedule items are **removed** from image **for cosmetic purposes**). From this page user can add items to the cart.
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/schedule.jpg)
 
@@ -86,11 +86,11 @@ All selected items are stored in the cart. The user can change number of adults 
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/cart.jpg)
 
-There are two types of payment: **money** (paying in bus) and **PayPal**. If the user is not authenticated he or she will be presented with a login page, before he/she can continue with payment. If he or she is authenticated than he or she will be presented with the list of bought items and tickets (see *my travels page*). 
+There are two types of payment: **money** (paying in bus) and **PayPal**. If the user is not authenticated he or she will be presented with a login page, before he or she can continue with payment. If the user is authenticated than he or she will be presented with the list of bought items and tickets (see *my travels page*). 
 
 #### Login and registration page
 
-Before paying the bus ticket, the user must be authenticated. The user can either login or register a new account. *Name, date of birth, email* and *password* are required fields. *Name* and *surname* can only be alphabetic characters. *Date of birth* must be valid date (the user should be older than 18 years old) and *email* must be a valid email address. The password must be 8 characters long and must have at least one number. If some of this rules (or none) are not satisfied the user is presented with an error message as seen in the image below. Except email login you can login with Facebook account (**note:** Facebook login is not available as source code so it's disabled in this version of CBC).
+Before paying the bus ticket, the user must be authenticated. The user can either login or register a new account. *Name, date of birth, email* and *password* are required fields. *Name* and *surname* can only be alphabetic characters. *Date of birth* must be valid date (the user should be older than 18 years old) and *email* must be a valid email address. The password must be at least 8 characters long and must have at least one number. If some of this rules (or all) are not satisfied the user is presented with an error message as seen in the image below. Except email login you can login with Facebook account (**note:** Facebook login is not available as source code, so it's disabled in this version of CBC).
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/login.jpg)
 
@@ -101,7 +101,7 @@ The user page is visible only for the authenticated users. There are several pag
 
 #### Settings page
 
-The settings page offers the user ability to change their personal information (except the email address). Validation of user input is same as on the registration page. If the password is left empty, the password will not be updated on saving the form.
+The settings page offers the user ability to change their personal information (except the email address). Validation of user input is same as on the registration page. If the password is left empty, the password will not be updated while saving the form.
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/settings.jpg)
 
@@ -113,7 +113,7 @@ The my travels page is the page where the user can see his or her travel history
 
 #### Discounts page
 
-The user can receive bonuses/discounts for his loyalty. He or she can use them while buying the tickets. **Note:** This is not available as source code so it's disabled in this version of CBC.
+The user can receive bonuses/discounts for his loyalty. He or she can use them while buying the tickets. **Note:** This is not available as source code, so it's disabled in this version of CBC.
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/discounts.jpg)
 
@@ -123,7 +123,7 @@ The administrator can also login to CBC system. He can view travel statistics, v
 
 #### Statistics page
 
-The administrator can see the total number of passengers and the total number of trips. He can also see which users travel the most and what are the most used bus lines. This information provides better management of the bus lines and gives ability to award the users who travels a lot.
+The administrator can view the total number of passengers and the total number of trips. He can also view which users travel the most and what are the most used bus lines. This information provides better management of the bus lines and gives ability to award the users who travels a lot.
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/statistics.jpg)
 
@@ -139,7 +139,7 @@ By choosing an specific user, the administrator can see his or her login and tra
 
 #### Routes page
 
-The routes page gives the administrator an ability to change or add the bus routes. **Note:** This is not available as source code so it's disabled in this version of CBC.
+The routes page gives the administrator an ability to change or add bus routes. **Note:** This is not available as source code, so it's disabled in this version of CBC.
 
  ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/routes.jpg)
 
@@ -151,7 +151,7 @@ There are several error pages:
 - Forbidden error page - if the user is not authenticated or doesn't have required permissions
 - Bad request error page - if the user request is malformed<sup>2</sup>
 
-Example of error page:
+Example of an error page:
 
 ![](https://github.com/SanjinKurelic/CapitalBusConnect/blob/master/images/error.jpg)
 
@@ -197,4 +197,4 @@ HTML/JS dependencies:
 
 ## Licence
 
-See the LICENSE file. For every question write to kurelic@sanjin.eu;
+See the LICENSE file. For every question write to kurelic@sanjin.eu
