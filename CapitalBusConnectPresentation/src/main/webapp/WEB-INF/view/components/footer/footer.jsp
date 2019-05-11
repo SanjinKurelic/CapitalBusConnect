@@ -50,6 +50,6 @@
             <div id="location-map"></div>
         </div>
     </div>
-    <%@ include file="copyright.jspf" %>
+    <%@ include file="copyright.jsp" %>
 </footer>
-<%@ include file="dialog.jspf" %>
+<%@ include file="dialog.jsp" %>

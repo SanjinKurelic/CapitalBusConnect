@@ -5,7 +5,7 @@
 <%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.temporal.ChronoUnit" %>
-<%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
+<%@ include file="/WEB-INF/view/components/header/banner.jsp" %>
 
 <%-- Local Variables: --%>
 <c:set var="maxDOB" value="${LocalDate.now().minus(18, ChronoUnit.YEARS)}"/>
@@ -138,4 +138,4 @@
         };
     </script>
 </c:if>
-<%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>
+<%@ include file="/WEB-INF/view/components/footer/footer.jsp" %>

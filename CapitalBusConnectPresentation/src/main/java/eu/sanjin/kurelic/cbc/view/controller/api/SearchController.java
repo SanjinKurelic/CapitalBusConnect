@@ -21,7 +21,7 @@ public class SearchController {
     // Url
     static final String SEARCH_API_ROOT = "/api/search";
     private static final String SEARCH_CITY_URL = "/city";
-    public static final String SEARCH_CITY_FULL_URL = SEARCH_API_ROOT + SEARCH_CITY_URL; // searchBox.jspf
+    public static final String SEARCH_CITY_FULL_URL = SEARCH_API_ROOT + SEARCH_CITY_URL; // searchBox.jsp
     private static final String SEARCH_CITY_URL_CITY_NAME = SEARCH_CITY_URL + "/{partialName}";
     private static final String SEARCH_USER_URL = "/user";
     public static final String SEARCH_USER_FULL_URL = SEARCH_API_ROOT + SEARCH_USER_URL; // users.jsp

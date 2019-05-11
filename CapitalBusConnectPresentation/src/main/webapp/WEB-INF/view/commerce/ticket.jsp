@@ -5,7 +5,7 @@
 <%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 <%@ page import="eu.sanjin.kurelic.cbc.view.components.TicketGenerator" %>
 <%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.CommerceController" %>
-<%@ include file="/WEB-INF/view/components/header/head.jspf" %>
+<%@ include file="/WEB-INF/view/components/header/head.jsp" %>
 
 <%-- Local variables: --%>
 

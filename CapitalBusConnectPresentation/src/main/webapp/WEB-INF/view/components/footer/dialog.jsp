@@ -42,4 +42,4 @@
     <div id="datePicker-ui-weekdays"><spring:message code="datePicker.weekdays.array"/></div>
     <div id="datePicker-ui-weekdaysShort"><spring:message code="datePicker.weekdaysShort.array"/></div>
 </div>
-<%@ include file="scripts.jspf" %>
+<%@ include file="scripts.jsp" %>

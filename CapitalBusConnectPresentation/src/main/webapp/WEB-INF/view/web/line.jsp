@@ -2,12 +2,12 @@
 <%@ page pageEncoding="UTF-8" %>
 
 <%-- Imports: --%>
-<%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
+<%@ include file="/WEB-INF/view/components/header/banner.jsp" %>
 
 <%-- Local variables: --%>
 
 <%-- Content: --%>
-<%@ include file="/WEB-INF/view/components/header/searchBox.jspf" %>
+<%@ include file="/WEB-INF/view/components/header/searchBox.jsp" %>
 <article>
     <cbc:menuComponent menu="${requestScope[AttributeNames.MENU_ITEM]}"/>
     <section class="cityInfoBox center">
@@ -31,4 +31,4 @@
         </div>
     </section>
 </article>
-<%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>
+<%@ include file="/WEB-INF/view/components/footer/footer.jsp" %>

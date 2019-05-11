@@ -6,7 +6,7 @@
 <%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.UserController" %>
 <%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.WebController" %>
 <%@ page import="java.util.Locale" %>
-<%@ include file="head.jspf" %>
+<%@ include file="head.jsp" %>
 
 <%-- Local variables --%>
 <c:set var="currentLang" value="${ cbcf:getCurrentLocale() }"/>

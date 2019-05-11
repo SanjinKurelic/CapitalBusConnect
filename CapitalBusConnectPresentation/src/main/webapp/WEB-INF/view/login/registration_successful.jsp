@@ -3,7 +3,7 @@
 
 <%-- Imports: --%>
 <%@ page import="eu.sanjin.kurelic.cbc.view.configuration.SpringSecurityConfiguration" %>
-<%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
+<%@ include file="/WEB-INF/view/components/header/banner.jsp" %>
 
 <%-- Local variables: --%>
 
@@ -19,4 +19,4 @@
         </div>
     </section>
 </article>
-<%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>
+<%@ include file="/WEB-INF/view/components/footer/footer.jsp" %>

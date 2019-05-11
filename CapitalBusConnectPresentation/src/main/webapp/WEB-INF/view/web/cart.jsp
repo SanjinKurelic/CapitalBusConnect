@@ -4,7 +4,7 @@
 <%-- Imports: --%>
 <%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 <%@ page import="eu.sanjin.kurelic.cbc.view.controller.web.CommerceController" %>
-<%@ include file="/WEB-INF/view/components/header/banner.jspf" %>
+<%@ include file="/WEB-INF/view/components/header/banner.jsp" %>
 
 <%-- Local variables: --%>
 <c:set var="hidePayPal" value="buyPayPalButton"/>
@@ -110,7 +110,7 @@
         </c:choose>
     </div>
 </article>
-<%@ include file="/WEB-INF/view/components/footer/footer.jspf" %>
+<%@ include file="/WEB-INF/view/components/footer/footer.jsp" %>
 <%-- PayPal button --%>
 <c:if test="${not empty requestScope[AttributeNames.SCHEDULE_ITEMS]}">
     <%--suppress JSUnresolvedVariable, JSValidateTypes, JSUnusedLocalSymbols, JSUnresolvedFunction --%>

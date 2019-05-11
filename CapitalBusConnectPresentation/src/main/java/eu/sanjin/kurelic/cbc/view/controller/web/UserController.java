@@ -35,7 +35,7 @@ public class UserController {
     private static final String SETTINGS_PAGE = USER_PATH + "/settings";
     private static final String DISCOUNT_PAGE = USER_PATH + "/discounts";
     private static final String TRAVELS_URL = "/travels";
-    public static final String TRAVELS_FULL_URL = USER_URL + TRAVELS_URL; // banner.jspf
+    public static final String TRAVELS_FULL_URL = USER_URL + TRAVELS_URL; // banner.jsp
     private static final String TRAVELS_URL_ALTERNATIVE = "/travels/{pageNumber}";
     private static final String SETTINGS_URL = "/settings";
     private static final String DISCOUNTS_URL = "/discounts";

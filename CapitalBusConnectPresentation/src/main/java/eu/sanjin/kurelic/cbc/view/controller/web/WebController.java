@@ -32,7 +32,7 @@ public class WebController {
     private final CartService cart;
     public static final String HOME_URL_ALTERNATIVE = "/home"; // menuComponent.tag
     public static final String BUS_LINE_URL = "/line/{fromCity}/{toCity}"; // promotionItem.tag
-    public static final String CART_URL = "/cart"; // CommerceController, banner.jspf
+    public static final String CART_URL = "/cart"; // CommerceController, banner.jsp
     public static final String CART_URL_ALTERNATIVE = "/cart/logged"; // cart.jsp
     // Views
     private static final String WEB_PATH = "web";

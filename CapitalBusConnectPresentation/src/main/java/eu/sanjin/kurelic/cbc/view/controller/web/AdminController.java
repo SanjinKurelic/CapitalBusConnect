@@ -30,7 +30,7 @@ public class AdminController {
 
     // Url
     static final String ADMIN_ROOT_URL = "/admin";
-    public static final String STATISTICS_FULL_URL_ALTERNATIVE = ADMIN_ROOT_URL + "/stats"; // banner.jspf
+    public static final String STATISTICS_FULL_URL_ALTERNATIVE = ADMIN_ROOT_URL + "/stats"; // banner.jsp
     private final ScheduleService scheduleService;
     private final StatisticService statisticService;
     private static final String STATISTICS_URL = "";
