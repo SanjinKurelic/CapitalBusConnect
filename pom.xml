@@ -198,6 +198,14 @@
                 <artifactId>maven-depedency-plugin</artifactId>
                 <version>${cbc.version.depedency}</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${cbc.version.warplugin}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
