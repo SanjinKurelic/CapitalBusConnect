@@ -3,6 +3,7 @@ package eu.sanjin.kurelic.cbc.repo.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "city")
 public class City {
 
     @Id
