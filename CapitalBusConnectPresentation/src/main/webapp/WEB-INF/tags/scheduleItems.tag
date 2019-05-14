@@ -3,7 +3,7 @@
 
 <%-- Imports: --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="cbc" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="cbc" uri="http://eu.sanjin.cbc.com/tags" %>
 
 <%-- Attributes: --%>
 <%@ attribute name="scheduleItems" required="true"

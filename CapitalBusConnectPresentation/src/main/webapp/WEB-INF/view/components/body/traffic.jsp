@@ -4,8 +4,8 @@
 <%-- Imports: --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="cbc" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="cbcf" uri="/WEB-INF/tlds/functions" %>
+<%@ taglib prefix="cbc" uri="http://eu.sanjin.cbc.com/tags" %>
+<%@ taglib prefix="cbcf" uri="http://eu.sanjin.cbc.com/functions" %>
 <%@ page import="eu.sanjin.kurelic.cbc.view.components.AttributeNames" %>
 
 <%-- Local variables: --%>

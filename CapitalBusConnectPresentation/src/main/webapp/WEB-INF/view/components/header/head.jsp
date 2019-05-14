@@ -8,8 +8,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="cbc" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="cbcf" uri="/WEB-INF/tlds/functions" %>
+<%@ taglib prefix="cbc" uri="http://eu.sanjin.cbc.com/tags" %>
+<%@ taglib prefix="cbcf" uri="http://eu.sanjin.cbc.com/functions" %>
 
 <%-- Language: --%>
 <%-- <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />

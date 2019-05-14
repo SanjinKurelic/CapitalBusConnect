@@ -3,7 +3,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
     <tlib-version>1.0</tlib-version>
     <short-name>cbcf</short-name>
-    <uri>/WEB-INF/tlds/functions</uri>
+    <uri>http://eu.sanjin.cbc.com/functions</uri>
     <function>
         <name>getCityImageResourceUrl</name>
         <function-class>eu.sanjin.kurelic.cbc.view.components.ExpressionLanguageFunctions</function-class>

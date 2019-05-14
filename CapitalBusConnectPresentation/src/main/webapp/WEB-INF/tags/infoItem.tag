@@ -4,7 +4,7 @@
 <%-- Imports: --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="cbcf" uri="/WEB-INF/tlds/functions" %>
+<%@ taglib prefix="cbcf" uri="http://eu.sanjin.cbc.com/functions" %>
 <%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemButtonType" %>
 <%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemColumnType" %>
 <%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemIconType" %>

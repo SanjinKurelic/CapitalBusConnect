@@ -4,7 +4,7 @@
 <%-- Imports: --%>
 <%@ tag import="eu.sanjin.kurelic.cbc.business.viewmodel.traffic.TrafficWarningType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="cbcf" uri="/WEB-INF/tlds/functions" %>
+<%@ taglib prefix="cbcf" uri="http://eu.sanjin.cbc.com/functions" %>
 
 <%-- Attributes: --%>
 <%@ attribute name="trafficInfoItem" required="true"

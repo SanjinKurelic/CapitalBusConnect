@@ -3,7 +3,7 @@
 
 <%-- Imports: --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="cbf" uri="/WEB-INF/tlds/functions" %>
+<%@ taglib prefix="cbf" uri="http://eu.sanjin.cbc.com/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%-- Attributes: --%>
