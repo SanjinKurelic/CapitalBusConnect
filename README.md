@@ -195,6 +195,10 @@ HTML/JS dependencies:
 
 <sup>2</sup> The bad request error page can be thrown if the developer has error in his or her code.
 
+## Known issues
+
+The administrator can't view users tickets because he is not an owner of a ticket. Possible solutions are: remove ticket button from the administrator page (not needed) or add line of code in the *TicketService* which allow access for the administrator.
+
 ## Licence
 
 See the LICENSE file. For every question write to kurelic@sanjin.eu
