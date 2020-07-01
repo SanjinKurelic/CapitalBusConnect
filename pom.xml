@@ -34,7 +34,7 @@
         <cbc.version.annotation>1.3.2</cbc.version.annotation>
         <cbc.version.bean>1.9.3</cbc.version.bean>
         <cbc.version.validator>6.1.0.Final</cbc.version.validator>
-        <cbc.version.mysql>8.0.14</cbc.version.mysql>
+        <cbc.version.mysql>8.0.16</cbc.version.mysql>
         <cbc.version.hibernate>5.4.1.Final</cbc.version.hibernate>
         <cbc.version.c3po>0.9.5.4</cbc.version.c3po>
         <cbc.version.warplugin>3.2.2</cbc.version.warplugin>
