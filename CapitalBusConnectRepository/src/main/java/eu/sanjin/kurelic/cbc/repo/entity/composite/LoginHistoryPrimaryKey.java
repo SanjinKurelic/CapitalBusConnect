@@ -13,47 +13,47 @@ import java.util.Objects;
 @Embeddable
 public class LoginHistoryPrimaryKey implements Serializable {
 
-    @ManyToOne
-    @JoinColumn(name = "username")
-    private User username;
-    @Column(name = "date_time")
-    private LocalDateTime dateTime;
+  @ManyToOne
+  @JoinColumn(name = "username")
+  private User username;
+  @Column(name = "date_time")
+  private LocalDateTime dateTime;
 
-    public LoginHistoryPrimaryKey() {
-    }
+  public LoginHistoryPrimaryKey() {
+  }
 
-    public LoginHistoryPrimaryKey(User username, LocalDateTime dateTime) {
-        this.username = username;
-        this.dateTime = dateTime;
-    }
+  public LoginHistoryPrimaryKey(User username, LocalDateTime dateTime) {
+    this.username = username;
+    this.dateTime = dateTime;
+  }
 
-    public User getUsername() {
-        return username;
-    }
+  public User getUsername() {
+    return username;
+  }
 
-    public void setUsername(User username) {
-        this.username = username;
-    }
+  public void setUsername(User username) {
+    this.username = username;
+  }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
+  public LocalDateTime getDateTime() {
+    return dateTime;
+  }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
+  public void setDateTime(LocalDateTime dateTime) {
+    this.dateTime = dateTime;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (Objects.isNull(o) || getClass() != o.getClass()) return false;
-        LoginHistoryPrimaryKey that = (LoginHistoryPrimaryKey) o;
-        return Objects.equals(username, that.username) &&
-                Objects.equals(dateTime, that.dateTime);
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (Objects.isNull(o) || getClass() != o.getClass()) return false;
+    LoginHistoryPrimaryKey that = (LoginHistoryPrimaryKey) o;
+    return Objects.equals(username, that.username) &&
+      Objects.equals(dateTime, that.dateTime);
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(username, dateTime);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(username, dateTime);
+  }
 }

@@ -8,8 +8,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(CountryDescription.class)
 public class CountryDescription_ {
 
-    public static volatile SingularAttribute<CountryDescription, LanguagePrimaryKey> id;
-    public static volatile SingularAttribute<CountryDescription, String> title;
-    public static volatile SingularAttribute<CountryDescription, Country> country;
+  public static volatile SingularAttribute<CountryDescription, LanguagePrimaryKey> id;
+  public static volatile SingularAttribute<CountryDescription, String> title;
+  public static volatile SingularAttribute<CountryDescription, Country> country;
 
 }

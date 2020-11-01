@@ -11,33 +11,33 @@ import javax.persistence.Table;
 @Table(name = "user_login_history")
 public class UserLoginHistory {
 
-    @EmbeddedId
-    private LoginHistoryPrimaryKey id;
-    @Column(name = "ip_address")
-    private String ipAddress;
+  @EmbeddedId
+  private LoginHistoryPrimaryKey id;
+  @Column(name = "ip_address")
+  private String ipAddress;
 
-    public UserLoginHistory() {
-    }
+  public UserLoginHistory() {
+  }
 
-    public UserLoginHistory(LoginHistoryPrimaryKey id, String ipAddress) {
-        this.id = id;
-        this.ipAddress = ipAddress;
-    }
+  public UserLoginHistory(LoginHistoryPrimaryKey id, String ipAddress) {
+    this.id = id;
+    this.ipAddress = ipAddress;
+  }
 
-    public LoginHistoryPrimaryKey getId() {
-        return id;
-    }
+  public LoginHistoryPrimaryKey getId() {
+    return id;
+  }
 
-    public void setId(LoginHistoryPrimaryKey id) {
-        this.id = id;
-    }
+  public void setId(LoginHistoryPrimaryKey id) {
+    this.id = id;
+  }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
+  public String getIpAddress() {
+    return ipAddress;
+  }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
+  public void setIpAddress(String ipAddress) {
+    this.ipAddress = ipAddress;
+  }
 
 }

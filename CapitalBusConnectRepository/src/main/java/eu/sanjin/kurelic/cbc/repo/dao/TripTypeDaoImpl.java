@@ -14,19 +14,19 @@ import javax.persistence.criteria.Root;
 @Repository
 public class TripTypeDaoImpl implements TripTypeDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
-    @Override
-    public TripType getTripType(TripTypeValues value) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+  @Override
+  public TripType getTripType(TripTypeValues value) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<TripType> criteria = builder.createQuery(TripType.class);
-        Root<TripType> root = criteria.from(TripType.class);
-        // HQL = FROM TripType WHERE name = :name
-        criteria.where(builder.equal(root.get(TripType_.name), value.name()));
+    CriteriaQuery<TripType> criteria = builder.createQuery(TripType.class);
+    Root<TripType> root = criteria.from(TripType.class);
+    // HQL = FROM TripType WHERE name = :name
+    criteria.where(builder.equal(root.get(TripType_.name), value.name()));
 
-        return entityManager.createQuery(criteria).getSingleResult();
-    }
+    return entityManager.createQuery(criteria).getSingleResult();
+  }
 
 }

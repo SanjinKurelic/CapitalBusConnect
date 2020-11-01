@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface BusScheduleDao {
 
-    BusSchedule getSchedule(int id);
+  BusSchedule getSchedule(int id);
 
-    List<BusSchedule> getSchedules(Integer... ids);
+  List<BusSchedule> getSchedules(Integer... ids);
 
-    List<BusSchedule> getBusLineSchedules(Integer fromCityId, Integer toCityId);
+  List<BusSchedule> getBusLineSchedules(Integer fromCityId, Integer toCityId);
 
 }

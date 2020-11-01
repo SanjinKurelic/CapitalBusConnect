@@ -5,6 +5,6 @@ import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
 
 public interface PayingMethodDao {
 
-    PayingMethod getPayingMethodByName(PayingMethodValues value);
+  PayingMethod getPayingMethodByName(PayingMethodValues value);
 
 }

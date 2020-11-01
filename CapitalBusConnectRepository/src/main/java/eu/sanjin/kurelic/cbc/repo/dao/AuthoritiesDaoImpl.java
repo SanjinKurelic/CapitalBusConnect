@@ -10,11 +10,11 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class AuthoritiesDaoImpl implements AuthoritiesDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
-    @Override
-    public void addAuthorityToUser(Authorities authority) {
-        entityManager.unwrap(Session.class).save(authority);
-    }
+  @Override
+  public void addAuthorityToUser(Authorities authority) {
+    entityManager.unwrap(Session.class).save(authority);
+  }
 }

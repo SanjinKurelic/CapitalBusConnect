@@ -14,32 +14,32 @@ import java.util.List;
 @Repository
 public class BusLineDaoImpl implements BusLineDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
-    @Override
-    public List<BusLine> getCityLines(int offset, int limit) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+  @Override
+  public List<BusLine> getCityLines(int offset, int limit) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<BusLine> criteria = builder.createQuery(BusLine.class);
-        Root<BusLine> root = criteria.from(BusLine.class);
-        criteria.select(root);
+    CriteriaQuery<BusLine> criteria = builder.createQuery(BusLine.class);
+    Root<BusLine> root = criteria.from(BusLine.class);
+    criteria.select(root);
 
-        TypedQuery<BusLine> query = entityManager.createQuery(criteria);
-        query.setFirstResult(offset);
-        query.setMaxResults(limit);
-        return query.getResultList();
-    }
+    TypedQuery<BusLine> query = entityManager.createQuery(criteria);
+    query.setFirstResult(offset);
+    query.setMaxResults(limit);
+    return query.getResultList();
+  }
 
-    @Override
-    public Long getNumberOfCityLines() {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+  @Override
+  public Long getNumberOfCityLines() {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
-        Root<BusLine> root = criteria.from(BusLine.class);
-        criteria.select(builder.count(root));
+    CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+    Root<BusLine> root = criteria.from(BusLine.class);
+    criteria.select(builder.count(root));
 
-        return entityManager.createQuery(criteria).getSingleResult();
-    }
+    return entityManager.createQuery(criteria).getSingleResult();
+  }
 
 }

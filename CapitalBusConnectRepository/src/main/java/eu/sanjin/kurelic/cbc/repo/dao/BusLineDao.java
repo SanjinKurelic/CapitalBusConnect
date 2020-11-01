@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface BusLineDao {
 
-    List<BusLine> getCityLines(int offset, int limit);
+  List<BusLine> getCityLines(int offset, int limit);
 
-    Long getNumberOfCityLines();
+  Long getNumberOfCityLines();
 
 }

@@ -16,21 +16,21 @@ import javax.transaction.Transactional;
 @Transactional
 class AuthoritiesDaoTest {
 
-    @Autowired
-    private AuthoritiesDao dao;
+  @Autowired
+  private AuthoritiesDao dao;
 
-    @Test
-    void addAuthorityToUserWrongAuthorityNull() {
-        // should not happen
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.addAuthorityToUser(TestConstant.AUTHORITIES_NULL)
-        );
-    }
+  @Test
+  void addAuthorityToUserWrongAuthorityNull() {
+    // should not happen
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.addAuthorityToUser(TestConstant.AUTHORITIES_NULL)
+    );
+  }
 
-    @Test
-    void addAuthorityToUser() {
-        Assertions.assertDoesNotThrow(() -> dao.addAuthorityToUser(TestConstant.AUTHORITIES_VALID));
-    }
+  @Test
+  void addAuthorityToUser() {
+    Assertions.assertDoesNotThrow(() -> dao.addAuthorityToUser(TestConstant.AUTHORITIES_VALID));
+  }
 
 }

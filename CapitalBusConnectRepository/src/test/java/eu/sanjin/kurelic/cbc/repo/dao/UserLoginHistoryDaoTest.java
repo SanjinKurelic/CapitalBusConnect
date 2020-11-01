@@ -16,127 +16,127 @@ import javax.transaction.Transactional;
 @Transactional
 class UserLoginHistoryDaoTest {
 
-    @Autowired
-    private UserLoginHistoryDao dao;
+  @Autowired
+  private UserLoginHistoryDao dao;
 
-    @Test
-    void getUserLoginHistory() {
-        Assertions.assertNotNull(dao.getUserLoginHistory(
-                TestConstant.USERNAME_VALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ));
-    }
+  @Test
+  void getUserLoginHistory() {
+    Assertions.assertNotNull(dao.getUserLoginHistory(
+      TestConstant.USERNAME_VALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ));
+  }
 
-    @Test
-    void getUserLoginHistoryWrongUser() {
-        Assertions.assertTrue(dao.getUserLoginHistory(
-                TestConstant.USERNAME_INVALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getUserLoginHistoryWrongUser() {
+    Assertions.assertTrue(dao.getUserLoginHistory(
+      TestConstant.USERNAME_INVALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getUserLoginHistoryWrongUserNull() {
-        Assertions.assertTrue(dao.getUserLoginHistory(
-                TestConstant.USERNAME_NULL,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getUserLoginHistoryWrongUserNull() {
+    Assertions.assertTrue(dao.getUserLoginHistory(
+      TestConstant.USERNAME_NULL,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getUserLoginHistoryByDate() {
-        Assertions.assertFalse(dao.getUserLoginHistory(
-                TestConstant.USERNAME_VALID,
-                TestConstant.DATE_LOGIN_VALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getUserLoginHistoryByDate() {
+    Assertions.assertFalse(dao.getUserLoginHistory(
+      TestConstant.USERNAME_VALID,
+      TestConstant.DATE_LOGIN_VALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getUserLoginHistoryByDateWrongDate() {
-        Assertions.assertTrue(dao.getUserLoginHistory(
-                TestConstant.USERNAME_VALID,
-                TestConstant.DATE_INVALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getUserLoginHistoryByDateWrongDate() {
+    Assertions.assertTrue(dao.getUserLoginHistory(
+      TestConstant.USERNAME_VALID,
+      TestConstant.DATE_INVALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getUserLoginHistoryByDateWrongUsernameNull() {
-        Assertions.assertTrue(dao.getUserLoginHistory(
-                TestConstant.USERNAME_NULL,
-                TestConstant.DATE_LOGIN_VALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getUserLoginHistoryByDateWrongUsernameNull() {
+    Assertions.assertTrue(dao.getUserLoginHistory(
+      TestConstant.USERNAME_NULL,
+      TestConstant.DATE_LOGIN_VALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getUserLoginHistoryByDateWrongUsername() {
-        Assertions.assertTrue(dao.getUserLoginHistory(
-                TestConstant.USERNAME_INVALID,
-                TestConstant.DATE_LOGIN_VALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getUserLoginHistoryByDateWrongUsername() {
+    Assertions.assertTrue(dao.getUserLoginHistory(
+      TestConstant.USERNAME_INVALID,
+      TestConstant.DATE_LOGIN_VALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getAllLoginHistory() {
-        Assertions.assertNotNull(dao.getAllLoginHistory(TestConstant.OFFSET_VALID, TestConstant.LIMIT_VALID));
-    }
+  @Test
+  void getAllLoginHistory() {
+    Assertions.assertNotNull(dao.getAllLoginHistory(TestConstant.OFFSET_VALID, TestConstant.LIMIT_VALID));
+  }
 
-    @Test
-    void getAllLoginHistoryWrongOffset() {
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.getAllLoginHistory(TestConstant.OFFSET_INVALID, TestConstant.LIMIT_VALID)
-        );
-    }
+  @Test
+  void getAllLoginHistoryWrongOffset() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.getAllLoginHistory(TestConstant.OFFSET_INVALID, TestConstant.LIMIT_VALID)
+    );
+  }
 
-    @Test
-    void getAllLoginHistoryWrongLimit() {
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.getAllLoginHistory(TestConstant.OFFSET_VALID, TestConstant.LIMIT_INVALID)
-        );
-    }
+  @Test
+  void getAllLoginHistoryWrongLimit() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.getAllLoginHistory(TestConstant.OFFSET_VALID, TestConstant.LIMIT_INVALID)
+    );
+  }
 
-    @Test
-    void getAllLoginHistoryByDate() {
-        Assertions.assertFalse(dao.getAllLoginHistory(
-                TestConstant.DATE_LOGIN_VALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getAllLoginHistoryByDate() {
+    Assertions.assertFalse(dao.getAllLoginHistory(
+      TestConstant.DATE_LOGIN_VALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getAllLoginHistoryByDateWrongDate() {
-        Assertions.assertTrue(dao.getAllLoginHistory(
-                TestConstant.DATE_INVALID,
-                TestConstant.OFFSET_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getAllLoginHistoryByDateWrongDate() {
+    Assertions.assertTrue(dao.getAllLoginHistory(
+      TestConstant.DATE_INVALID,
+      TestConstant.OFFSET_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getUserLoginHistoryCount() {
-        Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.USERNAME_VALID));
-    }
+  @Test
+  void getUserLoginHistoryCount() {
+    Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.USERNAME_VALID));
+  }
 
-    @Test
-    void getUserLoginHistoryCountWrongUser() {
-        Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.USERNAME_INVALID));
-    }
+  @Test
+  void getUserLoginHistoryCountWrongUser() {
+    Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.USERNAME_INVALID));
+  }
 
-    @Test
-    void getAllLoginHistoryCount() {
-        Assertions.assertNotNull(dao.getAllLoginHistoryCount());
-    }
+  @Test
+  void getAllLoginHistoryCount() {
+    Assertions.assertNotNull(dao.getAllLoginHistoryCount());
+  }
 }

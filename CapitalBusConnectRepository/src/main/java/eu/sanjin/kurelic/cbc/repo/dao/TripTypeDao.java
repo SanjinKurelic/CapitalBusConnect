@@ -5,6 +5,6 @@ import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
 
 public interface TripTypeDao {
 
-    TripType getTripType(TripTypeValues value);
+  TripType getTripType(TripTypeValues value);
 
 }

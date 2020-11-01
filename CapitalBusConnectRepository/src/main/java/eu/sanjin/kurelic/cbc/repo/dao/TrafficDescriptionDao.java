@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TrafficDescriptionDao {
 
-    List<TrafficDescription> getTrafficDescriptions(LocalDate date, String language, int limit);
+  List<TrafficDescription> getTrafficDescriptions(LocalDate date, String language, int limit);
 
 }

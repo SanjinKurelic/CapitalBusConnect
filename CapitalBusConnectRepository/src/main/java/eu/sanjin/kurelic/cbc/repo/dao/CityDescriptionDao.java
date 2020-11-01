@@ -7,19 +7,19 @@ import java.util.List;
 
 public interface CityDescriptionDao {
 
-    int TUPLE_CITY_NAME = 0;
-    int TUPLE_CITY_DESCRIPTION = 1;
+  int TUPLE_CITY_NAME = 0;
+  int TUPLE_CITY_DESCRIPTION = 1;
 
-    CityDescription getCityDescription(int id, String language);
+  CityDescription getCityDescription(int id, String language);
 
-    CityDescription getCityDescription(String cityName, String language);
+  CityDescription getCityDescription(String cityName, String language);
 
-    CityDescription getCityDescription(String cityName, String language, String nameLanguage);
+  CityDescription getCityDescription(String cityName, String language, String nameLanguage);
 
-    List<CityDescription> getCityDescriptions(String language);
+  List<CityDescription> getCityDescriptions(String language);
 
-    List<CityDescription> getCityDescriptions(String language, Integer... ids);
+  List<CityDescription> getCityDescriptions(String language, Integer... ids);
 
-    List<Tuple> searchCityDescription(String partialCityName, int limit, String language, String urlLanguage);
+  List<Tuple> searchCityDescription(String partialCityName, int limit, String language, String urlLanguage);
 
 }

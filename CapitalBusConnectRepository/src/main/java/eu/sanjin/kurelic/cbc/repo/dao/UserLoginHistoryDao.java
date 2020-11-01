@@ -7,18 +7,18 @@ import java.util.List;
 
 public interface UserLoginHistoryDao {
 
-    List<UserLoginHistory> getUserLoginHistory(String username, int offset, int limit);
+  List<UserLoginHistory> getUserLoginHistory(String username, int offset, int limit);
 
-    List<UserLoginHistory> getUserLoginHistory(String username, LocalDate date, int offset, int limit);
+  List<UserLoginHistory> getUserLoginHistory(String username, LocalDate date, int offset, int limit);
 
-    List<UserLoginHistory> getAllLoginHistory(int offset, int limit);
+  List<UserLoginHistory> getAllLoginHistory(int offset, int limit);
 
-    List<UserLoginHistory> getAllLoginHistory(LocalDate date, int offset, int limit);
+  List<UserLoginHistory> getAllLoginHistory(LocalDate date, int offset, int limit);
 
-    Long getUserLoginHistoryCount(String username);
+  Long getUserLoginHistoryCount(String username);
 
-    Long getAllLoginHistoryCount();
+  Long getAllLoginHistoryCount();
 
-    void addUserLoginHistory(UserLoginHistory userLoginHistory);
+  void addUserLoginHistory(UserLoginHistory userLoginHistory);
 
 }

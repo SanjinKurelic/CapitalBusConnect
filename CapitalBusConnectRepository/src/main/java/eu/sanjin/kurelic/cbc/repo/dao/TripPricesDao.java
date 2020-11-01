@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 public interface TripPricesDao {
 
-    default TripPrices getTripPrice(Duration tripDuration) {
-        return getTripPrice(tripDuration, LocalDate.now());
-    }
+  default TripPrices getTripPrice(Duration tripDuration) {
+    return getTripPrice(tripDuration, LocalDate.now());
+  }
 
-    TripPrices getTripPrice(Duration tripDuration, LocalDate date);
+  TripPrices getTripPrice(Duration tripDuration, LocalDate date);
 
 }

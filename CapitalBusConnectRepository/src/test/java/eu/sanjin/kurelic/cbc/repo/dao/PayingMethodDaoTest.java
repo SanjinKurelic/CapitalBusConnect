@@ -16,14 +16,14 @@ import javax.transaction.Transactional;
 @Transactional
 class PayingMethodDaoTest {
 
-    @Autowired
-    private PayingMethodDao dao;
+  @Autowired
+  private PayingMethodDao dao;
 
-    @Test
-    void getPayingMethodByName() {
-        Assertions.assertEquals(
-                PayingMethodValues.MONEY.name(),
-                dao.getPayingMethodByName(PayingMethodValues.MONEY).getName()
-        );
-    }
+  @Test
+  void getPayingMethodByName() {
+    Assertions.assertEquals(
+      PayingMethodValues.MONEY.name(),
+      dao.getPayingMethodByName(PayingMethodValues.MONEY).getName()
+    );
+  }
 }

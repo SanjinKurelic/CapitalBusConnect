@@ -6,6 +6,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Country.class)
 public class Country_ {
 
-    public static volatile SingularAttribute<Country, Integer> id;
+  public static volatile SingularAttribute<Country, Integer> id;
 
 }

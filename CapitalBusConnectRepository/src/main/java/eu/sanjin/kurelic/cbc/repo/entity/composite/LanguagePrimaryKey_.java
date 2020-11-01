@@ -6,7 +6,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(LanguagePrimaryKey.class)
 public class LanguagePrimaryKey_ {
 
-    public static volatile SingularAttribute<LanguagePrimaryKey, Integer> id;
-    public static volatile SingularAttribute<LanguagePrimaryKey, String> language;
+  public static volatile SingularAttribute<LanguagePrimaryKey, Integer> id;
+  public static volatile SingularAttribute<LanguagePrimaryKey, String> language;
 
 }

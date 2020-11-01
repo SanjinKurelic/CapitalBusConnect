@@ -8,8 +8,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(TrafficDescription.class)
 public class TrafficDescription_ {
 
-    public static volatile SingularAttribute<TrafficDescription, LanguagePrimaryKey> id;
-    public static volatile SingularAttribute<TrafficDescription, String> description;
-    public static volatile SingularAttribute<TrafficDescription, Traffic> traffic;
+  public static volatile SingularAttribute<TrafficDescription, LanguagePrimaryKey> id;
+  public static volatile SingularAttribute<TrafficDescription, String> description;
+  public static volatile SingularAttribute<TrafficDescription, Traffic> traffic;
 
 }

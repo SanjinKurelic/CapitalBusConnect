@@ -16,71 +16,71 @@ import javax.transaction.Transactional;
 @Transactional
 class UserDaoTest {
 
-    @Autowired
-    private UserDao dao;
+  @Autowired
+  private UserDao dao;
 
-    @Test
-    void getUserInformationWrongIdNull() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-                () -> dao.getUserInformation(TestConstant.USERNAME_NULL));
-    }
+  @Test
+  void getUserInformationWrongIdNull() {
+    Assertions.assertThrows(IllegalArgumentException.class,
+      () -> dao.getUserInformation(TestConstant.USERNAME_NULL));
+  }
 
-    @Test
-    void getUserInformationWrongId() {
-        Assertions.assertNull(dao.getUserInformation(TestConstant.USERNAME_INVALID));
-    }
+  @Test
+  void getUserInformationWrongId() {
+    Assertions.assertNull(dao.getUserInformation(TestConstant.USERNAME_INVALID));
+  }
 
-    @Test
-    void getUserInformation() {
-        Assertions.assertNotNull(dao.getUserInformation(TestConstant.USERNAME_VALID));
-    }
+  @Test
+  void getUserInformation() {
+    Assertions.assertNotNull(dao.getUserInformation(TestConstant.USERNAME_VALID));
+  }
 
-    @Test
-    void hasUserInformation() {
-        Assertions.assertTrue(dao.hasUserInformation(TestConstant.USERNAME_VALID));
-    }
+  @Test
+  void hasUserInformation() {
+    Assertions.assertTrue(dao.hasUserInformation(TestConstant.USERNAME_VALID));
+  }
 
-    @Test
-    void hasUserInformationWrongUsername() {
-        Assertions.assertFalse(dao.hasUserInformation(TestConstant.USERNAME_INVALID));
-    }
+  @Test
+  void hasUserInformationWrongUsername() {
+    Assertions.assertFalse(dao.hasUserInformation(TestConstant.USERNAME_INVALID));
+  }
 
-    @Test
-    void hasUserInformationWrongUsernameNull() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-                () -> dao.hasUserInformation(TestConstant.USERNAME_NULL));
-    }
+  @Test
+  void hasUserInformationWrongUsernameNull() {
+    Assertions.assertThrows(IllegalArgumentException.class,
+      () -> dao.hasUserInformation(TestConstant.USERNAME_NULL));
+  }
 
-    @Test
-    void searchUserInformation() {
-        Assertions.assertFalse(dao.searchUserInformation(
-                TestConstant.SEARCH_USER_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void searchUserInformation() {
+    Assertions.assertFalse(dao.searchUserInformation(
+      TestConstant.SEARCH_USER_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void searchUserInformationWrongUser() {
-        Assertions.assertTrue(dao.searchUserInformation(
-                TestConstant.SEARCH_USER_INVALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void searchUserInformationWrongUser() {
+    Assertions.assertTrue(dao.searchUserInformation(
+      TestConstant.SEARCH_USER_INVALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void searchUserInformationWrongUserNull() {
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.searchUserInformation(TestConstant.USERNAME_NULL, TestConstant.LIMIT_INVALID)
-        );
-    }
+  @Test
+  void searchUserInformationWrongUserNull() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.searchUserInformation(TestConstant.USERNAME_NULL, TestConstant.LIMIT_INVALID)
+    );
+  }
 
-    @Test
-    void searchUserInformationWrongLimit() {
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.searchUserInformation(TestConstant.SEARCH_USER_VALID, TestConstant.LIMIT_INVALID)
-        );
-    }
+  @Test
+  void searchUserInformationWrongLimit() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.searchUserInformation(TestConstant.SEARCH_USER_VALID, TestConstant.LIMIT_INVALID)
+    );
+  }
 
 }

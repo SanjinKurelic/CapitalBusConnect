@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @StaticMetamodel(LoginHistoryPrimaryKey.class)
 public class LoginHistoryPrimaryKey_ {
 
-    public static volatile SingularAttribute<LoginHistoryPrimaryKey, User> username;
-    public static volatile SingularAttribute<LoginHistoryPrimaryKey, LocalDateTime> dateTime;
+  public static volatile SingularAttribute<LoginHistoryPrimaryKey, User> username;
+  public static volatile SingularAttribute<LoginHistoryPrimaryKey, LocalDateTime> dateTime;
 
 }

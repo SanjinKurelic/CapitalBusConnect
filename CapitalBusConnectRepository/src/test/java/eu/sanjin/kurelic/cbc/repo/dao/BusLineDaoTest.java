@@ -16,46 +16,46 @@ import javax.transaction.Transactional;
 @Transactional
 class BusLineDaoTest {
 
-    @Autowired
-    BusLineDao dao;
+  @Autowired
+  BusLineDao dao;
 
-    @Test
-    void getCityLinesWrongOffset() {
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.getCityLines(TestConstant.OFFSET_INVALID, TestConstant.LIMIT_VALID)
-        );
-    }
+  @Test
+  void getCityLinesWrongOffset() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.getCityLines(TestConstant.OFFSET_INVALID, TestConstant.LIMIT_VALID)
+    );
+  }
 
-    @Test
-    void getCityLinesWrongOffsetLarge() {
-        Assertions.assertTrue(dao.getCityLines(TestConstant.OFFSET_LARGE, TestConstant.LIMIT_VALID).isEmpty());
-    }
+  @Test
+  void getCityLinesWrongOffsetLarge() {
+    Assertions.assertTrue(dao.getCityLines(TestConstant.OFFSET_LARGE, TestConstant.LIMIT_VALID).isEmpty());
+  }
 
-    @Test
-    void getCityLinesWrongLimit() {
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_INVALID)
-        );
-    }
+  @Test
+  void getCityLinesWrongLimit() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_INVALID)
+    );
+  }
 
-    @Test
-    void getCityLinesWrongLimitEmpty() {
-        Assertions.assertTrue(dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_ZERO).isEmpty());
-    }
+  @Test
+  void getCityLinesWrongLimitEmpty() {
+    Assertions.assertTrue(dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_ZERO).isEmpty());
+  }
 
-    @Test
-    void getCityLines() {
-        // Database should be filled for this test
-        Assertions.assertEquals(
-                TestConstant.LIMIT_VALID,
-                dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_VALID).size()
-        );
-    }
+  @Test
+  void getCityLines() {
+    // Database should be filled for this test
+    Assertions.assertEquals(
+      TestConstant.LIMIT_VALID,
+      dao.getCityLines(TestConstant.OFFSET_VALID, TestConstant.LIMIT_VALID).size()
+    );
+  }
 
-    @Test
-    void getNumberOfCityLines() {
-        Assertions.assertNotNull(dao.getNumberOfCityLines());
-    }
+  @Test
+  void getNumberOfCityLines() {
+    Assertions.assertNotNull(dao.getNumberOfCityLines());
+  }
 }

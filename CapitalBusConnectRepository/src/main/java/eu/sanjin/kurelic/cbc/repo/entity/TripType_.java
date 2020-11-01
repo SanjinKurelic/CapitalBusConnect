@@ -6,7 +6,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(TripType.class)
 public class TripType_ {
 
-    public static volatile SingularAttribute<TripType, Integer> id;
-    public static volatile SingularAttribute<TripType, String> name;
+  public static volatile SingularAttribute<TripType, Integer> id;
+  public static volatile SingularAttribute<TripType, String> name;
 
 }

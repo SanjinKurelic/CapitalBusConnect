@@ -10,23 +10,23 @@ import java.util.List;
 
 public interface TripHistoryDao {
 
-    int TUPLE_TRIP_HISTORY = 0;
-    int TUPLE_COUNTER = 1;
+  int TUPLE_TRIP_HISTORY = 0;
+  int TUPLE_COUNTER = 1;
 
-    TripHistory getTripHistory(int id);
+  TripHistory getTripHistory(int id);
 
-    void addOrUpdateTripHistory(TripHistory tripHistory);
+  void addOrUpdateTripHistory(TripHistory tripHistory);
 
-    default Integer getTripHistoryIdOrNull(BusSchedule busSchedule, LocalDate date, TripType tripType) {
-        return getTripHistoryIdOrNull(busSchedule.getId(), date, tripType.getId());
-    }
+  default Integer getTripHistoryIdOrNull(BusSchedule busSchedule, LocalDate date, TripType tripType) {
+    return getTripHistoryIdOrNull(busSchedule.getId(), date, tripType.getId());
+  }
 
-    Integer getTripHistoryIdOrNull(Integer busScheduleId, LocalDate date, Integer tripTypeId);
+  Integer getTripHistoryIdOrNull(Integer busScheduleId, LocalDate date, Integer tripTypeId);
 
-    List<Tuple> getMostTraveledSchedules(int limit);
+  List<Tuple> getMostTraveledSchedules(int limit);
 
-    List<Tuple> getLastFilledTripHistory(int limit);
+  List<Tuple> getLastFilledTripHistory(int limit);
 
-    Long getTripHistoryCount();
+  Long getTripHistoryCount();
 
 }

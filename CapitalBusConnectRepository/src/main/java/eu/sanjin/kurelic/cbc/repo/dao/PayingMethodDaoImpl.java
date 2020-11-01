@@ -14,19 +14,19 @@ import javax.persistence.criteria.Root;
 @Repository
 public class PayingMethodDaoImpl implements PayingMethodDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+  @PersistenceContext
+  private EntityManager entityManager;
 
-    @Override
-    public PayingMethod getPayingMethodByName(PayingMethodValues value) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PayingMethod> criteria = builder.createQuery(PayingMethod.class);
-        Root<PayingMethod> root = criteria.from(PayingMethod.class);
+  @Override
+  public PayingMethod getPayingMethodByName(PayingMethodValues value) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<PayingMethod> criteria = builder.createQuery(PayingMethod.class);
+    Root<PayingMethod> root = criteria.from(PayingMethod.class);
 
-        // HQL = FROM PayingMethod WHERE name = :name
-        criteria.where(builder.equal(root.get(PayingMethod_.name), value.name()));
+    // HQL = FROM PayingMethod WHERE name = :name
+    criteria.where(builder.equal(root.get(PayingMethod_.name), value.name()));
 
-        return entityManager.createQuery(criteria).getSingleResult();
-    }
+    return entityManager.createQuery(criteria).getSingleResult();
+  }
 
 }

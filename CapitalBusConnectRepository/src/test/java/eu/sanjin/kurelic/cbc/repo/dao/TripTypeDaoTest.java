@@ -16,16 +16,16 @@ import javax.transaction.Transactional;
 @Transactional
 class TripTypeDaoTest {
 
-    @Autowired
-    private TripTypeDao dao;
+  @Autowired
+  private TripTypeDao dao;
 
-    @Test
-    void getTripTypeWrongType() {
-        Assertions.assertThrows(NullPointerException.class, () -> dao.getTripType(TestConstant.TRIP_TYPE_NULL));
-    }
+  @Test
+  void getTripTypeWrongType() {
+    Assertions.assertThrows(NullPointerException.class, () -> dao.getTripType(TestConstant.TRIP_TYPE_NULL));
+  }
 
-    @Test
-    void getTripType() {
-        Assertions.assertNotNull(dao.getTripType(TestConstant.TRIP_TYPE));
-    }
+  @Test
+  void getTripType() {
+    Assertions.assertNotNull(dao.getTripType(TestConstant.TRIP_TYPE));
+  }
 }

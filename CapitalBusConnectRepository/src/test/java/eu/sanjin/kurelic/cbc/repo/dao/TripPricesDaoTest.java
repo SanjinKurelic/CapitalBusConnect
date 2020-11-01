@@ -17,24 +17,24 @@ import javax.transaction.Transactional;
 @Transactional
 class TripPricesDaoTest {
 
-    @Autowired
-    private TripPricesDao dao;
+  @Autowired
+  private TripPricesDao dao;
 
-    @Test
-    void getTripPriceWrongDate() {
-        Assertions.assertThrows(
-                NoResultException.class,
-                () -> dao.getTripPrice(TestConstant.TRIP_DURATION_VALID, TestConstant.DATE_INVALID)
-        );
-    }
+  @Test
+  void getTripPriceWrongDate() {
+    Assertions.assertThrows(
+      NoResultException.class,
+      () -> dao.getTripPrice(TestConstant.TRIP_DURATION_VALID, TestConstant.DATE_INVALID)
+    );
+  }
 
-    @Test
-    void getTripPriceWrongDuration() {
-        Assertions.assertThrows(NoResultException.class, () -> dao.getTripPrice(TestConstant.TRIP_DURATION_INVALID));
-    }
+  @Test
+  void getTripPriceWrongDuration() {
+    Assertions.assertThrows(NoResultException.class, () -> dao.getTripPrice(TestConstant.TRIP_DURATION_INVALID));
+  }
 
-    @Test
-    void getTripPriceValid() {
-        Assertions.assertNotNull(dao.getTripPrice(TestConstant.TRIP_DURATION_VALID));
-    }
+  @Test
+  void getTripPriceValid() {
+    Assertions.assertNotNull(dao.getTripPrice(TestConstant.TRIP_DURATION_VALID));
+  }
 }

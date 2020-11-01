@@ -8,7 +8,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(UserLoginHistory.class)
 public class UserLoginHistory_ {
 
-    public static volatile SingularAttribute<UserLoginHistory, LoginHistoryPrimaryKey> id;
-    public static volatile SingularAttribute<UserLoginHistory, String> ipAddress;
+  public static volatile SingularAttribute<UserLoginHistory, LoginHistoryPrimaryKey> id;
+  public static volatile SingularAttribute<UserLoginHistory, String> ipAddress;
 
 }

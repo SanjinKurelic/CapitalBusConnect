@@ -16,55 +16,55 @@ import javax.transaction.Transactional;
 @Transactional
 class TrafficDescriptionDaoTest {
 
-    @Autowired
-    private TrafficDescriptionDao dao;
+  @Autowired
+  private TrafficDescriptionDao dao;
 
-    @Test
-    void getTrafficDescriptionsWrongDate() {
-        Assertions.assertTrue(dao.getTrafficDescriptions(
-                TestConstant.DATE_INVALID,
-                TestConstant.LANGUAGE_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getTrafficDescriptionsWrongDate() {
+    Assertions.assertTrue(dao.getTrafficDescriptions(
+      TestConstant.DATE_INVALID,
+      TestConstant.LANGUAGE_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getTrafficDescriptionsWrongLanguageNull() {
-        Assertions.assertTrue(dao.getTrafficDescriptions(
-                TestConstant.DATE_VALID,
-                TestConstant.LANGUAGE_NULL,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getTrafficDescriptionsWrongLanguageNull() {
+    Assertions.assertTrue(dao.getTrafficDescriptions(
+      TestConstant.DATE_VALID,
+      TestConstant.LANGUAGE_NULL,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getTrafficDescriptionsWrongLanguage() {
-        Assertions.assertTrue(dao.getTrafficDescriptions(
-                TestConstant.DATE_VALID,
-                TestConstant.LANGUAGE_EMPTY,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getTrafficDescriptionsWrongLanguage() {
+    Assertions.assertTrue(dao.getTrafficDescriptions(
+      TestConstant.DATE_VALID,
+      TestConstant.LANGUAGE_EMPTY,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 
-    @Test
-    void getTrafficDescriptionsWrongLimit() {
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> dao.getTrafficDescriptions(
-                        TestConstant.DATE_VALID,
-                        TestConstant.LANGUAGE_VALID,
-                        TestConstant.LIMIT_INVALID
-                )
-        );
-    }
+  @Test
+  void getTrafficDescriptionsWrongLimit() {
+    Assertions.assertThrows(
+      IllegalArgumentException.class,
+      () -> dao.getTrafficDescriptions(
+        TestConstant.DATE_VALID,
+        TestConstant.LANGUAGE_VALID,
+        TestConstant.LIMIT_INVALID
+      )
+    );
+  }
 
-    @Test
-    void getTrafficDescriptions() {
-        // require at least one database record
-        Assertions.assertFalse(dao.getTrafficDescriptions(
-                TestConstant.DATE_VALID,
-                TestConstant.LANGUAGE_VALID,
-                TestConstant.LIMIT_VALID
-        ).isEmpty());
-    }
+  @Test
+  void getTrafficDescriptions() {
+    // require at least one database record
+    Assertions.assertFalse(dao.getTrafficDescriptions(
+      TestConstant.DATE_VALID,
+      TestConstant.LANGUAGE_VALID,
+      TestConstant.LIMIT_VALID
+    ).isEmpty());
+  }
 }
