@@ -14,7 +14,7 @@ import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
+import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValue;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -102,7 +102,7 @@ public class CartServiceImpl implements CartService {
 
   @Override
   @Transactional
-  public void saveToDatabase(PayingMethodValues payingMethod, String username) throws InvalidSuppliedArgumentsException, InvalidUserException {
+  public void saveToDatabase(PayingMethodValue payingMethod, String username) throws InvalidSuppliedArgumentsException, InvalidUserException {
     UserTravelHistory travelHistory;
     BusSchedule scheduleItem;
     // Check
@@ -120,7 +120,7 @@ public class CartServiceImpl implements CartService {
       travelHistory.setUsername(username);
       travelHistory.setNumberOfAdults(item.getNumberOfAdults());
       travelHistory.setNumberOfChildren(item.getNumberOfChildren());
-      travelHistory.setPayingMethod(payingMethodRepository.findByPayingMethodValues(payingMethod));
+      travelHistory.setPayingMethod(payingMethodRepository.findByPayingMethodValue(payingMethod));
       travelHistory.setPrice(tripPricesDao.getTripPrice(scheduleItem.getDuration()).getPrice());
       travelHistory.setTripHistory(getTripHistory(item, scheduleItem));
       // Store user travel history

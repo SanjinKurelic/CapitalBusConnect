@@ -4,8 +4,8 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.RegistrationUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValue;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.time.LocalDate;
@@ -80,8 +80,8 @@ public class TestConstant {
   public static final Locale LANGUAGE_NULL = null;
 
   // Cart items
-  public static final PayingMethodValues PAYING_METHOD_VALID = PayingMethodValues.MONEY;
-  public static final PayingMethodValues PAYING_METHOD_INVALID = null;
+  public static final PayingMethodValue PAYING_METHOD_VALID = PayingMethodValue.MONEY;
+  public static final PayingMethodValue PAYING_METHOD_INVALID = null;
   public static final CartItem CART_ITEM_INVALID = null;
   public static final CartItem CART_ITEM_EMPTY = new CartItem();
   public static final CartItem CART_ITEM_VALID;
@@ -94,21 +94,21 @@ public class TestConstant {
     // Cart item
     CART_ITEM_VALID = new CartItem(
       TestConstant.ID_VALID_NEXT, TestConstant.DATE_TIME_VALID_NEXT,
-      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValues.B_TO_A
+      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValue.B_TO_A
     );
     // Cart items
     CART_ITEMS_VALID = new CartItems();
     CART_ITEMS_VALID.add(new CartItem(
       TestConstant.ID_VALID, TestConstant.DATE_TIME_VALID,
-      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValues.B_TO_A)
+      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValue.B_TO_A)
     );
     CART_ITEMS_VALID.add(new CartItem(
       TestConstant.ID_VALID, TestConstant.DATE_TIME_VALID_NEXT,
-      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValues.B_TO_A)
+      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValue.B_TO_A)
     );
     CART_ITEMS_VALID.add(new CartItem(
       TestConstant.ID_VALID_NEXT, TestConstant.DATE_TIME_VALID,
-      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValues.B_TO_A)
+      TestConstant.NUMBER_OF_PEOPLE, TestConstant.NUMBER_OF_PEOPLE, TripTypeValue.B_TO_A)
     );
     // User form
     USER_FORM_VALID = new RegistrationUserForm();

@@ -1,7 +1,7 @@
 package eu.sanjin.kurelic.cbc.repo.dao;
 
 import eu.sanjin.kurelic.cbc.repo.configuration.RepositoryConfiguration;
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
+import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,8 +22,8 @@ class PayingMethodRepositoryTest {
   @Test
   void getPayingMethodByName() {
     Assertions.assertEquals(
-      PayingMethodValues.MONEY,
-      payingMethodRepository.findByPayingMethodValues(PayingMethodValues.MONEY).getPayingMethodValues()
+      PayingMethodValue.MONEY,
+      payingMethodRepository.findByPayingMethodValue(PayingMethodValue.MONEY).getPayingMethodValue()
     );
   }
 }

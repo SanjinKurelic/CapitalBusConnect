@@ -1,6 +1,6 @@
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 
 import java.time.LocalDateTime;
 
@@ -32,7 +32,7 @@ public interface ScheduleItem {
 
   SchedulePayingMethod getPayingMethod();
 
-  TripTypeValues getTripType();
+  TripTypeValue getTripType();
 
   boolean disabled();
 

@@ -1,12 +1,12 @@
 package eu.sanjin.kurelic.cbc.repo.values;
 
-public enum AuthoritiesValues {
+public enum AuthoritiesValue {
 
   ADMIN("ROLE_ADMIN"), USER("ROLE_USER");
 
   private final String value;
 
-  AuthoritiesValues(String value) {
+  AuthoritiesValue(String value) {
     this.value = value;
   }
 

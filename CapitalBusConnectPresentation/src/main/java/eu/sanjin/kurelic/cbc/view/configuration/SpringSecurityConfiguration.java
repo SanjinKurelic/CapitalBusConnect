@@ -1,6 +1,6 @@
 package eu.sanjin.kurelic.cbc.view.configuration;
 
-import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -44,9 +44,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
       .authorizeRequests()
-      .antMatchers(USER_URL_PATTERN).hasRole(AuthoritiesValues.USER.name())
-      .antMatchers(ADMIN_URL_PATTERN).hasRole(AuthoritiesValues.ADMIN.name())
-      .antMatchers(CART_LOGIN_REQUIRED_URL).hasRole(AuthoritiesValues.USER.name())
+      .antMatchers(USER_URL_PATTERN).hasRole(AuthoritiesValue.USER.name())
+      .antMatchers(ADMIN_URL_PATTERN).hasRole(AuthoritiesValue.ADMIN.name())
+      .antMatchers(CART_LOGIN_REQUIRED_URL).hasRole(AuthoritiesValue.USER.name())
       .and()
       .exceptionHandling()
       .accessDeniedPage(ACCESS_DENIED_PAGE_URL)

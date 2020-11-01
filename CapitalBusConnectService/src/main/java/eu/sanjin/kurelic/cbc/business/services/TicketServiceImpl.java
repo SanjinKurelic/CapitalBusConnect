@@ -6,7 +6,7 @@ import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -67,8 +67,8 @@ public class TicketServiceImpl implements TicketService {
     if (Objects.isNull(city1) || Objects.isNull(city2)) {
       return null;
     }
-    var tripType = TripTypeValues.valueOf(travelHistory.getTripHistory().getTripType().getName());
-    if (tripType == TripTypeValues.B_TO_A) {
+    var tripType = TripTypeValue.valueOf(travelHistory.getTripHistory().getTripType().getName());
+    if (tripType == TripTypeValue.B_TO_A) {
       ticket.setFromCity(city2.getTitle());
       ticket.setToCity(city1.getTitle());
     } else {

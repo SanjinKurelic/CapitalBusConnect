@@ -1,6 +1,6 @@
 package eu.sanjin.kurelic.cbc.repo.entity;
 
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
+import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValue;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ public class PayingMethod {
   private Integer id;
   @Enumerated(EnumType.STRING)
   @Column(unique = true, name = "name")
-  private PayingMethodValues payingMethodValues;
+  private PayingMethodValue payingMethodValue;
 
   public Integer getId() {
     return id;
@@ -30,11 +30,11 @@ public class PayingMethod {
     this.id = id;
   }
 
-  public PayingMethodValues getPayingMethodValues() {
-    return payingMethodValues;
+  public PayingMethodValue getPayingMethodValue() {
+    return payingMethodValue;
   }
 
-  public void setPayingMethodValues(PayingMethodValues payingMethodValues) {
-    this.payingMethodValues = payingMethodValues;
+  public void setPayingMethodValue(PayingMethodValue payingMethodValue) {
+    this.payingMethodValue = payingMethodValue;
   }
 }

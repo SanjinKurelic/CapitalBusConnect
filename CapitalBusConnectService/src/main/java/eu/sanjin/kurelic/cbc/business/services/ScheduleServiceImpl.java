@@ -14,8 +14,8 @@ import eu.sanjin.kurelic.cbc.repo.dao.TripPricesDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValue;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -85,9 +85,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         .setPrice(tripPricesDao.getTripPrice(busSchedule.getDuration(), date).getPrice());
       // Trip type info
       if (busSchedule.getBusLine().getCity1().getId().equals(fromCityId)) {
-        sb.setTripType(TripTypeValues.A_TO_B);
+        sb.setTripType(TripTypeValue.A_TO_B);
       } else {
-        sb.setTripType(TripTypeValues.B_TO_A);
+        sb.setTripType(TripTypeValue.B_TO_A);
       }
       items.add(sb.buildTimeItem());
     }
@@ -157,7 +157,7 @@ public class ScheduleServiceImpl implements ScheduleService {
       // Get correct city order
       var city1 = cities.get(cartItem.getScheduleId()).getFirst();
       var city2 = cities.get(cartItem.getScheduleId()).getSecond();
-      if (cartItem.getTripType() == TripTypeValues.B_TO_A) {
+      if (cartItem.getTripType() == TripTypeValue.B_TO_A) {
         var city = city1;
         city1 = city2;
         city2 = city;
@@ -218,7 +218,7 @@ public class ScheduleServiceImpl implements ScheduleService {
       // Get correct city order
       var city1 = cities.get(tripHistory.getBusSchedule().getId()).getFirst();
       var city2 = cities.get(tripHistory.getBusSchedule().getId()).getSecond();
-      if (tripHistory.getTripType().getName().equals(TripTypeValues.B_TO_A.name())) {
+      if (tripHistory.getTripType().getName().equals(TripTypeValue.B_TO_A.name())) {
         var city = city1;
         city1 = city2;
         city2 = city;
@@ -230,13 +230,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         .setNumberOfChildren(travelItem.getNumberOfChildren())
         // Price which was paid back then
         .setPrice(travelItem.getPrice() * travelItem.getNumberOfAdults() + travelItem.getPrice() * travelItem.getNumberOfChildren())
-        .setTripType(TripTypeValues.valueOf(tripHistory.getTripType().getName()))
+        .setTripType(TripTypeValue.valueOf(tripHistory.getTripType().getName()))
         .setFromPlace(city1)
         .setToPlace(city2);
       // Set button type - could be done with valueOf
-      if (travelItem.getPayingMethod().getPayingMethodValues().equals(PayingMethodValues.PAY_PAL)) {
+      if (travelItem.getPayingMethod().getPayingMethodValue().equals(PayingMethodValue.PAY_PAL)) {
         sb.setPayingMethod(SchedulePayingMethod.PAY_PAL);
-      } else if (travelItem.getPayingMethod().getPayingMethodValues().equals(PayingMethodValues.MONEY)) {
+      } else if (travelItem.getPayingMethod().getPayingMethodValue().equals(PayingMethodValue.MONEY)) {
         sb.setPayingMethod(SchedulePayingMethod.MONEY);
       }
       items.add(sb.buildPlaceItem());

@@ -1,6 +1,6 @@
 package eu.sanjin.kurelic.cbc.repo.values;
 
-public enum PayingMethodValues {
+public enum PayingMethodValue {
 
   MONEY, PAY_PAL
 

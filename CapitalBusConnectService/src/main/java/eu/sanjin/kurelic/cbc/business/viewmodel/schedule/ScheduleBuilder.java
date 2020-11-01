@@ -1,6 +1,6 @@
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public class ScheduleBuilder {
   private ScheduleButtonType button;
   private ScheduleUpdateType onUpdate;
   private SchedulePayingMethod payingMethod;
-  private TripTypeValues tripType;
+  private TripTypeValue tripType;
   private boolean disabled;
 
   public ScheduleBuilder() {
@@ -38,7 +38,7 @@ public class ScheduleBuilder {
     onUpdate = ScheduleUpdateType.NONE;
     button = ScheduleButtonType.NONE;
     payingMethod = SchedulePayingMethod.NONE;
-    tripType = TripTypeValues.NONE;
+    tripType = TripTypeValue.NONE;
     disabled = false;
   }
 
@@ -94,7 +94,7 @@ public class ScheduleBuilder {
     return payingMethod;
   }
 
-  TripTypeValues getTripType() {
+  TripTypeValue getTripType() {
     return tripType;
   }
 
@@ -167,7 +167,7 @@ public class ScheduleBuilder {
     return this;
   }
 
-  public ScheduleBuilder setTripType(TripTypeValues tripType) {
+  public ScheduleBuilder setTripType(TripTypeValue tripType) {
     this.tripType = tripType;
     return this;
   }

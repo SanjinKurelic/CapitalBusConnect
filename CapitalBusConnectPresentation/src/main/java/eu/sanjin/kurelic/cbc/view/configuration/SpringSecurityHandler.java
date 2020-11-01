@@ -1,7 +1,7 @@
 package eu.sanjin.kurelic.cbc.view.configuration;
 
 import eu.sanjin.kurelic.cbc.business.services.LoginHistoryService;
-import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +31,7 @@ public class SpringSecurityHandler extends SavedRequestAwareAuthenticationSucces
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                       Authentication authentication) throws ServletException, IOException {
     // Save only logins from non admin users
-    Predicate<GrantedAuthority> isAdmin = a -> a.getAuthority().equals(AuthoritiesValues.ADMIN.getValue());
+    Predicate<GrantedAuthority> isAdmin = a -> a.getAuthority().equals(AuthoritiesValue.ADMIN.getValue());
     if (authentication.getAuthorities().stream().noneMatch(isAdmin)) {
       // Get username
       String username = authentication.getName();

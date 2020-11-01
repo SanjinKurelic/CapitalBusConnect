@@ -11,7 +11,7 @@ import eu.sanjin.kurelic.cbc.repo.dao.TripHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -145,7 +145,7 @@ public class StatisticServiceImpl implements StatisticService {
     if (Objects.isNull(city1) || Objects.isNull(city2)) {
       return null;
     }
-    if (tripHistory.getTripType().getName().equals(TripTypeValues.B_TO_A.name())) {
+    if (tripHistory.getTripType().getName().equals(TripTypeValue.B_TO_A.name())) {
       return Pair.of(city2.getTitle(), city1.getTitle());
     }
     return Pair.of(city1.getTitle(), city2.getTitle());

@@ -1,6 +1,6 @@
 package eu.sanjin.kurelic.cbc.business.viewmodel.schedule;
 
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ class ScheduleTimeItemImpl implements ScheduleItem {
   private final ScheduleButtonType scheduleButton;
   private final ScheduleUpdateType onUpdate;
   private final SchedulePayingMethod payingMethod;
-  private final TripTypeValues tripType;
+  private final TripTypeValue tripType;
   private boolean disabled;
 
   ScheduleTimeItemImpl(ScheduleBuilder sb) {
@@ -109,7 +109,7 @@ class ScheduleTimeItemImpl implements ScheduleItem {
   }
 
   @Override
-  public TripTypeValues getTripType() {
+  public TripTypeValue getTripType() {
     return tripType;
   }
 

@@ -8,7 +8,7 @@ import eu.sanjin.kurelic.cbc.repo.dao.AuthoritiesDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserDao;
 import eu.sanjin.kurelic.cbc.repo.entity.Authorities;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
-import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     // Build user authority
     Authorities authority = new Authorities();
     authority.setUsername(u);
-    authority.setAuthority(AuthoritiesValues.USER.getValue());
+    authority.setAuthority(AuthoritiesValue.USER.getValue());
     // Store user authority - we use AND because both operations must yield true
     authorities.addAuthorityToUser(authority);
   }

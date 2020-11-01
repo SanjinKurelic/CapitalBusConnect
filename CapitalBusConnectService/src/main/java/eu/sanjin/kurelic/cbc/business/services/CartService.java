@@ -5,7 +5,7 @@ import eu.sanjin.kurelic.cbc.business.exception.InvalidSuppliedArgumentsExceptio
 import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
+import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValue;
 
 public interface CartService {
 
@@ -21,7 +21,7 @@ public interface CartService {
 
   void removeAllCartItems();
 
-  void saveToDatabase(PayingMethodValues payingMethod, String username) throws InvalidSuppliedArgumentsException,
+  void saveToDatabase(PayingMethodValue payingMethod, String username) throws InvalidSuppliedArgumentsException,
     InvalidUserException;
 
   CartItems getCartItems();

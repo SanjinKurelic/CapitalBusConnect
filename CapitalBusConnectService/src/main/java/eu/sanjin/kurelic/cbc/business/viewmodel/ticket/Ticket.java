@@ -1,6 +1,6 @@
 package eu.sanjin.kurelic.cbc.business.viewmodel.ticket;
 
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,7 +17,7 @@ public class Ticket {
   private LocalTime time;
   private int numberOfAdults;
   private int numberOfChildren;
-  private TripTypeValues tripType;
+  private TripTypeValue tripType;
   private String code;
 
   public int getId() {
@@ -100,11 +100,11 @@ public class Ticket {
     this.numberOfChildren = numberOfChildren;
   }
 
-  public TripTypeValues getTripType() {
+  public TripTypeValue getTripType() {
     return tripType;
   }
 
-  public void setTripType(TripTypeValues tripType) {
+  public void setTripType(TripTypeValue tripType) {
     this.tripType = tripType;
   }
 

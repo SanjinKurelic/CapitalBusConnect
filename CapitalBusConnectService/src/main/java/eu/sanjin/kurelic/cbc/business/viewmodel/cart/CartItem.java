@@ -1,7 +1,7 @@
 package eu.sanjin.kurelic.cbc.business.viewmodel.cart;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Max;
@@ -29,13 +29,13 @@ public class CartItem implements Serializable {
   @Max(value = 10, message = "NumberOfChildren must be between 0-10.")
   private Integer numberOfChildren;
   @NotNull(message = "TripType is required.")
-  private TripTypeValues tripType;
+  private TripTypeValue tripType;
 
   public CartItem() {
   }
 
   public CartItem(Integer scheduleId, LocalDateTime date, Integer numberOfAdults, Integer numberOfChildren,
-                  TripTypeValues tripType) {
+                  TripTypeValue tripType) {
     this.scheduleId = scheduleId;
     this.date = date;
     this.numberOfAdults = numberOfAdults;
@@ -75,11 +75,11 @@ public class CartItem implements Serializable {
     this.numberOfChildren = numberOfChildren;
   }
 
-  public TripTypeValues getTripType() {
+  public TripTypeValue getTripType() {
     return tripType;
   }
 
-  public void setTripType(TripTypeValues tripType) {
+  public void setTripType(TripTypeValue tripType) {
     this.tripType = tripType;
   }
 

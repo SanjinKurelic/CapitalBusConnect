@@ -5,8 +5,8 @@ import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.entity.TripType;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
-import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValues;
-import eu.sanjin.kurelic.cbc.repo.values.TripTypeValues;
+import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValue;
+import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -35,8 +35,8 @@ public class TestConstant {
   public static final Authorities AUTHORITIES_VALID;
 
   // Trip type
-  public static final TripTypeValues TRIP_TYPE_NULL = null;
-  public static final TripTypeValues TRIP_TYPE = TripTypeValues.A_TO_B;
+  public static final TripTypeValue TRIP_TYPE_NULL = null;
+  public static final TripTypeValue TRIP_TYPE = TripTypeValue.A_TO_B;
   public static final TripHistory TRIP_HISTORY_VALID;
 
   // Date & time
@@ -72,7 +72,7 @@ public class TestConstant {
     var u = new User();
     u.setUsername(TestConstant.USERNAME_VALID);
     AUTHORITIES_VALID.setUsername(u);
-    AUTHORITIES_VALID.setAuthority(AuthoritiesValues.USER.getValue());
+    AUTHORITIES_VALID.setAuthority(AuthoritiesValue.USER.getValue());
 
     // Trip history
     TRIP_HISTORY_VALID = new TripHistory();

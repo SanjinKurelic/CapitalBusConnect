@@ -5,7 +5,7 @@ import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
 import eu.sanjin.kurelic.cbc.business.services.CartService;
 import eu.sanjin.kurelic.cbc.business.services.ScheduleService;
 import eu.sanjin.kurelic.cbc.business.services.TicketService;
-import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
+import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValue;
 import eu.sanjin.kurelic.cbc.view.aspect.ReadFromSession;
 import eu.sanjin.kurelic.cbc.view.aspect.SaveToSession;
 import eu.sanjin.kurelic.cbc.view.components.AttributeNames;
@@ -71,7 +71,7 @@ public class CommerceController {
       PAYING_METHOD_URL_MINUS_CHARACTER,
       PAYING_METHOD_JAVA_UNDERSCORE_CHARACTER
     );
-    PayingMethodValues payingMethodValue = PayingMethodValues.valueOf(payingMethodCleaned);
+    PayingMethodValue payingMethodValue = PayingMethodValue.valueOf(payingMethodCleaned);
     cartService.saveToDatabase(payingMethodValue, SecurityContextHolder.getContext().getAuthentication().getName());
     // If no exception, empty cart item
     cartService.removeAllCartItems();
