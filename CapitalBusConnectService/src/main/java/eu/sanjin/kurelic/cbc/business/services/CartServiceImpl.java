@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
   private final TripTypeDao tripTypeDao;
   private final TripPricesDao tripPricesDao;
   private final UserTravelHistoryDao userTravelHistoryDao;
-  private final PayingMethodDao payingMethodDao;
+  private final PayingMethodRepository payingMethodRepository;
   private final UserService userService;
 
   public CartServiceImpl(BusScheduleDao busScheduleDao, TripHistoryDao tripHistoryDao, TripTypeDao tripTypeDao,
@@ -45,7 +45,7 @@ public class CartServiceImpl implements CartService {
     this.tripTypeDao = tripTypeDao;
     this.tripPricesDao = tripPricesDao;
     this.userTravelHistoryDao = userTravelHistoryDao;
-    this.payingMethodDao = payingMethodDao;
+    this.payingMethodRepository = payingMethodRepository;
     this.userService = userService;
   }
 
@@ -120,7 +120,7 @@ public class CartServiceImpl implements CartService {
       travelHistory.setUsername(username);
       travelHistory.setNumberOfAdults(item.getNumberOfAdults());
       travelHistory.setNumberOfChildren(item.getNumberOfChildren());
-      travelHistory.setPayingMethod(payingMethodDao.getPayingMethodByName(payingMethod));
+      travelHistory.setPayingMethod(payingMethodRepository.findByPayingMethodValues(payingMethod));
       travelHistory.setPrice(tripPricesDao.getTripPrice(scheduleItem.getDuration()).getPrice());
       travelHistory.setTripHistory(getTripHistory(item, scheduleItem));
       // Store user travel history

@@ -234,9 +234,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         .setFromPlace(city1)
         .setToPlace(city2);
       // Set button type - could be done with valueOf
-      if (travelItem.getPayingMethod().getName().equals(PayingMethodValues.PAY_PAL.name())) {
+      if (travelItem.getPayingMethod().getPayingMethodValues().equals(PayingMethodValues.PAY_PAL)) {
         sb.setPayingMethod(SchedulePayingMethod.PAY_PAL);
-      } else if (travelItem.getPayingMethod().getName().equals(PayingMethodValues.MONEY.name())) {
+      } else if (travelItem.getPayingMethod().getPayingMethodValues().equals(PayingMethodValues.MONEY)) {
         sb.setPayingMethod(SchedulePayingMethod.MONEY);
       }
       items.add(sb.buildPlaceItem());

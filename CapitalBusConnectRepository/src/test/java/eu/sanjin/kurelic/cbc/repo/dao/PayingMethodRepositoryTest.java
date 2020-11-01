@@ -14,16 +14,16 @@ import javax.transaction.Transactional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
 @Transactional
-class PayingMethodDaoTest {
+class PayingMethodRepositoryTest {
 
   @Autowired
-  private PayingMethodDao dao;
+  private PayingMethodRepository payingMethodRepository;
 
   @Test
   void getPayingMethodByName() {
     Assertions.assertEquals(
-      PayingMethodValues.MONEY.name(),
-      dao.getPayingMethodByName(PayingMethodValues.MONEY).getName()
+      PayingMethodValues.MONEY,
+      payingMethodRepository.findByPayingMethodValues(PayingMethodValues.MONEY).getPayingMethodValues()
     );
   }
 }
