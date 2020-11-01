@@ -6,14 +6,14 @@ import java.util.Locale;
 
 public interface StatisticService {
 
-    InfoItems getTopUsersByTravels(int limit);
+  InfoItems getTopUsersByTravels(int limit);
 
-    InfoItems getTopBusLinesByTravelling(Locale language, int limit);
+  InfoItems getTopBusLinesByTravelling(Locale language, int limit);
 
-    InfoItems getOverbookedBusLines(Locale language, int limit);
+  InfoItems getOverbookedBusLines(Locale language, int limit);
 
-    Long getTotalNumberOfPassengers();
+  Long getTotalNumberOfPassengers();
 
-    Long getTotalNumberOfTrips();
+  Long getTotalNumberOfTrips();
 
 }

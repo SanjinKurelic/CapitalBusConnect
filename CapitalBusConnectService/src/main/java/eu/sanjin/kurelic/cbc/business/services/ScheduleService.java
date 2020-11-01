@@ -11,24 +11,24 @@ import java.util.Locale;
 @Service
 public interface ScheduleService {
 
-    ScheduleItems getBusLineSchedules(Integer fromCityId, Integer toCityId, LocalDate date);
+  ScheduleItems getBusLineSchedules(Integer fromCityId, Integer toCityId, LocalDate date);
 
-    ScheduleItems getBusLineSchedules(String fromCityName, String toCityName, LocalDate date, Locale language);
+  ScheduleItems getBusLineSchedules(String fromCityName, String toCityName, LocalDate date, Locale language);
 
-    @Transactional
-    default ScheduleItems getCartItemSchedules(CartItems cartItems, Locale language) {
-        return getCartItemSchedules(cartItems, false, language);
-    }
+  @Transactional
+  default ScheduleItems getCartItemSchedules(CartItems cartItems, Locale language) {
+    return getCartItemSchedules(cartItems, false, language);
+  }
 
-    ScheduleItems getCartItemSchedules(CartItems cartItems, boolean bought, Locale language);
+  ScheduleItems getCartItemSchedules(CartItems cartItems, boolean bought, Locale language);
 
-    @Transactional
-    default ScheduleItems getUserTravelHistory(String username, int pageNumber, int limit, Locale language) {
-        return getUserTravelHistory(username, null, pageNumber, limit, language);
-    }
+  @Transactional
+  default ScheduleItems getUserTravelHistory(String username, int pageNumber, int limit, Locale language) {
+    return getUserTravelHistory(username, null, pageNumber, limit, language);
+  }
 
-    ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language);
+  ScheduleItems getUserTravelHistory(String username, LocalDate date, int pageNumber, int limit, Locale language);
 
-    Long getUserTravelHistoryCount(String username);
+  Long getUserTravelHistoryCount(String username);
 
 }

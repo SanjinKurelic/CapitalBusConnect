@@ -6,8 +6,8 @@ import java.util.Locale;
 
 public interface TicketService {
 
-    Ticket getTicket(String username, Locale language, Integer userTravelHistoryId);
+  Ticket getTicket(String username, Locale language, Integer userTravelHistoryId);
 
-    //Tickets getTickets(String username, Locale language, Integer ...userTravelHistoryIds);
+  //Tickets getTickets(String username, Locale language, Integer ...userTravelHistoryIds);
 
 }

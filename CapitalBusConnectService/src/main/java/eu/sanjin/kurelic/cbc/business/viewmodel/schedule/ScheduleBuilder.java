@@ -7,182 +7,182 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class ScheduleBuilder {
-    
-    private int id;
-    private String fromPlace;
-    private String toPlace;
-    private LocalTime fromTime;
-    private Duration duration;
-    private LocalDateTime date;
-    private double price;
-    private double basePrice;
-    private int numberOfAdults;
-    private int numberOfChildren;
-    private ScheduleButtonType button;
-    private ScheduleUpdateType onUpdate;
-    private SchedulePayingMethod payingMethod;
-    private TripTypeValues tripType;
-    private boolean disabled;
 
-    public ScheduleBuilder() {
-        id = 0;
-        fromPlace = "";
-        toPlace = "";
-        fromTime = null;
-        duration = null;
-        date = null;
-        price = 0;
-        basePrice = 0;
-        numberOfAdults = 0;
-        numberOfChildren = 0;
-        onUpdate = ScheduleUpdateType.NONE;
-        button = ScheduleButtonType.NONE;
-        payingMethod = SchedulePayingMethod.NONE;
-        tripType = TripTypeValues.NONE;
-        disabled = false;
-    }
+  private int id;
+  private String fromPlace;
+  private String toPlace;
+  private LocalTime fromTime;
+  private Duration duration;
+  private LocalDateTime date;
+  private double price;
+  private double basePrice;
+  private int numberOfAdults;
+  private int numberOfChildren;
+  private ScheduleButtonType button;
+  private ScheduleUpdateType onUpdate;
+  private SchedulePayingMethod payingMethod;
+  private TripTypeValues tripType;
+  private boolean disabled;
 
-    int getId() {
-        return id;
-    }
+  public ScheduleBuilder() {
+    id = 0;
+    fromPlace = "";
+    toPlace = "";
+    fromTime = null;
+    duration = null;
+    date = null;
+    price = 0;
+    basePrice = 0;
+    numberOfAdults = 0;
+    numberOfChildren = 0;
+    onUpdate = ScheduleUpdateType.NONE;
+    button = ScheduleButtonType.NONE;
+    payingMethod = SchedulePayingMethod.NONE;
+    tripType = TripTypeValues.NONE;
+    disabled = false;
+  }
 
-    String getFromPlace() {
-        return fromPlace;
-    }
+  int getId() {
+    return id;
+  }
 
-    String getToPlace() {
-        return toPlace;
-    }
+  String getFromPlace() {
+    return fromPlace;
+  }
 
-    LocalTime getFromTime() {
-        return fromTime;
-    }
+  String getToPlace() {
+    return toPlace;
+  }
 
-    Duration getDuration() {
-        return duration;
-    }
+  LocalTime getFromTime() {
+    return fromTime;
+  }
 
-    LocalDateTime getDate() {
-        return date;
-    }
+  Duration getDuration() {
+    return duration;
+  }
 
-    double getPrice() {
-        return price;
-    }
+  LocalDateTime getDate() {
+    return date;
+  }
 
-    double getBasePrice() {
-        return basePrice;
-    }
+  double getPrice() {
+    return price;
+  }
 
-    int getNumberOfAdults() {
-        return numberOfAdults;
-    }
+  double getBasePrice() {
+    return basePrice;
+  }
 
-    int getNumberOfChildren() {
-        return numberOfChildren;
-    }
+  int getNumberOfAdults() {
+    return numberOfAdults;
+  }
 
-    ScheduleButtonType getButtonType() {
-        return button;
-    }
-    
-    ScheduleUpdateType getOnUpdate() {
-        return onUpdate;
-    }
+  int getNumberOfChildren() {
+    return numberOfChildren;
+  }
 
-    SchedulePayingMethod getPayingMethod() {
-        return payingMethod;
-    }
+  ScheduleButtonType getButtonType() {
+    return button;
+  }
 
-    TripTypeValues getTripType() {
-        return tripType;
-    }
+  ScheduleUpdateType getOnUpdate() {
+    return onUpdate;
+  }
 
-    public boolean getDisabled() {
-        return disabled;
-    }
+  SchedulePayingMethod getPayingMethod() {
+    return payingMethod;
+  }
 
-    public ScheduleBuilder setId(int id) {
-        this.id = id;
-        return this;
-    }
+  TripTypeValues getTripType() {
+    return tripType;
+  }
 
-    public ScheduleBuilder setFromPlace(String fromPlace) {
-        this.fromPlace = fromPlace;
-        return this;
-    }
+  public boolean getDisabled() {
+    return disabled;
+  }
 
-    public ScheduleBuilder setToPlace(String toPlace) {
-        this.toPlace = toPlace;
-        return this;
-    }
+  public ScheduleBuilder setId(int id) {
+    this.id = id;
+    return this;
+  }
 
-    public ScheduleBuilder setFromTime(LocalTime fromTime) {
-        this.fromTime = fromTime;
-        return this;
-    }
+  public ScheduleBuilder setFromPlace(String fromPlace) {
+    this.fromPlace = fromPlace;
+    return this;
+  }
 
-    public ScheduleBuilder setDuration(Duration duration) {
-        this.duration = duration;
-        return this;
-    }
+  public ScheduleBuilder setToPlace(String toPlace) {
+    this.toPlace = toPlace;
+    return this;
+  }
 
-    public ScheduleBuilder setDate(LocalDateTime date) {
-        this.date = date;
-        return this;
-    }
+  public ScheduleBuilder setFromTime(LocalTime fromTime) {
+    this.fromTime = fromTime;
+    return this;
+  }
 
-    public ScheduleBuilder setPrice(double price) {
-        this.price = price;
-        return this;
-    }
+  public ScheduleBuilder setDuration(Duration duration) {
+    this.duration = duration;
+    return this;
+  }
 
-    public ScheduleBuilder setBasePrice(double basePrice) {
-        this.basePrice = basePrice;
-        return this;
-    }
+  public ScheduleBuilder setDate(LocalDateTime date) {
+    this.date = date;
+    return this;
+  }
 
-    public ScheduleBuilder setNumberOfAdults(int numberOfAdults) {
-        this.numberOfAdults = numberOfAdults;
-        return this;
-    }
+  public ScheduleBuilder setPrice(double price) {
+    this.price = price;
+    return this;
+  }
 
-    public ScheduleBuilder setNumberOfChildren(int numberOfChildren) {
-        this.numberOfChildren = numberOfChildren;
-        return this;
-    }
+  public ScheduleBuilder setBasePrice(double basePrice) {
+    this.basePrice = basePrice;
+    return this;
+  }
 
-    public ScheduleBuilder setButtonType(ScheduleButtonType button) {
-        this.button = button;
-        return this;
-    }
-    
-    public ScheduleBuilder setOnUpdate(ScheduleUpdateType onUpdate){
-        this.onUpdate = onUpdate;
-        return this;
-    }
+  public ScheduleBuilder setNumberOfAdults(int numberOfAdults) {
+    this.numberOfAdults = numberOfAdults;
+    return this;
+  }
 
-    public ScheduleBuilder setPayingMethod(SchedulePayingMethod payingMethod) {
-        this.payingMethod = payingMethod;
-        return this;
-    }
+  public ScheduleBuilder setNumberOfChildren(int numberOfChildren) {
+    this.numberOfChildren = numberOfChildren;
+    return this;
+  }
 
-    public ScheduleBuilder setTripType(TripTypeValues tripType) {
-        this.tripType = tripType;
-        return this;
-    }
+  public ScheduleBuilder setButtonType(ScheduleButtonType button) {
+    this.button = button;
+    return this;
+  }
 
-    public ScheduleBuilder setDisabled(boolean disabled) {
-        this.disabled = disabled;
-        return this;
-    }
-    
-    public ScheduleItem buildPlaceItem(){
-        return new SchedulePlaceItemImpl(this);
-    }
-    
-    public ScheduleItem buildTimeItem(){
-        return new ScheduleTimeItemImpl(this);
-    }
+  public ScheduleBuilder setOnUpdate(ScheduleUpdateType onUpdate) {
+    this.onUpdate = onUpdate;
+    return this;
+  }
+
+  public ScheduleBuilder setPayingMethod(SchedulePayingMethod payingMethod) {
+    this.payingMethod = payingMethod;
+    return this;
+  }
+
+  public ScheduleBuilder setTripType(TripTypeValues tripType) {
+    this.tripType = tripType;
+    return this;
+  }
+
+  public ScheduleBuilder setDisabled(boolean disabled) {
+    this.disabled = disabled;
+    return this;
+  }
+
+  public ScheduleItem buildPlaceItem() {
+    return new SchedulePlaceItemImpl(this);
+  }
+
+  public ScheduleItem buildTimeItem() {
+    return new ScheduleTimeItemImpl(this);
+  }
 
 }

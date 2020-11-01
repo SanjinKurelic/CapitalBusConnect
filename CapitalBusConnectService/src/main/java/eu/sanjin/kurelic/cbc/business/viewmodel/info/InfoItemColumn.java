@@ -2,8 +2,8 @@ package eu.sanjin.kurelic.cbc.business.viewmodel.info;
 
 public interface InfoItemColumn {
 
-    InfoItemColumnType getColumnType();
+  InfoItemColumnType getColumnType();
 
-    Object getValue();
+  Object getValue();
 
 }

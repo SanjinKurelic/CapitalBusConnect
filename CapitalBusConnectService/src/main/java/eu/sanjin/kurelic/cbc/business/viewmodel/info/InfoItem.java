@@ -4,17 +4,17 @@ import java.util.ArrayList;
 
 public class InfoItem {
 
-    private ArrayList<InfoItemColumn> columns;
+  private ArrayList<InfoItemColumn> columns;
 
-    public InfoItem() {
-        columns = new ArrayList<>();
-    }
+  public InfoItem() {
+    columns = new ArrayList<>();
+  }
 
-    public void addColumn(InfoItemColumn column) {
-        columns.add(column);
-    }
+  public void addColumn(InfoItemColumn column) {
+    columns.add(column);
+  }
 
-    public ArrayList<InfoItemColumn> getColumns() {
-        return columns;
-    }
+  public ArrayList<InfoItemColumn> getColumns() {
+    return columns;
+  }
 }

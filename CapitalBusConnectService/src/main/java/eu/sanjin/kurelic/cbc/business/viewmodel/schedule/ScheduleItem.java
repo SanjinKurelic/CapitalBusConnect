@@ -6,36 +6,36 @@ import java.time.LocalDateTime;
 
 public interface ScheduleItem {
 
-    int getId();
+  int getId();
 
-    String getLeftTitle();
+  String getLeftTitle();
 
-    String getRightTitle();
+  String getRightTitle();
 
-    String getDescription();
+  String getDescription();
 
-    int getNumberOfAdults();
+  int getNumberOfAdults();
 
-    int getNumberOfChildren();
+  int getNumberOfChildren();
 
-    double getPrice();
+  double getPrice();
 
-    double getBasePrice();
+  double getBasePrice();
 
-    ScheduleButtonType getButton();
+  ScheduleButtonType getButton();
 
-    ScheduleItemType getType();
+  ScheduleItemType getType();
 
-    LocalDateTime getDate();
+  LocalDateTime getDate();
 
-    ScheduleUpdateType getOnUpdate();
+  ScheduleUpdateType getOnUpdate();
 
-    SchedulePayingMethod getPayingMethod();
+  SchedulePayingMethod getPayingMethod();
 
-    TripTypeValues getTripType();
+  TripTypeValues getTripType();
 
-    boolean disabled();
+  boolean disabled();
 
-    void setDisabled(boolean disabled);
+  void setDisabled(boolean disabled);
 
 }

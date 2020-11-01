@@ -18,32 +18,32 @@ import java.util.Objects;
 @Service
 public class TrafficInfoServiceImpl implements TrafficInfoService {
 
-    private final TrafficDescriptionDao trafficDao;
+  private final TrafficDescriptionDao trafficDao;
 
-    @Autowired
-    public TrafficInfoServiceImpl(TrafficDescriptionDao trafficDao) {
-        this.trafficDao = trafficDao;
-    }
+  @Autowired
+  public TrafficInfoServiceImpl(TrafficDescriptionDao trafficDao) {
+    this.trafficDao = trafficDao;
+  }
 
-    @Override
-    @Transactional
-    public TrafficInfoItems getTrafficItems(Locale locale, int limit) {
-        TrafficInfoItems items = new TrafficInfoItems();
-        TrafficInfoItem item;
-        // Check
-        if (Objects.isNull(locale) || limit < 1) {
-            return items;
-        }
-        // Logic
-        String language = LocaleUtility.getLanguage(locale);
-        List<TrafficDescription> descriptions = trafficDao.getTrafficDescriptions(LocalDate.now(), language, limit);
-        for (TrafficDescription description : descriptions) {
-            item = new TrafficInfoItem();
-            item.setTextMessage(description.getDescription());
-            item.setWarningType(TrafficWarningType.valueOf(description.getTraffic().getTrafficType().getName()));
-            item.setDate(description.getTraffic().getDate());
-            items.add(item);
-        }
-        return items;
+  @Override
+  @Transactional
+  public TrafficInfoItems getTrafficItems(Locale locale, int limit) {
+    TrafficInfoItems items = new TrafficInfoItems();
+    TrafficInfoItem item;
+    // Check
+    if (Objects.isNull(locale) || limit < 1) {
+      return items;
     }
+    // Logic
+    String language = LocaleUtility.getLanguage(locale);
+    List<TrafficDescription> descriptions = trafficDao.getTrafficDescriptions(LocalDate.now(), language, limit);
+    for (TrafficDescription description : descriptions) {
+      item = new TrafficInfoItem();
+      item.setTextMessage(description.getDescription());
+      item.setWarningType(TrafficWarningType.valueOf(description.getTraffic().getTrafficType().getName()));
+      item.setDate(description.getTraffic().getDate());
+      items.add(item);
+    }
+    return items;
+  }
 }

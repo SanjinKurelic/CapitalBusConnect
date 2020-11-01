@@ -12,30 +12,30 @@ import java.time.LocalDateTime;
 @Service
 public interface LoginHistoryService {
 
-    void addUserLoginHistory(String username, String ipAddress, LocalDateTime dateTime) throws InvalidSuppliedArgumentsException, InvalidUserException;
+  void addUserLoginHistory(String username, String ipAddress, LocalDateTime dateTime) throws InvalidSuppliedArgumentsException, InvalidUserException;
 
-    @Transactional
-    default void addUserLoginHistory(String username, String ipAddress) throws InvalidSuppliedArgumentsException,
-            InvalidUserException {
-        addUserLoginHistory(username, ipAddress, LocalDateTime.now());
-    }
+  @Transactional
+  default void addUserLoginHistory(String username, String ipAddress) throws InvalidSuppliedArgumentsException,
+    InvalidUserException {
+    addUserLoginHistory(username, ipAddress, LocalDateTime.now());
+  }
 
-    InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit);
+  InfoItems getUserLoginHistory(String username, LocalDate date, int pageNumber, int limit);
 
-    @Transactional
-    default InfoItems getUserLoginHistory(String username, int pageNumber, int limit) {
-        return getUserLoginHistory(username, null, pageNumber, limit);
-    }
+  @Transactional
+  default InfoItems getUserLoginHistory(String username, int pageNumber, int limit) {
+    return getUserLoginHistory(username, null, pageNumber, limit);
+  }
 
-    InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit);
+  InfoItems getAllLoginHistory(LocalDate date, int pageNumber, int limit);
 
-    @Transactional
-    default InfoItems getAllLoginHistory(int pageNumber, int limit) {
-        return getAllLoginHistory(null, pageNumber, limit);
-    }
+  @Transactional
+  default InfoItems getAllLoginHistory(int pageNumber, int limit) {
+    return getAllLoginHistory(null, pageNumber, limit);
+  }
 
-    Long getAllLoginHistoryCount();
+  Long getAllLoginHistoryCount();
 
-    Long getUserLoginHistoryCount(String username);
+  Long getUserLoginHistoryCount(String username);
 
 }

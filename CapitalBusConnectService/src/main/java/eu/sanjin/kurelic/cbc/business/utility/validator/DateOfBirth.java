@@ -12,14 +12,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateOfBirth {
 
-    int oldestPerson() default 120;
+  int oldestPerson() default 120;
 
-    int youngestPerson() default 18;
+  int youngestPerson() default 18;
 
-    String message() default "Date of Birth is not valid.";
+  String message() default "Date of Birth is not valid.";
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 
 }

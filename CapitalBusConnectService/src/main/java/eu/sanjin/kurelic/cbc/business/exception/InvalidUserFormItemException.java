@@ -8,24 +8,24 @@ import java.util.Set;
 
 public class InvalidUserFormItemException extends Exception {
 
-    private String message;
+  private String message;
 
-    public InvalidUserFormItemException(Set<ConstraintViolation<UserForm>> violations) {
-        StringBuilder message = new StringBuilder();
-        for (var violation : violations) {
-            message.append(violation.getMessage());
-        }
-        this.message = message.toString();
+  public InvalidUserFormItemException(Set<ConstraintViolation<UserForm>> violations) {
+    StringBuilder message = new StringBuilder();
+    for (var violation : violations) {
+      message.append(violation.getMessage());
     }
+    this.message = message.toString();
+  }
 
-    public InvalidUserFormItemException() {
-    }
+  public InvalidUserFormItemException() {
+  }
 
-    @Override
-    public String getMessage() {
-        if (!Objects.isNull(message)) {
-            return message;
-        }
-        return super.getMessage();
+  @Override
+  public String getMessage() {
+    if (!Objects.isNull(message)) {
+      return message;
     }
+    return super.getMessage();
+  }
 }

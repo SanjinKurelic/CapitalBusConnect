@@ -12,10 +12,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Text {
 
-    String message() default "Text contains non alphabetic characters.";
+  String message() default "Text contains non alphabetic characters.";
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 
 }

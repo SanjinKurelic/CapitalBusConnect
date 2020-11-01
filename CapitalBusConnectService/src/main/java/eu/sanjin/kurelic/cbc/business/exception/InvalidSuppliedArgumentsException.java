@@ -4,20 +4,20 @@ import java.util.Objects;
 
 public class InvalidSuppliedArgumentsException extends Exception {
 
-    private String message;
+  private String message;
 
-    public InvalidSuppliedArgumentsException() {
-    }
+  public InvalidSuppliedArgumentsException() {
+  }
 
-    public InvalidSuppliedArgumentsException(String message) {
-        this.message = message;
-    }
+  public InvalidSuppliedArgumentsException(String message) {
+    this.message = message;
+  }
 
-    @Override
-    public String getMessage() {
-        if (!Objects.isNull(message)) {
-            return message;
-        }
-        return super.getMessage();
+  @Override
+  public String getMessage() {
+    if (!Objects.isNull(message)) {
+      return message;
     }
+    return super.getMessage();
+  }
 }

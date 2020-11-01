@@ -6,8 +6,8 @@ import java.util.Locale;
 
 public interface PromotionInfoService {
 
-    PromotionItems getPromotionItems(String fromCityTitle, Locale locale);
+  PromotionItems getPromotionItems(String fromCityTitle, Locale locale);
 
-    PromotionItems getPromotionItems(Locale locale);
+  PromotionItems getPromotionItems(Locale locale);
 
 }

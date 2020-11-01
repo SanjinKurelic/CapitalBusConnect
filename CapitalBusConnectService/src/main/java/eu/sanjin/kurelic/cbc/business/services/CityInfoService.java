@@ -8,12 +8,12 @@ import java.util.Locale;
 
 public interface CityInfoService {
 
-    CityInfoItem getCityItem(String cityName, Locale language);
+  CityInfoItem getCityItem(String cityName, Locale language);
 
-    CitySearchResults searchByCityName(String partialName, int numberOfSearchResults, Locale language);
+  CitySearchResults searchByCityName(String partialName, int numberOfSearchResults, Locale language);
 
-    InfoItems getCityLines(int pageNumber, int limit, Locale language);
+  InfoItems getCityLines(int pageNumber, int limit, Locale language);
 
-    Long getNumberOfCityLines();
+  Long getNumberOfCityLines();
 
 }

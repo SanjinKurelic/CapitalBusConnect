@@ -14,27 +14,27 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {ServiceConfiguration.class, RepositoryConfiguration.class})
 class TrafficInfoServiceTest {
 
-    @Autowired
-    private TrafficInfoService service;
+  @Autowired
+  private TrafficInfoService service;
 
-    @Test
-    void getTrafficItemsWrongLocaleNull() {
-        Assertions.assertTrue(service.getTrafficItems(TestConstant.LANGUAGE_NULL, TestConstant.LIMIT_VALID).isEmpty());
-    }
+  @Test
+  void getTrafficItemsWrongLocaleNull() {
+    Assertions.assertTrue(service.getTrafficItems(TestConstant.LANGUAGE_NULL, TestConstant.LIMIT_VALID).isEmpty());
+  }
 
-    @Test
-    void getTrafficItemsWrongLocale() {
-        Assertions.assertTrue(service.getTrafficItems(TestConstant.LANGUAGE_INVALID, TestConstant.LIMIT_VALID).isEmpty());
-    }
+  @Test
+  void getTrafficItemsWrongLocale() {
+    Assertions.assertTrue(service.getTrafficItems(TestConstant.LANGUAGE_INVALID, TestConstant.LIMIT_VALID).isEmpty());
+  }
 
-    @Test
-    void getTrafficItemsWrongLimit() {
-        Assertions.assertTrue(service.getTrafficItems(TestConstant.LANGUAGE_VALID, TestConstant.LIMIT_INVALID).isEmpty());
-    }
+  @Test
+  void getTrafficItemsWrongLimit() {
+    Assertions.assertTrue(service.getTrafficItems(TestConstant.LANGUAGE_VALID, TestConstant.LIMIT_INVALID).isEmpty());
+  }
 
-    @Test
-    void getTrafficItems() {
-        // Require filled database
-        Assertions.assertFalse(service.getTrafficItems(TestConstant.LANGUAGE_VALID, TestConstant.LIMIT_VALID).isEmpty());
-    }
+  @Test
+  void getTrafficItems() {
+    // Require filled database
+    Assertions.assertFalse(service.getTrafficItems(TestConstant.LANGUAGE_VALID, TestConstant.LIMIT_VALID).isEmpty());
+  }
 }

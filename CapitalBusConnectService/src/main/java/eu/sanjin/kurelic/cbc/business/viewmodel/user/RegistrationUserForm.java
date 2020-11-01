@@ -7,19 +7,19 @@ import javax.validation.constraints.Size;
 
 public class RegistrationUserForm extends UserForm {
 
-    @NotNull(message = "errorMessage.identification.required.text")
-    @Password(message = "errorMessage.identification.invalid.number.text")
-    @Size(min = 8, message = "errorMessage.identification.invalid.minSize.text")
-    private String identification;
+  @NotNull(message = "errorMessage.identification.required.text")
+  @Password(message = "errorMessage.identification.invalid.number.text")
+  @Size(min = 8, message = "errorMessage.identification.invalid.minSize.text")
+  private String identification;
 
 
-    @Override
-    public String getIdentification() {
-        return identification;
-    }
+  @Override
+  public String getIdentification() {
+    return identification;
+  }
 
-    @Override
-    public void setIdentification(String identification) {
-        this.identification = identification;
-    }
+  @Override
+  public void setIdentification(String identification) {
+    this.identification = identification;
+  }
 }

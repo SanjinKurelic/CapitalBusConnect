@@ -7,21 +7,21 @@ import java.util.Set;
 
 public class InvalidCartItemException extends Exception {
 
-    private String message;
+  private String message;
 
-    public InvalidCartItemException(Set<ConstraintViolation<CartItem>> violations) {
-        StringBuilder message = new StringBuilder();
-        for (var violation : violations) {
-            message.append(violation.getMessage());
-        }
-        this.message = message.toString();
+  public InvalidCartItemException(Set<ConstraintViolation<CartItem>> violations) {
+    StringBuilder message = new StringBuilder();
+    for (var violation : violations) {
+      message.append(violation.getMessage());
     }
+    this.message = message.toString();
+  }
 
-    public InvalidCartItemException() {
-    }
+  public InvalidCartItemException() {
+  }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
+  @Override
+  public String getMessage() {
+    return message;
+  }
 }

@@ -9,21 +9,21 @@ import eu.sanjin.kurelic.cbc.repo.values.PayingMethodValues;
 
 public interface CartService {
 
-    void loadCartItems(CartItems items);
+  void loadCartItems(CartItems items);
 
-    boolean hasCartItem(CartItem cartItem);
+  boolean hasCartItem(CartItem cartItem);
 
-    void addCartItem(CartItem cartItem) throws InvalidCartItemException;
+  void addCartItem(CartItem cartItem) throws InvalidCartItemException;
 
-    void updateCartItem(CartItem cartItem) throws InvalidCartItemException;
+  void updateCartItem(CartItem cartItem) throws InvalidCartItemException;
 
-    void removeCartItem(CartItem cartItem) throws InvalidCartItemException;
+  void removeCartItem(CartItem cartItem) throws InvalidCartItemException;
 
-    void removeAllCartItems();
+  void removeAllCartItems();
 
-    void saveToDatabase(PayingMethodValues payingMethod, String username) throws InvalidSuppliedArgumentsException,
-            InvalidUserException;
+  void saveToDatabase(PayingMethodValues payingMethod, String username) throws InvalidSuppliedArgumentsException,
+    InvalidUserException;
 
-    CartItems getCartItems();
+  CartItems getCartItems();
 
 }

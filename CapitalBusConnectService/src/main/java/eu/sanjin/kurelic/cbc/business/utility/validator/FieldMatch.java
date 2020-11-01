@@ -12,20 +12,20 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = FieldMatchValidator.class)
 public @interface FieldMatch {
 
-    String message() default "The fields must match";
+  String message() default "The fields must match";
 
-    String firstField();
+  String firstField();
 
-    String secondField();
+  String secondField();
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface List {
-        FieldMatch[] value();
-    }
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface List {
+    FieldMatch[] value();
+  }
 
 }

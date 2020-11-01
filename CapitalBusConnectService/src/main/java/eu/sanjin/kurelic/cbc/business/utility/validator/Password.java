@@ -12,14 +12,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Password {
 
-    boolean requireNumbers() default true;
+  boolean requireNumbers() default true;
 
-    boolean requireSpecialCharacters() default false;
+  boolean requireSpecialCharacters() default false;
 
-    String message() default "Password is not valid.";
+  String message() default "Password is not valid.";
 
-    Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 
 }
