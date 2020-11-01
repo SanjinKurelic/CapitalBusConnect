@@ -10,7 +10,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.SchedulePayingMethod;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleUpdateType;
 import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
-import eu.sanjin.kurelic.cbc.repo.dao.TripPricesDao;
+import eu.sanjin.kurelic.cbc.repo.dao.TripPricesRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.UserTravelHistory;
@@ -38,15 +38,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 
   private final BusScheduleRepository busScheduleRepository;
   private final CityDescriptionDao cityDescriptionDao;
-  private final TripPricesDao tripPricesDao;
+  private final TripPricesRepository tripPricesRepository;
   private final UserTravelHistoryDao userTravelHistoryDao;
 
   @Autowired
-  public ScheduleServiceImpl(BusScheduleRepository busScheduleRepository, CityDescriptionDao cityDescriptionDao, TripPricesDao tripPricesDao
+  public ScheduleServiceImpl(BusScheduleRepository busScheduleRepository, CityDescriptionDao cityDescriptionDao, TripPricesRepository tripPricesRepository
     , UserTravelHistoryDao userTravelHistoryDao) {
     this.busScheduleRepository = busScheduleRepository;
     this.cityDescriptionDao = cityDescriptionDao;
-    this.tripPricesDao = tripPricesDao;
+    this.tripPricesRepository = tripPricesRepository;
     this.userTravelHistoryDao = userTravelHistoryDao;
   }
 
@@ -82,7 +82,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         .setDate(LocalDateTime.of(date, busSchedule.getFromTime()))
         .setFromTime(busSchedule.getFromTime())
         .setDuration(busSchedule.getDuration())
-        .setPrice(tripPricesDao.getTripPrice(busSchedule.getDuration(), date).getPrice());
+        .setPrice(tripPricesRepository.findFirstByTripDurationLessThanEqualAndFromDateLessThanEqualOrderByTripDurationDescFromDateDesc(busSchedule.getDuration(), date).getPrice());
       // Trip type info
       if (busSchedule.getBusLine().getCity1().getId().equals(fromCityId)) {
         sb.setTripType(TripTypeValue.A_TO_B);
@@ -152,7 +152,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     for (CartItem cartItem : cartItems) {
       // Calculate price
       var schedule = schedules.get(cartItem.getScheduleId());
-      basePrice = tripPricesDao.getTripPrice(schedule.getDuration()).getPrice();
+      basePrice = tripPricesRepository.findFirstByTripDurationLessThanEqualAndFromDateLessThanEqualOrderByTripDurationDescFromDateDesc(schedule.getDuration()).getPrice();
       price = cartItem.getNumberOfAdults() * basePrice + cartItem.getNumberOfChildren() * basePrice;
       // Get correct city order
       var city1 = cities.get(cartItem.getScheduleId()).getFirst();

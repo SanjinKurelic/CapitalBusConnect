@@ -8,7 +8,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
 import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.PayingMethodRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.TripHistoryDao;
-import eu.sanjin.kurelic.cbc.repo.dao.TripPricesDao;
+import eu.sanjin.kurelic.cbc.repo.dao.TripPricesRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.TripTypeRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
@@ -32,18 +32,18 @@ public class CartServiceImpl implements CartService {
   private final BusScheduleRepository busScheduleRepository;
   private final TripHistoryDao tripHistoryDao;
   private final TripTypeRepository tripTypeRepository;
-  private final TripPricesDao tripPricesDao;
+  private final TripPricesRepository tripPricesRepository;
   private final UserTravelHistoryDao userTravelHistoryDao;
   private final PayingMethodRepository payingMethodRepository;
   private final UserService userService;
 
   public CartServiceImpl(BusScheduleRepository busScheduleRepository, TripHistoryDao tripHistoryDao, TripTypeRepository tripTypeRepository,
-                         TripPricesDao tripPricesDao, UserTravelHistoryDao userTravelHistoryDao,
+                         TripPricesRepository tripPricesRepository, UserTravelHistoryDao userTravelHistoryDao,
                          PayingMethodRepository payingMethodRepository, UserService userService) {
     this.busScheduleRepository = busScheduleRepository;
     this.tripHistoryDao = tripHistoryDao;
     this.tripTypeRepository = tripTypeRepository;
-    this.tripPricesDao = tripPricesDao;
+    this.tripPricesRepository = tripPricesRepository;
     this.userTravelHistoryDao = userTravelHistoryDao;
     this.payingMethodRepository = payingMethodRepository;
     this.userService = userService;
@@ -121,7 +121,7 @@ public class CartServiceImpl implements CartService {
       travelHistory.setNumberOfAdults(item.getNumberOfAdults());
       travelHistory.setNumberOfChildren(item.getNumberOfChildren());
       travelHistory.setPayingMethod(payingMethodRepository.findByPayingMethodValue(payingMethod));
-      travelHistory.setPrice(tripPricesDao.getTripPrice(scheduleItem.getDuration()).getPrice());
+      travelHistory.setPrice(tripPricesRepository.findFirstByTripDurationLessThanEqualAndFromDateLessThanEqualOrderByTripDurationDescFromDateDesc(scheduleItem.getDuration()).getPrice());
       travelHistory.setTripHistory(getTripHistory(item, scheduleItem));
       // Store user travel history
       userTravelHistoryDao.addUserTravelHistory(travelHistory);

@@ -15,26 +15,26 @@ import javax.transaction.Transactional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
 @Transactional
-class TripPricesDaoTest {
+class TripPricesRepositoryTest {
 
   @Autowired
-  private TripPricesDao dao;
+  private TripPricesRepository tripPricesRepository;
 
   @Test
   void getTripPriceWrongDate() {
     Assertions.assertThrows(
-      NoResultException.class,
-      () -> dao.getTripPrice(TestConstant.TRIP_DURATION_VALID, TestConstant.DATE_INVALID)
+      IllegalArgumentException.class,
+      () -> tripPricesRepository.findFirstByTripDurationLessThanEqualAndFromDateLessThanEqualOrderByTripDurationDescFromDateDesc(TestConstant.TRIP_DURATION_VALID, TestConstant.DATE_INVALID)
     );
   }
 
   @Test
   void getTripPriceWrongDuration() {
-    Assertions.assertThrows(NoResultException.class, () -> dao.getTripPrice(TestConstant.TRIP_DURATION_INVALID));
+    Assertions.assertNull(tripPricesRepository.findFirstByTripDurationLessThanEqualAndFromDateLessThanEqualOrderByTripDurationDescFromDateDesc(TestConstant.TRIP_DURATION_INVALID));
   }
 
   @Test
   void getTripPriceValid() {
-    Assertions.assertNotNull(dao.getTripPrice(TestConstant.TRIP_DURATION_VALID));
+    Assertions.assertNotNull(tripPricesRepository.findFirstByTripDurationLessThanEqualAndFromDateLessThanEqualOrderByTripDurationDescFromDateDesc(TestConstant.TRIP_DURATION_VALID));
   }
 }
