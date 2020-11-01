@@ -9,7 +9,7 @@ import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.PayingMethodRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.TripHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.dao.TripPricesDao;
-import eu.sanjin.kurelic.cbc.repo.dao.TripTypeDao;
+import eu.sanjin.kurelic.cbc.repo.dao.TripTypeRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusSchedule;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
@@ -31,18 +31,18 @@ public class CartServiceImpl implements CartService {
   private CartItems items;
   private final BusScheduleRepository busScheduleRepository;
   private final TripHistoryDao tripHistoryDao;
-  private final TripTypeDao tripTypeDao;
+  private final TripTypeRepository tripTypeRepository;
   private final TripPricesDao tripPricesDao;
   private final UserTravelHistoryDao userTravelHistoryDao;
   private final PayingMethodRepository payingMethodRepository;
   private final UserService userService;
 
-  public CartServiceImpl(BusScheduleRepository busScheduleRepository, TripHistoryDao tripHistoryDao, TripTypeDao tripTypeDao,
+  public CartServiceImpl(BusScheduleRepository busScheduleRepository, TripHistoryDao tripHistoryDao, TripTypeRepository tripTypeRepository,
                          TripPricesDao tripPricesDao, UserTravelHistoryDao userTravelHistoryDao,
                          PayingMethodRepository payingMethodRepository, UserService userService) {
     this.busScheduleRepository = busScheduleRepository;
     this.tripHistoryDao = tripHistoryDao;
-    this.tripTypeDao = tripTypeDao;
+    this.tripTypeRepository = tripTypeRepository;
     this.tripPricesDao = tripPricesDao;
     this.userTravelHistoryDao = userTravelHistoryDao;
     this.payingMethodRepository = payingMethodRepository;
@@ -137,7 +137,7 @@ public class CartServiceImpl implements CartService {
   private TripHistory getTripHistory(CartItem item, BusSchedule scheduleItem) {
     TripHistory tripHistory;
     Integer id = tripHistoryDao.getTripHistoryIdOrNull(scheduleItem, item.getDate().toLocalDate(),
-      tripTypeDao.getTripType(item.getTripType()));
+      tripTypeRepository.findByTripTypeValue(item.getTripType()));
     int numberOfSeats;
     if (!Objects.isNull(id)) {
       tripHistory = tripHistoryDao.getTripHistory(id);
@@ -145,7 +145,7 @@ public class CartServiceImpl implements CartService {
     } else {
       tripHistory = new TripHistory();
       tripHistory.setDate(item.getDate().toLocalDate());
-      tripHistory.setTripType(tripTypeDao.getTripType(item.getTripType()));
+      tripHistory.setTripType(tripTypeRepository.findByTripTypeValue(item.getTripType()));
       tripHistory.setBusSchedule(scheduleItem);
       numberOfSeats = scheduleItem.getBusType().getNumberOfSeats();
     }

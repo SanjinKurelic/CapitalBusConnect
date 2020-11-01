@@ -145,7 +145,7 @@ public class StatisticServiceImpl implements StatisticService {
     if (Objects.isNull(city1) || Objects.isNull(city2)) {
       return null;
     }
-    if (tripHistory.getTripType().getName().equals(TripTypeValue.B_TO_A.name())) {
+    if (tripHistory.getTripType().getTripTypeValue().equals(TripTypeValue.B_TO_A)) {
       return Pair.of(city2.getTitle(), city1.getTitle());
     }
     return Pair.of(city1.getTitle(), city2.getTitle());

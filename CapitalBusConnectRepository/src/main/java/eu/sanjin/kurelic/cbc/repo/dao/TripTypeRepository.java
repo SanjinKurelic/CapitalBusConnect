@@ -4,8 +4,8 @@ import eu.sanjin.kurelic.cbc.repo.entity.TripType;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TripTypeDao {
+public interface TripTypeRepository extends JpaRepository<TripType, Integer> {
 
-  TripType getTripType(TripTypeValue value);
+  TripType findByTripTypeValue(TripTypeValue value);
 
 }

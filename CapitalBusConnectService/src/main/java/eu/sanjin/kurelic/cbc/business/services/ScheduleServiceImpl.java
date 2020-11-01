@@ -218,7 +218,7 @@ public class ScheduleServiceImpl implements ScheduleService {
       // Get correct city order
       var city1 = cities.get(tripHistory.getBusSchedule().getId()).getFirst();
       var city2 = cities.get(tripHistory.getBusSchedule().getId()).getSecond();
-      if (tripHistory.getTripType().getName().equals(TripTypeValue.B_TO_A.name())) {
+      if (tripHistory.getTripType().getTripTypeValue().equals(TripTypeValue.B_TO_A)) {
         var city = city1;
         city1 = city2;
         city2 = city;
@@ -230,7 +230,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         .setNumberOfChildren(travelItem.getNumberOfChildren())
         // Price which was paid back then
         .setPrice(travelItem.getPrice() * travelItem.getNumberOfAdults() + travelItem.getPrice() * travelItem.getNumberOfChildren())
-        .setTripType(TripTypeValue.valueOf(tripHistory.getTripType().getName()))
+        .setTripType(tripHistory.getTripType().getTripTypeValue())
         .setFromPlace(city1)
         .setToPlace(city2);
       // Set button type - could be done with valueOf

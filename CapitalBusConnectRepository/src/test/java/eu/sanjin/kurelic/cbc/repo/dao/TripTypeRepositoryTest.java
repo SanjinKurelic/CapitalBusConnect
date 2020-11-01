@@ -14,18 +14,18 @@ import javax.transaction.Transactional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
 @Transactional
-class TripTypeDaoTest {
+class TripTypeRepositoryTest {
 
   @Autowired
-  private TripTypeDao dao;
+  private TripTypeRepository tripTypeRepository;
 
   @Test
   void getTripTypeWrongType() {
-    Assertions.assertThrows(NullPointerException.class, () -> dao.getTripType(TestConstant.TRIP_TYPE_NULL));
+    Assertions.assertNull(tripTypeRepository.findByTripTypeValue(TestConstant.TRIP_TYPE_NULL));
   }
 
   @Test
   void getTripType() {
-    Assertions.assertNotNull(dao.getTripType(TestConstant.TRIP_TYPE));
+    Assertions.assertNotNull(tripTypeRepository.findByTripTypeValue(TestConstant.TRIP_TYPE));
   }
 }

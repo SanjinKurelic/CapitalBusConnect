@@ -67,7 +67,7 @@ public class TicketServiceImpl implements TicketService {
     if (Objects.isNull(city1) || Objects.isNull(city2)) {
       return null;
     }
-    var tripType = TripTypeValue.valueOf(travelHistory.getTripHistory().getTripType().getName());
+    var tripType = travelHistory.getTripHistory().getTripType().getTripTypeValue();
     if (tripType == TripTypeValue.B_TO_A) {
       ticket.setFromCity(city2.getTitle());
       ticket.setToCity(city1.getTitle());
@@ -96,7 +96,7 @@ public class TicketServiceImpl implements TicketService {
     // id of trip
     sb.append(travelHistory.getId()).append(CODE_SEPARATOR);
     // travelType name
-    sb.append(travelHistory.getTripHistory().getTripType().getName().toUpperCase()).append(CODE_SEPARATOR);
+    sb.append(travelHistory.getTripHistory().getTripType().getTripTypeValue().name()).append(CODE_SEPARATOR);
     // username
     sb.append(username);
     return DigestUtils.md5DigestAsHex(sb.toString().getBytes());
