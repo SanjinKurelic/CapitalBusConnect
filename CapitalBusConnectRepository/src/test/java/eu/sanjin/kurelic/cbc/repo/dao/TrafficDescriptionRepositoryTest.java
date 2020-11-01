@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -14,35 +15,24 @@ import javax.transaction.Transactional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
 @Transactional
-class TrafficDescriptionDaoTest {
+class TrafficDescriptionRepositoryTest {
 
   @Autowired
-  private TrafficDescriptionDao dao;
-
-  @Test
-  void getTrafficDescriptionsWrongDate() {
-    Assertions.assertTrue(dao.getTrafficDescriptions(
-      TestConstant.DATE_INVALID,
-      TestConstant.LANGUAGE_VALID,
-      TestConstant.LIMIT_VALID
-    ).isEmpty());
-  }
+  private TrafficDescriptionRepository trafficDescriptionRepository;
 
   @Test
   void getTrafficDescriptionsWrongLanguageNull() {
-    Assertions.assertTrue(dao.getTrafficDescriptions(
-      TestConstant.DATE_VALID,
+    Assertions.assertTrue(trafficDescriptionRepository.findByIdLanguageOrderByTrafficDateAsc(
       TestConstant.LANGUAGE_NULL,
-      TestConstant.LIMIT_VALID
+      PageRequest.of(0, TestConstant.LIMIT_VALID)
     ).isEmpty());
   }
 
   @Test
   void getTrafficDescriptionsWrongLanguage() {
-    Assertions.assertTrue(dao.getTrafficDescriptions(
-      TestConstant.DATE_VALID,
+    Assertions.assertTrue(trafficDescriptionRepository.findByIdLanguageOrderByTrafficDateAsc(
       TestConstant.LANGUAGE_EMPTY,
-      TestConstant.LIMIT_VALID
+      PageRequest.of(0, TestConstant.LIMIT_VALID)
     ).isEmpty());
   }
 
@@ -50,10 +40,9 @@ class TrafficDescriptionDaoTest {
   void getTrafficDescriptionsWrongLimit() {
     Assertions.assertThrows(
       IllegalArgumentException.class,
-      () -> dao.getTrafficDescriptions(
-        TestConstant.DATE_VALID,
+      () -> trafficDescriptionRepository.findByIdLanguageOrderByTrafficDateAsc(
         TestConstant.LANGUAGE_VALID,
-        TestConstant.LIMIT_INVALID
+        PageRequest.of(0, TestConstant.LIMIT_INVALID)
       )
     );
   }
@@ -61,10 +50,9 @@ class TrafficDescriptionDaoTest {
   @Test
   void getTrafficDescriptions() {
     // require at least one database record
-    Assertions.assertFalse(dao.getTrafficDescriptions(
-      TestConstant.DATE_VALID,
+    Assertions.assertFalse(trafficDescriptionRepository.findByIdLanguageOrderByTrafficDateAsc(
       TestConstant.LANGUAGE_VALID,
-      TestConstant.LIMIT_VALID
+      PageRequest.of(0, TestConstant.LIMIT_VALID)
     ).isEmpty());
   }
 }
