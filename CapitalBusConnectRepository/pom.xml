@@ -2,26 +2,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>CapitalBusConnect</artifactId>
-        <groupId>eu.sanjin.kurelic.cbc</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>CapitalBusConnect</artifactId>
+    <groupId>eu.sanjin.kurelic.cbc</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>CapitalBusConnectRepository</artifactId>
-    <packaging>jar</packaging>
+  <artifactId>CapitalBusConnectRepository</artifactId>
+  <packaging>jar</packaging>
 
-    <properties>
-        <cbc.version.p6spy>3.8.2</cbc.version.p6spy>
-    </properties>
+  <properties>
+    <cbc.version.p6spy>3.8.2</cbc.version.p6spy>
+  </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
-            <version>${cbc.version.p6spy}</version>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>p6spy</groupId>
+      <artifactId>p6spy</artifactId>
+      <version>${cbc.version.p6spy}</version>
+    </dependency>
+  </dependencies>
 
 </project>
