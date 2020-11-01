@@ -30,7 +30,7 @@
         <title>Capital Bus Connect</title>
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <base href="${pageContext.request.contextPath}/"/>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:100,400&amp;subset=latin-ext" rel="stylesheet">        
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,400&amp;subset=latin-ext" rel="stylesheet">
         <link rel="stylesheet" href="<spring:url value="${ cbcf:getStylesheetUrl('style.css')}"/>">
         <security:csrfMetaTags/>
         <%-- Favicon --%>

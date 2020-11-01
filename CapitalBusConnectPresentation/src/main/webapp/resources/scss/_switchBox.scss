@@ -4,10 +4,10 @@
   $parent: &;
   position: relative;
   width: 60px;
-  height: 36px; 
+  height: 36px;
 
   &-layer {
-    @include cbc_absolute(0,0,0,0);
+    @include cbc_absolute(0, 0, 0, 0);
     background: color(dark-shadow);
     border-radius: 100px;
   }
@@ -25,9 +25,9 @@
   }
 
   &-checkbox {
-    @include cbc_absolute(0,0,0,0);
+    @include cbc_absolute(0, 0, 0, 0);
     width: 100%;
-    height: 100%;    
+    height: 100%;
     cursor: pointer;
     background: color(light); // IE 8
     opacity: 0;

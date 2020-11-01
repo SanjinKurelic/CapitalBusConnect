@@ -15,30 +15,30 @@ import javax.servlet.http.HttpSession;
 @Component
 public class SessionAspect {
 
-    private final CartService service;
+  private final CartService service;
 
-    public SessionAspect(CartService service) {
-        this.service = service;
-    }
+  public SessionAspect(CartService service) {
+    this.service = service;
+  }
 
-    // Advices
-    @Before("@annotation(readFromSession)")
-    public void loadFromSession(ReadFromSession readFromSession) {
-        var session = getSession();
-        if (session.getAttribute(readFromSession.value()) == null) {
-            session.setAttribute(readFromSession.value(), new CartItems());
-        }
-        service.loadCartItems((CartItems) session.getAttribute(readFromSession.value()));
+  // Advices
+  @Before("@annotation(readFromSession)")
+  public void loadFromSession(ReadFromSession readFromSession) {
+    var session = getSession();
+    if (session.getAttribute(readFromSession.value()) == null) {
+      session.setAttribute(readFromSession.value(), new CartItems());
     }
+    service.loadCartItems((CartItems) session.getAttribute(readFromSession.value()));
+  }
 
-    @AfterReturning("@annotation(saveToSession)")
-    public void saveToSession(SaveToSession saveToSession) {
-        var session = getSession();
-        session.setAttribute(saveToSession.value(), service.getCartItems());
-    }
+  @AfterReturning("@annotation(saveToSession)")
+  public void saveToSession(SaveToSession saveToSession) {
+    var session = getSession();
+    session.setAttribute(saveToSession.value(), service.getCartItems());
+  }
 
-    // Utility
-    private HttpSession getSession() {
-        return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession(true);
-    }
+  // Utility
+  private HttpSession getSession() {
+    return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession(true);
+  }
 }

@@ -1,138 +1,140 @@
 // Created by Sanjin Kurelić (kurelic@sanjin.eu)
 
-input{
-    padding:10px;
-    border:1px solid color(dark);
-    border-radius:5px;
-    background:color(light);
+input {
+  padding: 10px;
+  border: 1px solid color(dark);
+  border-radius: 5px;
+  background: color(light);
 
-    &:focus {
-        outline: none;
-    }
+  &:focus {
+    outline: none;
+  }
 }
 
-.button{
-    border-radius: 5px;
-    display: inline-block;
-    background: color(primary);
-    border: 1px solid color(dark);
-    padding: 14px 20px;
-    min-width: 100px;
-    text-align: center;
-    cursor: pointer;
+.button {
+  border-radius: 5px;
+  display: inline-block;
+  background: color(primary);
+  border: 1px solid color(dark);
+  padding: 14px 20px;
+  min-width: 100px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background: color(secondary);
+    color: color(light);
+  }
+
+  &.disabled {
+    background: color(dark-shadow);
+    color: color(dark);
+    cursor: default;
 
     &:hover {
-        background:color(secondary);
-        color:color(light);
+      background: color(dark-shadow);
+      color: color(dark);
     }
+  }
 
-    &.disabled {
-        background: color(dark-shadow);
-        color: color(dark);
-        cursor: default;
+  &.error {
+    background: color(error);
+    color: color(light);
 
-        &:hover {
-            background: color(dark-shadow);
-            color: color(dark);
-        }
+    &:hover {
+      background: lighten(color(error), 10%);
     }
-    
-    &.error {
-        background: color(error);
-        color: color(light);
-        
-        &:hover{
-            background: lighten(color(error), 10%);
-        }
-    }
+  }
 }
 
-h2{
-    font-size:1.1em;
-    margin:0;
-    padding:20px;
+h2 {
+  font-size: 1.1em;
+  margin: 0;
+  padding: 20px;
 
-    &.article-title{
-        text-align:left;
-        color:color(secondary);
-        letter-spacing:2px;
-        padding-bottom:1.5%;
-        text-transform: uppercase;
+  &.article-title {
+    text-align: left;
+    color: color(secondary);
+    letter-spacing: 2px;
+    padding-bottom: 1.5%;
+    text-transform: uppercase;
 
-        &::after, &:after {
-            display:inline-block;
-            content:"";
-            border:1px solid color(secondary);
-            width:100%;
-        }
+    &::after, &:after {
+      display: inline-block;
+      content: "";
+      border: 1px solid color(secondary);
+      width: 100%;
     }
+  }
 }
 
-%select-interactive-element{
-    padding:8px 16px;
-    border-width:1px;
-    border-style:solid;
-    border-color:transparent transparent rgba(0, 0, 0, 0.1) transparent;    
+%select-interactive-element {
+  padding: 8px 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
 }
 
 .select {
-    position:relative;
-    display:inline-block;
-    background:color(light);
-    color:color(dark);
-    cursor: pointer;
-    user-select: none;
+  position: relative;
+  display: inline-block;
+  background: color(light);
+  color: color(dark);
+  cursor: pointer;
+  user-select: none;
 
-    select, .select-hide {
-        display:none;
+  select, .select-hide {
+    display: none;
+  }
+
+  &-items {
+    @include cbc_absolute(100%, 0, -1, 0);
+    background-color: inherit;
+    z-index: 99;
+
+    div {
+      @extend %select-interactive-element;
     }
 
-    &-items {
-        @include cbc_absolute(100%, 0, -1, 0);
-        background-color:inherit;
-        z-index:99;
+    div:hover, &-selected {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
 
-        div {
-            @extend %select-interactive-element;
-        }
+  &-selected {
+    @extend %select-interactive-element;
 
-        div:hover, &-selected {
-            background-color:rgba(0, 0, 0, 0.1);
-        }
+    &:after {
+      @include cbc_absolute(14px, 10px, -1, -1);
+      content: "";
+      width: 0;
+      height: 0;
+      border-width: 6px;
+      border-style: solid;
+      border-color: color(dark) transparent transparent transparent;
     }
 
-    &-selected {
-        @extend %select-interactive-element;
+    .select-arrow-active:after {
+      border-color: transparent transparent color(dark) transparent;
+      top: 7px;
+    }
+  }
 
-        &:after {
-            @include cbc_absolute(14px, 10px, -1, -1);
-            content:"";
-            width:0;
-            height:0;
-            border-width:6px;
-            border-style:solid;
-            border-color:color(dark) transparent transparent transparent;
-        }
+  // Sizes
+  &-tiny {
+    width: 70px;
+  }
 
-        .select-arrow-active:after {
-            border-color:transparent transparent color(dark) transparent;
-            top:7px;
-        }
-    }
+  &-small {
+    width: 100px;
+  }
 
-    // Sizes
-    &-tiny{
-        width:70px;
-    }
-    &-small{
-        width:100px;
-    }
-    &-normal{
-        width:200px;
-    }
-    
-    &.disabled {
-        cursor: default;
-    }
+  &-normal {
+    width: 200px;
+  }
+
+  &.disabled {
+    cursor: default;
+  }
 }
 

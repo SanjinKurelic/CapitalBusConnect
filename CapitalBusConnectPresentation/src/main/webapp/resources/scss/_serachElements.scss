@@ -1,154 +1,155 @@
 // Created by Sanjin Kurelić (kurelic@sanjin.eu)
 
 %search-button {
-    border:1px solid color(dark);
-    border-radius:5px;
-    padding:0 20px;
-    height:37px;
-    background:color(light);
+  border: 1px solid color(dark);
+  border-radius: 5px;
+  padding: 0 20px;
+  height: 37px;
+  background: color(light);
 }
 
 %search-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 %search-table {
-    width: 100%;
-    td {
-        padding: 5px;
+  width: 100%;
 
-        input {
-            background: color(light);
-            width:100%;
-            text-transform:capitalize;
-        }
+  td {
+    padding: 5px;
 
-        span.icon {
-            font-size:1.2em;
-        }
-
-        button {
-            @extend %search-button;
-        }
+    input {
+      background: color(light);
+      width: 100%;
+      text-transform: capitalize;
     }
+
+    span.icon {
+      font-size: 1.2em;
+    }
+
+    button {
+      @extend %search-button;
+    }
+  }
 }
 
-.searchBox{
-    background-image:url('../images/banner.jpg');
-    background-size: cover;
-    background-position:center;
-    width:100%;
+.searchBox {
+  background-image: url('../images/banner.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 300px;
+
+  .center {
+    position: relative;
     height: 300px;
+  }
 
-    .center{
-        position: relative;
-        height: 300px;
+  &-content {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 0 black;
+    @include cbc_absolute(-1, 5px, 20px, 5px);
+    @include cbc_tablet {
+      background: color(dark-shadow);
+      bottom: 0;
+      border-radius: 0;
+      left: 0;
+      right: 0;
     }
 
-    &-content{
-        background:rgba(255,255,255,0.7);
-        padding:10px;
-        border-radius:5px;
-        box-shadow: 0 0 0 black;
-        @include cbc_absolute(-1, 5px, 20px, 5px);
-        @include cbc_tablet {
-            background:color(dark-shadow);
-            bottom:0;
-            border-radius:0;
-            left:0;
-            right:0;
+    &-compact {
+      display: none;
+      @include cbc_mobile {
+        display: block;
+      }
+
+      table {
+        @extend %search-table;
+
+        @include cbc_mobile {
+          td button {
+            width: 100%;
+          }
         }
-
-        &-compact {
-            display: none;
-            @include cbc_mobile {
-                display:block;
-            }
-
-            table {
-                @extend %search-table;
-
-                @include cbc_mobile {
-                    td button {
-                        width:100%;
-                    }
-                }
-            }
-        }
-
-        &-full {
-            display: block;
-            @include cbc_mobile {
-                display:none;
-            }
-
-            table {
-                @extend %search-table;
-            }
-        }
+      }
     }
+
+    &-full {
+      display: block;
+      @include cbc_mobile {
+        display: none;
+      }
+
+      table {
+        @extend %search-table;
+      }
+    }
+  }
 }
 
 .searchBar {
-    background-color: color(dark-shadow);
-    padding: 10px;
-    border-radius: 5px;
+  background-color: color(dark-shadow);
+  padding: 10px;
+  border-radius: 5px;
 
-    &-content {
-        width: 100%;
-        table-layout: fixed;
+  &-content {
+    width: 100%;
+    table-layout: fixed;
 
-        td {
-            text-align: right;
-            padding: 0 10px;
-        }
-
-        button {
-            @extend %search-button;
-        }
+    td {
+      text-align: right;
+      padding: 0 10px;
     }
 
-    &.wrap {
-        @include cbc_tablet {
-            td {
-                display: inline-block;
-                width: 40%;
-                margin: 5px;
-                text-align: left;
-            }
-
-            td:last-of-type {
-                width: 95%;
-                text-align: right;
-            }
-        }
+    button {
+      @extend %search-button;
     }
+  }
+
+  &.wrap {
+    @include cbc_tablet {
+      td {
+        display: inline-block;
+        width: 40%;
+        margin: 5px;
+        text-align: left;
+      }
+
+      td:last-of-type {
+        width: 95%;
+        text-align: right;
+      }
+    }
+  }
 }
 
 .searchContainer {
-    position: relative;
+  position: relative;
 
-    &-elements {
-        position: absolute;
-        background: color(light);
-        left: 0;
-        right: 0;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        z-index: 100;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  &-elements {
+    position: absolute;
+    background: color(light);
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 100;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
-        &-element {
-            padding: 8px 15px;
-            border-bottom: 1px solid color(light-shadow);
-            font-size: 0.8em;
-            text-align: left;
+    &-element {
+      padding: 8px 15px;
+      border-bottom: 1px solid color(light-shadow);
+      font-size: 0.8em;
+      text-align: left;
 
-            &:hover {
-                cursor: pointer;
-                background: color(dark-shadow);
-            }
-        }
+      &:hover {
+        cursor: pointer;
+        background: color(dark-shadow);
+      }
     }
+  }
 }

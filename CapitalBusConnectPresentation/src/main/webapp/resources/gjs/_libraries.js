@@ -8,8 +8,8 @@
  * @returns {Element}
  */
 function $(id) {
-    "use strict";
-    return document.getElementById(id);
+  "use strict";
+  return document.getElementById(id);
 }
 
 /**
@@ -19,9 +19,9 @@ function $(id) {
  * @returns {NodeList}
  */
 function $$(element, parent) {
-    "use strict";
-    parent = parent || document;
-    return parent.querySelectorAll(element);
+  "use strict";
+  parent = parent || document;
+  return parent.querySelectorAll(element);
 }
 
 /**
@@ -31,14 +31,14 @@ function $$(element, parent) {
  * @returns {Element}
  */
 function cbc_findUpTag(elem, tag) {
-    "use strict";
-    while (elem.parentElement) {
-        elem = elem.parentElement;
-        if (elem.tagName.toUpperCase() === tag.toUpperCase()) {
-            return elem;
-        }
+  "use strict";
+  while (elem.parentElement) {
+    elem = elem.parentElement;
+    if (elem.tagName.toUpperCase() === tag.toUpperCase()) {
+      return elem;
     }
-    return null;
+  }
+  return null;
 }
 
 /**
@@ -48,8 +48,8 @@ function cbc_findUpTag(elem, tag) {
  * @returns {void}
  */
 function cbc_removeClass(element, className) {
-    "use strict";
-    element.className = element.className.replace(className, "");
+  "use strict";
+  element.className = element.className.replace(className, "");
 }
 
 /**
@@ -59,8 +59,8 @@ function cbc_removeClass(element, className) {
  * @returns {Boolean}
  */
 function cbc_hasClass(element, className) {
-    "use strict";
-    return (element.className.split(" ").indexOf(className) !== -1);
+  "use strict";
+  return (element.className.split(" ").indexOf(className) !== -1);
 }
 
 /**
@@ -70,10 +70,10 @@ function cbc_hasClass(element, className) {
  * @returns {void}
  */
 function cbc_addClass(element, className) {
-    "use strict";
-    if (!cbc_hasClass(element, className)) {
-        element.className += " " + className;
-    }
+  "use strict";
+  if (!cbc_hasClass(element, className)) {
+    element.className += " " + className;
+  }
 }
 
 /**
@@ -98,14 +98,14 @@ function cbc_addClass(element, className) {
  * @returns {Element}
  */
 function cbc_findUpClass(elem, className) {
-    "use strict";
-    while (elem.parentElement) {
-        elem = elem.parentElement;
-        if (cbc_hasClass(elem, className)) {
-            return elem;
-        }
+  "use strict";
+  while (elem.parentElement) {
+    elem = elem.parentElement;
+    if (cbc_hasClass(elem, className)) {
+      return elem;
     }
-    return null;
+  }
+  return null;
 }
 
 /**
@@ -116,13 +116,13 @@ function cbc_findUpClass(elem, className) {
  * @returns {void}
  */
 function cbc_addEventListener(event, element, func) {
-    "use strict";
-    element = element || document;
-    if (element.addEventListener) {
-        element.addEventListener(event, func, true);
-    } else if (element.attachEvent) {
-        element.attachEvent("on" + event, func);
-    }
+  "use strict";
+  element = element || document;
+  if (element.addEventListener) {
+    element.addEventListener(event, func, true);
+  } else if (element.attachEvent) {
+    element.attachEvent("on" + event, func);
+  }
 }
 
 /**
@@ -132,8 +132,8 @@ function cbc_addEventListener(event, element, func) {
  * @returns {void}
  */
 function cbc_addClickEventListener(element, func) {
-    "use strict";
-    cbc_addEventListener("click", element, func);
+  "use strict";
+  cbc_addEventListener("click", element, func);
 }
 
 /**
@@ -141,8 +141,8 @@ function cbc_addClickEventListener(element, func) {
  * @param {Element} element
  */
 function cbc_removeEventListeners(element) {
-    "use strict";
-    element.parentElement.replaceChild(element.cloneNode(true), element);
+  "use strict";
+  element.parentElement.replaceChild(element.cloneNode(true), element);
 }
 
 /**
@@ -150,12 +150,12 @@ function cbc_removeEventListeners(element) {
  * @param {Event} e
  */
 function cbc_blockEvents(e) {
-    "use strict";
-    e.cancelBubble = true;
-    if (e.stopPropagation) {
-        e.stopPropagation();
-    }
-    return false;
+  "use strict";
+  e.cancelBubble = true;
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
+  return false;
 }
 
 /**
@@ -164,11 +164,11 @@ function cbc_blockEvents(e) {
  * @returns {Object}
  */
 function cbc_enum(object) {
-    "use strict";
-    if (Object.freeze) {
-        return Object.freeze(object);
-    }
-    return object;
+  "use strict";
+  if (Object.freeze) {
+    return Object.freeze(object);
+  }
+  return object;
 }
 
 /**
@@ -176,10 +176,10 @@ function cbc_enum(object) {
  * @returns {Function}
  */
 function cbc_voidFunction() {
-    "use strict";
-    return function () {
-        return undefined;
-    };
+  "use strict";
+  return function () {
+    return undefined;
+  };
 }
 
 /**
@@ -187,8 +187,8 @@ function cbc_voidFunction() {
  * @param {function} func
  */
 function cbc_async(func) {
-    "use strict";
-    setTimeout(func, 0);
+  "use strict";
+  setTimeout(func, 0);
 }
 
 /**
@@ -197,8 +197,8 @@ function cbc_async(func) {
  * @returns {string}
  */
 function cbc_formatDecimal(decimalNumber) {
-    "use strict";
-    return decimalNumber.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  "use strict";
+  return decimalNumber.toFixed(2).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 }
 
 /**
@@ -207,9 +207,9 @@ function cbc_formatDecimal(decimalNumber) {
  * @returns {string}
  */
 function cbc_hrkToEuro(value) {
-    "use strict";
-    var euro = value / 7.5;
-    return euro.toFixed(2);
+  "use strict";
+  var euro = value / 7.5;
+  return euro.toFixed(2);
 }
 
 /**
@@ -218,54 +218,54 @@ function cbc_hrkToEuro(value) {
  */
 // noinspection JSLint
 if (!Function.prototype.bind) {
-    // noinspection JSLint
-    Function.prototype.bind = function (oThis) {
-        "use strict";
-        var aArgs, fToBind, FNOP, fBound;
-        if (typeof this !== "function") {
-            throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-        }
-        aArgs = Array.prototype.slice.call(arguments, 1);
-        fToBind = this;
-        FNOP = cbc_voidFunction();
-        fBound = function () {
-            // noinspection JSLint
-            return fToBind.apply(this instanceof FNOP
-                ? this
-                : oThis,
-                aArgs.concat(Array.prototype.slice.call(arguments)));
-        };
-        if (this.prototype) {
-            FNOP.prototype = this.prototype;
-        }
-        fBound.prototype = new FNOP();
-        return fBound;
+  // noinspection JSLint
+  Function.prototype.bind = function (oThis) {
+    "use strict";
+    var aArgs, fToBind, FNOP, fBound;
+    if (typeof this !== "function") {
+      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+    }
+    aArgs = Array.prototype.slice.call(arguments, 1);
+    fToBind = this;
+    FNOP = cbc_voidFunction();
+    fBound = function () {
+      // noinspection JSLint
+      return fToBind.apply(this instanceof FNOP
+        ? this
+        : oThis,
+        aArgs.concat(Array.prototype.slice.call(arguments)));
     };
+    if (this.prototype) {
+      FNOP.prototype = this.prototype;
+    }
+    fBound.prototype = new FNOP();
+    return fBound;
+  };
 }
 
 /**
  * IE 8 indexOf support
  */
 if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function (elt, num) {
-        "use strict";
-        var from, len, radix = 10;
-        len = parseInt(Math.abs(this.length).toString(radix), radix);
-        from = num || 0;
-        if (from < 0) {
-            from = Math.ceil(from);
-        } else {
-            from = Math.floor(from);
-        }
-        if (from < 0) {
-            from += len;
-        }
-        // noinspection JSLint
-        for (from; from < len; from += 1) {
-            if (this.hasOwnProperty(from) && this[from] === elt) {
-                return from;
-            }
-        }
-        return -1;
-    };
+  Array.prototype.indexOf = function (elt, num) {
+    "use strict";
+    var from, len, radix = 10;
+    len = parseInt(Math.abs(this.length).toString(radix), radix);
+    from = num || 0;
+    if (from < 0) {
+      from = Math.ceil(from);
+    } else {
+      from = Math.floor(from);
+    }
+    if (from < 0) {
+      from += len;
+    }
+    // noinspection JSLint
+    for (from; from < len; from += 1) {
+      if (this.hasOwnProperty(from) && this[from] === elt) {
+        return from;
+      }
+    }
+    return -1;
+  };
 }

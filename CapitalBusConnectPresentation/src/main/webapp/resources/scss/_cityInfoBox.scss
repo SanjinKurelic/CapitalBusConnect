@@ -1,53 +1,53 @@
 // Created by Sanjin Kurelić (kurelic@sanjin.eu)
 
-%cityInfo-inline{
-    display:inline-block;
-    vertical-align:top;
+%cityInfo-inline {
+  display: inline-block;
+  vertical-align: top;
 }
 
 @include cbc_mobile {
-    %cityInfo-inline{
-        display:block;
-        width:100%;
-    }
+  %cityInfo-inline {
+    display: block;
+    width: 100%;
+  }
 }
 
-.cityInfoBox{
-    padding:10px 10px 30px;
+.cityInfoBox {
+  padding: 10px 10px 30px;
 
-    &-description {
-        @extend %cityInfo-inline;
-        width:69%;
-      @include cbc_mobile {
-        width: 100%;
-      }
-
-        p {
-            padding-left:40px;
-            margin:15px 0;
-            @include cbc_mobile {
-              padding: 20px 0 0;
-            }
-        }
+  &-description {
+    @extend %cityInfo-inline;
+    width: 69%;
+    @include cbc_mobile {
+      width: 100%;
     }
 
-    &-image {
-        @extend %cityInfo-inline;
-        width:30%;
-        margin-top:15px;
+    p {
+      padding-left: 40px;
+      margin: 15px 0;
       @include cbc_mobile {
-        width: 100%;
-        max-width: 400px;
-        margin: 15px auto;
+        padding: 20px 0 0;
       }
     }
+  }
 
-    &-buttons {
-        text-align:right;
-        margin-top:30px;
-        
-        button {
-            color: color(dark);
-        }
+  &-image {
+    @extend %cityInfo-inline;
+    width: 30%;
+    margin-top: 15px;
+    @include cbc_mobile {
+      width: 100%;
+      max-width: 400px;
+      margin: 15px auto;
     }
+  }
+
+  &-buttons {
+    text-align: right;
+    margin-top: 30px;
+
+    button {
+      color: color(dark);
+    }
+  }
 }

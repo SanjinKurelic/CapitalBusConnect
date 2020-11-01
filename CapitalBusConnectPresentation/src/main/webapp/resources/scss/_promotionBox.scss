@@ -1,47 +1,47 @@
 //Created by Sanjin Kurelić (kurelic@sanjin.eu)
 
-.promotionBox{
-    text-align:center;
+.promotionBox {
+  text-align: center;
 
-    &-item{
-        display:inline-block;
-        width:32%;
-        padding:8px;
-        position:relative;
-        max-width:400px;
-        cursor:pointer;
-        @include cbc_tablet {
-            width:48%;
-        }
-        @include cbc_mobile {
-            width:98%;
-        }
-
-        &:hover &-image {
-            filter:opacity(70%);
-        }
-
-        &-image {
-            width:100%;
-        }
-
-        &-info {
-            @include cbc_absolute(-1, 8px, 12px, 8px);
-            background:rgba(0,0,0,0.4);
-
-            &-title {
-                margin:1em;
-                margin-bottom:0.5em;
-                text-align:left;
-                color: color(light);
-            }
-
-            &-price {
-                float:right;
-                padding:10px;
-                width:110px;
-                background: color(primary);
-            }
-        }
+  &-item {
+    display: inline-block;
+    width: 32%;
+    padding: 8px;
+    position: relative;
+    max-width: 400px;
+    cursor: pointer;
+    @include cbc_tablet {
+      width: 48%;
     }
+    @include cbc_mobile {
+      width: 98%;
+    }
+
+    &:hover &-image {
+      filter: opacity(70%);
+    }
+
+    &-image {
+      width: 100%;
+    }
+
+    &-info {
+      @include cbc_absolute(-1, 8px, 12px, 8px);
+      background: rgba(0, 0, 0, 0.4);
+
+      &-title {
+        margin: 1em;
+        margin-bottom: 0.5em;
+        text-align: left;
+        color: color(light);
+      }
+
+      &-price {
+        float: right;
+        padding: 10px;
+        width: 110px;
+        background: color(primary);
+      }
+    }
+  }
 }

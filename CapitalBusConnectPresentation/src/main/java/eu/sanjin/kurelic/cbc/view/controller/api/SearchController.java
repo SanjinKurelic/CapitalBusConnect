@@ -18,34 +18,34 @@ import org.springframework.web.context.annotation.RequestScope;
 @RequestScope
 public class SearchController {
 
-    // Url
-    static final String SEARCH_API_ROOT = "/api/search";
-    private static final String SEARCH_CITY_URL = "/city";
-    public static final String SEARCH_CITY_FULL_URL = SEARCH_API_ROOT + SEARCH_CITY_URL; // searchBox.jsp
-    private static final String SEARCH_CITY_URL_CITY_NAME = SEARCH_CITY_URL + "/{partialName}";
-    private static final String SEARCH_USER_URL = "/user";
-    public static final String SEARCH_USER_FULL_URL = SEARCH_API_ROOT + SEARCH_USER_URL; // users.jsp
-    private static final String SEARCH_USER_URL_USERNAME = SEARCH_USER_URL + "/{partialName}";
-    private final CityInfoService cityInfoService;
-    private final UserService userService;
+  // Url
+  static final String SEARCH_API_ROOT = "/api/search";
+  private static final String SEARCH_CITY_URL = "/city";
+  public static final String SEARCH_CITY_FULL_URL = SEARCH_API_ROOT + SEARCH_CITY_URL; // searchBox.jsp
+  private static final String SEARCH_CITY_URL_CITY_NAME = SEARCH_CITY_URL + "/{partialName}";
+  private static final String SEARCH_USER_URL = "/user";
+  public static final String SEARCH_USER_FULL_URL = SEARCH_API_ROOT + SEARCH_USER_URL; // users.jsp
+  private static final String SEARCH_USER_URL_USERNAME = SEARCH_USER_URL + "/{partialName}";
+  private final CityInfoService cityInfoService;
+  private final UserService userService;
 
-    public SearchController(CityInfoService cityInfoService, @Qualifier("userServiceImpl") UserService userService) {
-        this.cityInfoService = cityInfoService;
-        this.userService = userService;
-    }
+  public SearchController(CityInfoService cityInfoService, @Qualifier("userServiceImpl") UserService userService) {
+    this.cityInfoService = cityInfoService;
+    this.userService = userService;
+  }
 
-    @GetMapping(value = SEARCH_CITY_URL_CITY_NAME, produces = MediaType.APPLICATION_JSON_VALUE)
-    public CitySearchResults searchCity(@PathVariable String partialName) {
-        return cityInfoService.searchByCityName(
-                partialName,
-                VisibleConfiguration.NUMBER_OF_SEARCH_ITEMS,
-                LocaleContextHolder.getLocale()
-        );
-    }
+  @GetMapping(value = SEARCH_CITY_URL_CITY_NAME, produces = MediaType.APPLICATION_JSON_VALUE)
+  public CitySearchResults searchCity(@PathVariable String partialName) {
+    return cityInfoService.searchByCityName(
+      partialName,
+      VisibleConfiguration.NUMBER_OF_SEARCH_ITEMS,
+      LocaleContextHolder.getLocale()
+    );
+  }
 
-    @GetMapping(value = SEARCH_USER_URL_USERNAME, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String[] searchUser(@PathVariable String partialName) {
-        return userService.searchUserByName(partialName, VisibleConfiguration.NUMBER_OF_SEARCH_ITEMS);
-    }
+  @GetMapping(value = SEARCH_USER_URL_USERNAME, produces = MediaType.APPLICATION_JSON_VALUE)
+  public String[] searchUser(@PathVariable String partialName) {
+    return userService.searchUserByName(partialName, VisibleConfiguration.NUMBER_OF_SEARCH_ITEMS);
+  }
 
 }

@@ -31,76 +31,76 @@ import java.util.Objects;
 @Controller
 public class LoginRegisterController {
 
-    private final UserService userService;
-    // View path
-    private static final String LOGIN_REGISTRATION_PAGE = "login/login_registration";
-    private static final String REGISTRATION_SUCCESSFUL = "login/registration_successful";
-    private static final String ACCESS_DENIED_PAGE = "error/denied";
-    // Helpers
-    private static final String LOGOUT_REDIRECT = "redirect:" + WebController.HOME_URL_ALTERNATIVE;
-    // Wrong email
-    private static final String WRONG_EMAIL_ATTRIBUTE = "email";
-    private static final String WRONG_EMAIL_TEXT_CODE = "errorMessage.email.exists.text";
+  private final UserService userService;
+  // View path
+  private static final String LOGIN_REGISTRATION_PAGE = "login/login_registration";
+  private static final String REGISTRATION_SUCCESSFUL = "login/registration_successful";
+  private static final String ACCESS_DENIED_PAGE = "error/denied";
+  // Helpers
+  private static final String LOGOUT_REDIRECT = "redirect:" + WebController.HOME_URL_ALTERNATIVE;
+  // Wrong email
+  private static final String WRONG_EMAIL_ATTRIBUTE = "email";
+  private static final String WRONG_EMAIL_TEXT_CODE = "errorMessage.email.exists.text";
 
-    @Autowired
-    public LoginRegisterController(@Qualifier("userServiceImpl") UserService userService) {
-        this.userService = userService;
+  @Autowired
+  public LoginRegisterController(@Qualifier("userServiceImpl") UserService userService) {
+    this.userService = userService;
+  }
+
+  @GetMapping(SpringSecurityConfiguration.LOGIN_PAGE_URL)
+  public ModelAndView loginPage() {
+    var viewModel = new ModelAndView(LOGIN_REGISTRATION_PAGE);
+
+    // Menu and active tab item
+    viewModel.addObject(AttributeNames.MENU_ITEM, MenuBuilder.getLoginPageMenu(ActiveTabItem.LOGIN_PAGE));
+    viewModel.addObject(AttributeNames.ACTIVE_TAB_ITEM, ActiveTabItem.LOGIN_PAGE);
+    viewModel.addObject(AttributeNames.USER_DATA, new RegistrationUserForm());
+
+    return viewModel;
+  }
+
+  @GetMapping(SpringSecurityConfiguration.LOGOUT_PAGE_URL)
+  public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (!Objects.isNull(authentication)) {
+      (new SecurityContextLogoutHandler()).logout(request, response, authentication);
     }
+    return LOGOUT_REDIRECT;
+  }
 
-    @GetMapping(SpringSecurityConfiguration.LOGIN_PAGE_URL)
-    public ModelAndView loginPage() {
-        var viewModel = new ModelAndView(LOGIN_REGISTRATION_PAGE);
+  @GetMapping(SpringSecurityConfiguration.ACCESS_DENIED_PAGE_URL)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public ModelAndView accessDeniedPage() {
+    return new ModelAndView(ACCESS_DENIED_PAGE);
+  }
 
-        // Menu and active tab item
-        viewModel.addObject(AttributeNames.MENU_ITEM, MenuBuilder.getLoginPageMenu(ActiveTabItem.LOGIN_PAGE));
-        viewModel.addObject(AttributeNames.ACTIVE_TAB_ITEM, ActiveTabItem.LOGIN_PAGE);
-        viewModel.addObject(AttributeNames.USER_DATA, new RegistrationUserForm());
+  @PostMapping(SpringSecurityConfiguration.REGISTER_URL)
+  public ModelAndView registerUserPage(@Valid @ModelAttribute(AttributeNames.USER_DATA) RegistrationUserForm user,
+                                       BindingResult result) throws InvalidUserFormItemException,
+    InvalidUserException {
+    ModelAndView viewModel = new ModelAndView();
+    // Invalid
+    if (result.hasErrors() || userService.hasUser(user)) {
+      viewModel.setViewName(LOGIN_REGISTRATION_PAGE);
+      viewModel.addObject(AttributeNames.USER_DATA_COPY, user);
+      viewModel.addObject(AttributeNames.MENU_ITEM, MenuBuilder.getLoginPageMenu(ActiveTabItem.REGISTER_PAGE));
+      viewModel.addObject(AttributeNames.ACTIVE_TAB_ITEM, ActiveTabItem.REGISTER_PAGE);
 
-        return viewModel;
+      // Database access optimization, if result does not have errors, than user already exists
+      // If we introduce another error, change used statement whit commented one !
+      //if(userService.hasUser(user)) {
+      if (!result.hasErrors()) {
+        result.rejectValue(WRONG_EMAIL_ATTRIBUTE, WRONG_EMAIL_TEXT_CODE, WRONG_EMAIL_TEXT_CODE);
+      }
+
+      viewModel.addObject(AttributeNames.ERROR_COPY,
+        ErrorMessagesOrder.sortErrorsInRegistrationForm(result.getAllErrors()));
+      return viewModel;
     }
-
-    @GetMapping(SpringSecurityConfiguration.LOGOUT_PAGE_URL)
-    public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!Objects.isNull(authentication)) {
-            (new SecurityContextLogoutHandler()).logout(request, response, authentication);
-        }
-        return LOGOUT_REDIRECT;
-    }
-
-    @GetMapping(SpringSecurityConfiguration.ACCESS_DENIED_PAGE_URL)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ModelAndView accessDeniedPage() {
-        return new ModelAndView(ACCESS_DENIED_PAGE);
-    }
-
-    @PostMapping(SpringSecurityConfiguration.REGISTER_URL)
-    public ModelAndView registerUserPage(@Valid @ModelAttribute(AttributeNames.USER_DATA) RegistrationUserForm user,
-                                         BindingResult result) throws InvalidUserFormItemException,
-            InvalidUserException {
-        ModelAndView viewModel = new ModelAndView();
-        // Invalid
-        if (result.hasErrors() || userService.hasUser(user)) {
-            viewModel.setViewName(LOGIN_REGISTRATION_PAGE);
-            viewModel.addObject(AttributeNames.USER_DATA_COPY, user);
-            viewModel.addObject(AttributeNames.MENU_ITEM, MenuBuilder.getLoginPageMenu(ActiveTabItem.REGISTER_PAGE));
-            viewModel.addObject(AttributeNames.ACTIVE_TAB_ITEM, ActiveTabItem.REGISTER_PAGE);
-
-            // Database access optimization, if result does not have errors, than user already exists
-            // If we introduce another error, change used statement whit commented one !
-            //if(userService.hasUser(user)) {
-            if (!result.hasErrors()) {
-                result.rejectValue(WRONG_EMAIL_ATTRIBUTE, WRONG_EMAIL_TEXT_CODE, WRONG_EMAIL_TEXT_CODE);
-            }
-
-            viewModel.addObject(AttributeNames.ERROR_COPY,
-                    ErrorMessagesOrder.sortErrorsInRegistrationForm(result.getAllErrors()));
-            return viewModel;
-        }
-        // Store user
-        userService.addUser(user);
-        viewModel.setViewName(REGISTRATION_SUCCESSFUL);
-        return viewModel;
-    }
+    // Store user
+    userService.addUser(user);
+    viewModel.setViewName(REGISTRATION_SUCCESSFUL);
+    return viewModel;
+  }
 
 }

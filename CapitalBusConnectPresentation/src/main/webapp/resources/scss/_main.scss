@@ -4,44 +4,44 @@
 
 // Fixes & default styles
 a {
-    text-decoration: none;
-    color: color(dark);
+  text-decoration: none;
+  color: color(dark);
 }
 
-main, header, footer, section, article, nav{
-    display:block;
+main, header, footer, section, article, nav {
+  display: block;
 }
 
-html{
-    height:100%;
-    box-sizing: border-box;
+html {
+  height: 100%;
+  box-sizing: border-box;
 }
 
 *, *:after, *:before {
-    box-sizing: inherit;
+  box-sizing: inherit;
 }
 
-body{
-    min-height:100%;
-    margin:0;
-    font-family:Roboto, serif;
-    position:relative;
-    color:color(dark);
-    background:color(light);
-    
-    &-blockScroll {
-        overflow-y: hidden;
-    }
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: Roboto, serif;
+  position: relative;
+  color: color(dark);
+  background: color(light);
+
+  &-blockScroll {
+    overflow-y: hidden;
+  }
 }
 
 .icon {
-    font-family: icon, serif;
+  font-family: icon, serif;
 }
 
-.center{
-    max-width:1000px;
-    margin:0 auto;
-    position:relative;
+.center {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .paddingBottom {
@@ -53,11 +53,13 @@ body{
 }
 
 .errorText {
-    color: color(error);
+  color: color(error);
 }
+
 .shadowText {
-    color: color(light-shadow);
+  color: color(light-shadow);
 }
+
 .warningText {
-    color: darken(color(warning), 5);
+  color: darken(color(warning), 5);
 }

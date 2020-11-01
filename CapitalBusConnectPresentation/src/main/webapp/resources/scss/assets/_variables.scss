@@ -2,51 +2,51 @@
 
 // Variables
 $cbc_colors: (
-    primary: #FFC107,
-    secondary: #FF6F00,
-    dark: #424242,
-    light: #F0F0F0,
-    light-shadow: #BEBEBE,
-    dark-shadow: #DEDEDE,
-    error: #DC3545,
-    warning: #FFC107,
+  primary: #FFC107,
+  secondary: #FF6F00,
+  dark: #424242,
+  light: #F0F0F0,
+  light-shadow: #BEBEBE,
+  dark-shadow: #DEDEDE,
+  error: #DC3545,
+  warning: #FFC107,
 );
 
 $cbc_tabletBP: 700px;
 $cbc_mobileBP: 500px;
 
 // Mixins and functions
-@function color($color-name){
-    @return map-get($cbc_colors, $color-name);
+@function color($color-name) {
+  @return map-get($cbc_colors, $color-name);
 }
 
 @mixin cbc_font-face($font-family, $url) {
-    @font-face {
-        font-family: '#{$font-family}';
-        src: url('#{$url}.eot');
-        src: url('#{$url}.eot?#iefix') format('embedded-opentype'),
-            url('#{$url}.woff2') format('woff2'),
-            url('#{$url}.woff') format('woff'),
-            url('#{$url}.ttf') format('truetype'),
-            url('#{$url}.svg') format('svg');
-        font-weight: normal;
-        font-style: normal;
-    }
+  @font-face {
+    font-family: '#{$font-family}';
+    src: url('#{$url}.eot');
+    src: url('#{$url}.eot?#iefix') format('embedded-opentype'),
+    url('#{$url}.woff2') format('woff2'),
+    url('#{$url}.woff') format('woff'),
+    url('#{$url}.ttf') format('truetype'),
+    url('#{$url}.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
 }
 
 @mixin cbc_position($top, $right, $bottom, $left) {
-    @if $top > -1 {
-        top: $top;
-    }
-    @if $right > -1 {
-        right: $right;
-    }
-    @if $bottom > -1 {
-        bottom: $bottom;
-    }
-    @if $left > -1 {
-        left: $left;
-    }
+  @if $top > -1 {
+    top: $top;
+  }
+  @if $right > -1 {
+    right: $right;
+  }
+  @if $bottom > -1 {
+    bottom: $bottom;
+  }
+  @if $left > -1 {
+    left: $left;
+  }
 }
 
 @mixin cbc_absolute($top, $right, $bottom, $left) {
@@ -60,13 +60,13 @@ $cbc_mobileBP: 500px;
 }
 
 @mixin cbc_tablet {
-    @media (max-width: #{$cbc_tabletBP}){
-        @content;
-    }
+  @media (max-width: #{$cbc_tabletBP}) {
+    @content;
+  }
 }
 
 @mixin cbc_mobile {
-    @media (max-width: #{$cbc_mobileBP}){
-        @content;
-    }
+  @media (max-width: #{$cbc_mobileBP}) {
+    @content;
+  }
 }
