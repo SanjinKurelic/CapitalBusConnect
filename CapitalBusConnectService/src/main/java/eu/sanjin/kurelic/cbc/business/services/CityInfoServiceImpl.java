@@ -11,11 +11,12 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemTextColumn;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.search.CitySearchResult;
 import eu.sanjin.kurelic.cbc.business.viewmodel.search.CitySearchResults;
-import eu.sanjin.kurelic.cbc.repo.dao.BusLineDao;
+import eu.sanjin.kurelic.cbc.repo.dao.BusLineRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.entity.BusLine;
 import eu.sanjin.kurelic.cbc.repo.entity.CityDescription;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
@@ -29,12 +30,12 @@ import java.util.Objects;
 public class CityInfoServiceImpl implements CityInfoService {
 
   private final CityDescriptionDao cityDescriptionDao;
-  private final BusLineDao busLineDao;
+  private final BusLineRepository busLineRepository;
 
   @Autowired
-  public CityInfoServiceImpl(CityDescriptionDao cityDescriptionDao, BusLineDao busLineDao) {
+  public CityInfoServiceImpl(CityDescriptionDao cityDescriptionDao, BusLineRepository busLineRepository) {
     this.cityDescriptionDao = cityDescriptionDao;
-    this.busLineDao = busLineDao;
+    this.busLineRepository = busLineRepository;
   }
 
   @Override
@@ -83,7 +84,7 @@ public class CityInfoServiceImpl implements CityInfoService {
     InfoItems items = new InfoItems();
     InfoItem item;
     // Check
-    if (Objects.isNull(language) || limit < 0) {
+    if (Objects.isNull(language) || limit <= 0) {
       return items;
     }
     // Page number
@@ -92,7 +93,7 @@ public class CityInfoServiceImpl implements CityInfoService {
       return items;
     }
     // Logic
-    var lines = busLineDao.getCityLines(pageNumber, limit);
+    var lines = busLineRepository.findAll(PageRequest.of(pageNumber, limit)).getContent();
     if (lines.isEmpty()) {
       return items;
     }
@@ -122,7 +123,7 @@ public class CityInfoServiceImpl implements CityInfoService {
   @Override
   @Transactional
   public Long getNumberOfCityLines() {
-    return busLineDao.getNumberOfCityLines();
+    return busLineRepository.count();
   }
 
   // Utility
