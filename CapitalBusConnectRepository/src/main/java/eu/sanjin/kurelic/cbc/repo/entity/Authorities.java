@@ -16,17 +16,15 @@ import java.util.Objects;
 public class Authorities implements Serializable {
 
   @Id
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "username")
-  private User username;
+  private String username;
   @Column
   private String authority;
 
-  public User getUsername() {
+  public String getUsername() {
     return username;
   }
 
-  public void setUsername(User username) {
+  public void setUsername(String username) {
     this.username = username;
   }
 

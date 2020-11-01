@@ -14,23 +14,14 @@ import javax.transaction.Transactional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
 @Transactional
-class AuthoritiesDaoTest {
+class AuthoritiesRepositoryTest {
 
   @Autowired
-  private AuthoritiesDao dao;
-
-  @Test
-  void addAuthorityToUserWrongAuthorityNull() {
-    // should not happen
-    Assertions.assertThrows(
-      IllegalArgumentException.class,
-      () -> dao.addAuthorityToUser(TestConstant.AUTHORITIES_NULL)
-    );
-  }
+  private AuthoritiesRepository authoritiesRepository;
 
   @Test
   void addAuthorityToUser() {
-    Assertions.assertDoesNotThrow(() -> dao.addAuthorityToUser(TestConstant.AUTHORITIES_VALID));
+    Assertions.assertDoesNotThrow(() -> authoritiesRepository.save(TestConstant.AUTHORITIES_VALID));
   }
 
 }

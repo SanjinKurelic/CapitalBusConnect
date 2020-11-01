@@ -4,7 +4,7 @@ import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
 import eu.sanjin.kurelic.cbc.business.exception.InvalidUserFormItemException;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
-import eu.sanjin.kurelic.cbc.repo.dao.AuthoritiesDao;
+import eu.sanjin.kurelic.cbc.repo.dao.AuthoritiesRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.UserDao;
 import eu.sanjin.kurelic.cbc.repo.entity.Authorities;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
@@ -25,11 +25,11 @@ public class UserServiceImpl implements UserService {
 
   private static final String PASSWORD_APPENDER = "{bcrypt}";
   private final UserDao userDao;
-  private final AuthoritiesDao authorities;
+  private final AuthoritiesRepository authorities;
   private final BCryptPasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserServiceImpl(UserDao userDao, AuthoritiesDao authorities) {
+  public UserServiceImpl(UserDao userDao, AuthoritiesRepository authorities) {
     this.userDao = userDao;
     this.passwordEncoder = new BCryptPasswordEncoder(); // Spring security problem if BCryptPasswordEncoder is defined as bean
     this.authorities = authorities;
@@ -82,10 +82,10 @@ public class UserServiceImpl implements UserService {
     userDao.addUserInformation(u);
     // Build user authority
     Authorities authority = new Authorities();
-    authority.setUsername(u);
+    authority.setUsername(u.getUsername());
     authority.setAuthority(AuthoritiesValue.USER.getValue());
     // Store user authority - we use AND because both operations must yield true
-    authorities.addAuthorityToUser(authority);
+    authorities.save(authority);
   }
 
   @Override
@@ -159,5 +159,4 @@ public class UserServiceImpl implements UserService {
       throw new InvalidUserFormItemException(violations);
     }
   }
-
 }
