@@ -5,8 +5,8 @@ import eu.sanjin.kurelic.cbc.business.exception.InvalidSuppliedArgumentsExceptio
 import eu.sanjin.kurelic.cbc.business.exception.InvalidUserException;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItem;
 import eu.sanjin.kurelic.cbc.business.viewmodel.cart.CartItems;
-import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleDao;
-import eu.sanjin.kurelic.cbc.repo.dao.PayingMethodDao;
+import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleRepository;
+import eu.sanjin.kurelic.cbc.repo.dao.PayingMethodRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.TripHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.dao.TripPricesDao;
 import eu.sanjin.kurelic.cbc.repo.dao.TripTypeDao;
@@ -29,7 +29,7 @@ import java.util.Set;
 public class CartServiceImpl implements CartService {
 
   private CartItems items;
-  private final BusScheduleDao busScheduleDao;
+  private final BusScheduleRepository busScheduleRepository;
   private final TripHistoryDao tripHistoryDao;
   private final TripTypeDao tripTypeDao;
   private final TripPricesDao tripPricesDao;
@@ -37,10 +37,10 @@ public class CartServiceImpl implements CartService {
   private final PayingMethodRepository payingMethodRepository;
   private final UserService userService;
 
-  public CartServiceImpl(BusScheduleDao busScheduleDao, TripHistoryDao tripHistoryDao, TripTypeDao tripTypeDao,
+  public CartServiceImpl(BusScheduleRepository busScheduleRepository, TripHistoryDao tripHistoryDao, TripTypeDao tripTypeDao,
                          TripPricesDao tripPricesDao, UserTravelHistoryDao userTravelHistoryDao,
-                         PayingMethodDao payingMethodDao, UserService userService) {
-    this.busScheduleDao = busScheduleDao;
+                         PayingMethodRepository payingMethodRepository, UserService userService) {
+    this.busScheduleRepository = busScheduleRepository;
     this.tripHistoryDao = tripHistoryDao;
     this.tripTypeDao = tripTypeDao;
     this.tripPricesDao = tripPricesDao;
@@ -115,7 +115,7 @@ public class CartServiceImpl implements CartService {
     }
     for (CartItem item : items) {
       travelHistory = new UserTravelHistory();
-      scheduleItem = busScheduleDao.getSchedule(item.getScheduleId());
+      scheduleItem = busScheduleRepository.getById(item.getScheduleId());
       // Fill info
       travelHistory.setUsername(username);
       travelHistory.setNumberOfAdults(item.getNumberOfAdults());

@@ -8,7 +8,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleButtonType;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleItems;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.SchedulePayingMethod;
 import eu.sanjin.kurelic.cbc.business.viewmodel.schedule.ScheduleUpdateType;
-import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleDao;
+import eu.sanjin.kurelic.cbc.repo.dao.BusScheduleRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.dao.TripPricesDao;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
@@ -36,15 +36,15 @@ import java.util.stream.Collectors;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
-  private final BusScheduleDao busScheduleDao;
+  private final BusScheduleRepository busScheduleRepository;
   private final CityDescriptionDao cityDescriptionDao;
   private final TripPricesDao tripPricesDao;
   private final UserTravelHistoryDao userTravelHistoryDao;
 
   @Autowired
-  public ScheduleServiceImpl(BusScheduleDao dao, CityDescriptionDao cityDescriptionDao, TripPricesDao tripPricesDao
+  public ScheduleServiceImpl(BusScheduleRepository busScheduleRepository, CityDescriptionDao cityDescriptionDao, TripPricesDao tripPricesDao
     , UserTravelHistoryDao userTravelHistoryDao) {
-    this.busScheduleDao = dao;
+    this.busScheduleRepository = busScheduleRepository;
     this.cityDescriptionDao = cityDescriptionDao;
     this.tripPricesDao = tripPricesDao;
     this.userTravelHistoryDao = userTravelHistoryDao;
@@ -62,7 +62,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     sb.setButtonType(ScheduleButtonType.ADD_TO_CART);
     // Logic
     var weekend = EnumSet.of(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY);
-    List<BusSchedule> busSchedules = busScheduleDao.getBusLineSchedules(fromCityId, toCityId);
+    List<BusSchedule> busSchedules = busScheduleRepository.getBusLineSchedules(fromCityId, toCityId);
     for (BusSchedule busSchedule : busSchedules) {
       // If bus does not operates continue
       if (!busSchedule.isOperates()) {
@@ -284,7 +284,10 @@ public class ScheduleServiceImpl implements ScheduleService {
   }
 
   private Map<Integer, BusSchedule> getSchedules(ArrayList<Integer> ids) {
-    var busSchedules = busScheduleDao.getSchedules(ids.toArray(Integer[]::new));
+    if (Objects.isNull(ids) || ids.isEmpty()) {
+      return new HashMap<>();
+    }
+    var busSchedules = busScheduleRepository.getByIdIn(ids);
     return busSchedules.stream().collect(Collectors.toMap(BusSchedule::getId, i -> i));
   }
 
