@@ -5,11 +5,12 @@ import eu.sanjin.kurelic.cbc.business.exception.InvalidUserFormItemException;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.SettingsUserForm;
 import eu.sanjin.kurelic.cbc.business.viewmodel.user.UserForm;
 import eu.sanjin.kurelic.cbc.repo.dao.AuthoritiesRepository;
-import eu.sanjin.kurelic.cbc.repo.dao.UserDao;
+import eu.sanjin.kurelic.cbc.repo.dao.UserInformationRepository;
 import eu.sanjin.kurelic.cbc.repo.entity.Authorities;
 import eu.sanjin.kurelic.cbc.repo.entity.User;
 import eu.sanjin.kurelic.cbc.repo.values.AuthoritiesValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,13 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
   private static final String PASSWORD_APPENDER = "{bcrypt}";
-  private final UserDao userDao;
+  private final UserInformationRepository userInformationRepository;
   private final AuthoritiesRepository authorities;
   private final BCryptPasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserServiceImpl(UserDao userDao, AuthoritiesRepository authorities) {
-    this.userDao = userDao;
+  public UserServiceImpl(UserInformationRepository userInformationRepository, AuthoritiesRepository authorities) {
+    this.userInformationRepository = userInformationRepository;
     this.passwordEncoder = new BCryptPasswordEncoder(); // Spring security problem if BCryptPasswordEncoder is defined as bean
     this.authorities = authorities;
   }
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
       return null;
     }
     // Logic
-    return userDao.getUserInformation(username);
+    return userInformationRepository.findById(username).orElse(null);
   }
 
   @Override
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
     // Logic
     var u = convertUserFormToUser(user, new User());
     // Store user information
-    userDao.addUserInformation(u);
+    userInformationRepository.save(u);
     // Build user authority
     Authorities authority = new Authorities();
     authority.setUsername(u.getUsername());
@@ -98,9 +99,9 @@ public class UserServiceImpl implements UserService {
     }
     // Logic
     if (Objects.isNull(user.getIdentification()) || user.getIdentification().isBlank()) {
-      userDao.updateUserInformationWithoutPassword(convertUserFormToUser(user));
+      userInformationRepository.updateUserInformationWithoutPassword(convertUserFormToUser(user));
     } else {
-      userDao.updateUserInformation(convertUserFormToUser(user));
+      userInformationRepository.save(convertUserFormToUser(user));
     }
   }
 
@@ -112,7 +113,7 @@ public class UserServiceImpl implements UserService {
       return false;
     }
     // Logic
-    return userDao.hasUserInformation(username);
+    return userInformationRepository.findById(username).isPresent();
   }
 
   @Override
@@ -124,7 +125,7 @@ public class UserServiceImpl implements UserService {
     }
     // Logic
     ArrayList<String> result = new ArrayList<>();
-    var users = userDao.searchUserInformation(partialName, numberOfSearchResults);
+    var users = userInformationRepository.findByUsernameStartsWithIgnoreCase(partialName, PageRequest.of(0, numberOfSearchResults));
     for (User user : users) {
       result.add(user.getUsername());
     }

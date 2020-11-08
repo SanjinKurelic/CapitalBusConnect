@@ -8,7 +8,7 @@ import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItemTextColumn;
 import eu.sanjin.kurelic.cbc.business.viewmodel.info.InfoItems;
 import eu.sanjin.kurelic.cbc.repo.dao.CityDescriptionDao;
 import eu.sanjin.kurelic.cbc.repo.dao.TripHistoryDao;
-import eu.sanjin.kurelic.cbc.repo.dao.UserDao;
+import eu.sanjin.kurelic.cbc.repo.dao.UserInformationRepository;
 import eu.sanjin.kurelic.cbc.repo.dao.UserTravelHistoryDao;
 import eu.sanjin.kurelic.cbc.repo.entity.TripHistory;
 import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
@@ -26,18 +26,18 @@ import java.util.Objects;
 public class StatisticServiceImpl implements StatisticService {
 
   private final UserTravelHistoryDao userTravelHistoryDao;
-  private final UserDao userDao;
+  private final UserInformationRepository userInformationRepository;
   private final TripHistoryDao tripHistoryDao;
   private final CityDescriptionDao cityDescriptionDao;
 
   public StatisticServiceImpl(
     UserTravelHistoryDao userTravelHistoryDao,
-    UserDao userDao,
+    UserInformationRepository userInformationRepository,
     TripHistoryDao tripHistoryDao,
     CityDescriptionDao cityDescriptionDao
   ) {
     this.userTravelHistoryDao = userTravelHistoryDao;
-    this.userDao = userDao;
+    this.userInformationRepository = userInformationRepository;
     this.tripHistoryDao = tripHistoryDao;
     this.cityDescriptionDao = cityDescriptionDao;
   }
@@ -56,13 +56,16 @@ public class StatisticServiceImpl implements StatisticService {
     for (var usernameCounterTuple : usernameCounterTuples) {
       item = new InfoItem();
       // get user info - database query in for loop (statistics are not something heavily requested)
-      var user = userDao.getUserInformation(
+      var user = userInformationRepository.findById(
         usernameCounterTuple.get(UserTravelHistoryDao.TUPLE_USERNAME).toString()
       );
+      if (user.isEmpty()) {
+        continue;
+      }
       // fill info item
-      item.addColumn(new InfoItemTextColumn(user.getUsername()));
-      item.addColumn(new InfoItemTextColumn(user.getName()));
-      item.addColumn(new InfoItemTextColumn(user.getSurname()));
+      item.addColumn(new InfoItemTextColumn(user.get().getUsername()));
+      item.addColumn(new InfoItemTextColumn(user.get().getName()));
+      item.addColumn(new InfoItemTextColumn(user.get().getSurname()));
       item.addColumn(new InfoItemTextColumn(
         usernameCounterTuple.get(UserTravelHistoryDao.TUPLE_NUMBER_OF_TRAVELS).toString()
       ));

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -14,56 +15,44 @@ import javax.transaction.Transactional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RepositoryConfiguration.class})
 @Transactional
-class UserDaoTest {
+class UserInformationRepositoryTest {
 
   @Autowired
-  private UserDao dao;
-
-  @Test
-  void getUserInformationWrongIdNull() {
-    Assertions.assertThrows(IllegalArgumentException.class,
-      () -> dao.getUserInformation(TestConstant.USERNAME_NULL));
-  }
+  private UserInformationRepository dao;
 
   @Test
   void getUserInformationWrongId() {
-    Assertions.assertNull(dao.getUserInformation(TestConstant.USERNAME_INVALID));
+    Assertions.assertTrue(dao.findById(TestConstant.USERNAME_INVALID).isEmpty());
   }
 
   @Test
   void getUserInformation() {
-    Assertions.assertNotNull(dao.getUserInformation(TestConstant.USERNAME_VALID));
+    Assertions.assertFalse(dao.findById(TestConstant.USERNAME_VALID).isEmpty());
   }
 
   @Test
   void hasUserInformation() {
-    Assertions.assertTrue(dao.hasUserInformation(TestConstant.USERNAME_VALID));
+    Assertions.assertFalse(dao.findById(TestConstant.USERNAME_VALID).isEmpty());
   }
 
   @Test
   void hasUserInformationWrongUsername() {
-    Assertions.assertFalse(dao.hasUserInformation(TestConstant.USERNAME_INVALID));
-  }
-
-  @Test
-  void hasUserInformationWrongUsernameNull() {
-    Assertions.assertThrows(IllegalArgumentException.class,
-      () -> dao.hasUserInformation(TestConstant.USERNAME_NULL));
+    Assertions.assertTrue(dao.findById(TestConstant.USERNAME_INVALID).isEmpty());
   }
 
   @Test
   void searchUserInformation() {
-    Assertions.assertFalse(dao.searchUserInformation(
+    Assertions.assertFalse(dao.findByUsernameStartsWithIgnoreCase(
       TestConstant.SEARCH_USER_VALID,
-      TestConstant.LIMIT_VALID
+      PageRequest.of(0, TestConstant.LIMIT_VALID)
     ).isEmpty());
   }
 
   @Test
   void searchUserInformationWrongUser() {
-    Assertions.assertTrue(dao.searchUserInformation(
+    Assertions.assertTrue(dao.findByUsernameStartsWithIgnoreCase(
       TestConstant.SEARCH_USER_INVALID,
-      TestConstant.LIMIT_VALID
+      PageRequest.of(0, TestConstant.LIMIT_VALID)
     ).isEmpty());
   }
 
@@ -71,7 +60,7 @@ class UserDaoTest {
   void searchUserInformationWrongUserNull() {
     Assertions.assertThrows(
       IllegalArgumentException.class,
-      () -> dao.searchUserInformation(TestConstant.USERNAME_NULL, TestConstant.LIMIT_INVALID)
+      () -> dao.findByUsernameStartsWithIgnoreCase(TestConstant.USERNAME_NULL, PageRequest.of(0, TestConstant.LIMIT_INVALID))
     );
   }
 
@@ -79,7 +68,7 @@ class UserDaoTest {
   void searchUserInformationWrongLimit() {
     Assertions.assertThrows(
       IllegalArgumentException.class,
-      () -> dao.searchUserInformation(TestConstant.SEARCH_USER_VALID, TestConstant.LIMIT_INVALID)
+      () -> dao.findByUsernameStartsWithIgnoreCase(TestConstant.SEARCH_USER_VALID, PageRequest.of(0, TestConstant.LIMIT_INVALID))
     );
   }
 
