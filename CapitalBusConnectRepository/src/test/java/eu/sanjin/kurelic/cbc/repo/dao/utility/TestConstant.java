@@ -10,6 +10,8 @@ import eu.sanjin.kurelic.cbc.repo.values.TripTypeValue;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestConstant {
 
@@ -26,9 +28,9 @@ public class TestConstant {
   public static final int ID_VALID = 1;
   public static final int ID_VALID_NEXT = 2;
   public static final int IDS_VALID_COUNT = 3;
-  public static final Integer[] IDS_VALID = {1, 2, 3};
-  public static final Integer[] IDS_NULL = null;
-  public static final Integer[] IDS_EMPTY = new Integer[0];
+  public static final List<Integer> IDS_VALID = List.of(1, 2, 3);
+  public static final List<Integer> IDS_NULL = null;
+  public static final List<Integer> IDS_EMPTY = new ArrayList<>();
 
   // Authority
   public static final Authorities AUTHORITIES_NULL = null;
@@ -69,9 +71,7 @@ public class TestConstant {
   static {
     // Authorities
     AUTHORITIES_VALID = new Authorities();
-    var u = new User();
-    u.setUsername(TestConstant.USERNAME_VALID);
-    AUTHORITIES_VALID.setUsername(u);
+    AUTHORITIES_VALID.setUsername(TestConstant.USERNAME_VALID);
     AUTHORITIES_VALID.setAuthority(AuthoritiesValue.USER.getValue());
 
     // Trip history
