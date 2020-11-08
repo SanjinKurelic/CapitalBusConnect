@@ -44,7 +44,7 @@ public class LoginHistoryServiceImpl implements LoginHistoryService {
     if (Objects.isNull(user)) {
       throw new InvalidUserException(String.format(LOGIN_INFORMATION_PAIR, username, ipAddress));
     }
-    userLoginHistory.setId(new LoginHistoryPrimaryKey(user, dateTime));
+    userLoginHistory.setId(new LoginHistoryPrimaryKey(user.getUsername(), dateTime));
     userLoginHistory.setIpAddress(ipAddress);
     loginHistory.addUserLoginHistory(userLoginHistory); // Can throw
   }
@@ -117,11 +117,11 @@ public class LoginHistoryServiceImpl implements LoginHistoryService {
     InfoItem item;
     for (UserLoginHistory loginHistory : loginHistories) {
       item = new InfoItem();
-      item.addColumn(new InfoItemTextColumn(loginHistory.getId().getUsername().getUsername()));
+      item.addColumn(new InfoItemTextColumn(loginHistory.getId().getUsername()));
       item.addColumn(new InfoItemTextColumn(loginHistory.getId().getDateTime().format(DateTimeFormatter.ISO_DATE_TIME).replace('T', ' ')));
       item.addColumn(new InfoItemTextColumn(loginHistory.getIpAddress()));
       item.addColumn(new InfoItemButtonColumn(InfoItemButtonType.BUY_INFO,
-        loginHistory.getId().getUsername().getUsername()));
+        loginHistory.getId().getUsername()));
       // Add to items
       items.add(item);
     }

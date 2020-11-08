@@ -13,25 +13,24 @@ import java.util.Objects;
 @Embeddable
 public class LoginHistoryPrimaryKey implements Serializable {
 
-  @ManyToOne
-  @JoinColumn(name = "username")
-  private User username;
+  @Column(name = "username")
+  private String username;
   @Column(name = "date_time")
   private LocalDateTime dateTime;
 
   public LoginHistoryPrimaryKey() {
   }
 
-  public LoginHistoryPrimaryKey(User username, LocalDateTime dateTime) {
+  public LoginHistoryPrimaryKey(String username, LocalDateTime dateTime) {
     this.username = username;
     this.dateTime = dateTime;
   }
 
-  public User getUsername() {
+  public String getUsername() {
     return username;
   }
 
-  public void setUsername(User username) {
+  public void setUsername(String username) {
     this.username = username;
   }
 
