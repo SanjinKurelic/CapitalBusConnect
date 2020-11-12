@@ -103,8 +103,7 @@ public class CityInfoServiceImpl implements CityInfoService {
       ids.add(line.getCity1().getId());
       ids.add(line.getCity2().getId());
     }
-    var cityDescriptions = cityDescriptionDao.getCityDescriptions(LocaleUtility.getLanguage(language),
-      ids.toArray(Integer[]::new));
+    var cityDescriptions = cityDescriptionDao.findByIdLanguageAndIdIdIn(LocaleUtility.getLanguage(language), ids);
     // Wrong language
     if (cityDescriptions.isEmpty()) {
       return items;

@@ -273,9 +273,9 @@ public class ScheduleServiceImpl implements ScheduleService {
   }
 
   private Pair<String, String> getCityDescription(BusSchedule busSchedule, Locale language) {
-    var city1 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity1().getId(),
+    var city1 = cityDescriptionDao.findByIdIdAndIdLanguage(busSchedule.getBusLine().getCity1().getId(),
       LocaleUtility.getLanguage(language));
-    var city2 = cityDescriptionDao.getCityDescription(busSchedule.getBusLine().getCity2().getId(),
+    var city2 = cityDescriptionDao.findByIdIdAndIdLanguage(busSchedule.getBusLine().getCity2().getId(),
       LocaleUtility.getLanguage(language));
     if (Objects.isNull(city1) || Objects.isNull(city2)) {
       return null;

@@ -136,11 +136,11 @@ public class StatisticServiceImpl implements StatisticService {
   }
 
   private Pair<String, String> getCityDescription(TripHistory tripHistory, String language) {
-    var city1 = cityDescriptionDao.getCityDescription(
+    var city1 = cityDescriptionDao.findByIdIdAndIdLanguage(
       tripHistory.getBusSchedule().getBusLine().getCity1().getId(),
       language
     );
-    var city2 = cityDescriptionDao.getCityDescription(
+    var city2 = cityDescriptionDao.findByIdIdAndIdLanguage(
       tripHistory.getBusSchedule().getBusLine().getCity2().getId(),
       language
     );

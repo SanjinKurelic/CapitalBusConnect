@@ -24,7 +24,7 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
 
   private final CityDescriptionDao cityDescriptionDao;
   // Hardcoded items, as this is the only example of system
-  private static final Integer[] PROMOTION_ITEMS = {15, 19, 20, 26, 28, 37};
+  private static final List<Integer> PROMOTION_ITEMS = List.of(15, 19, 20, 26, 28, 37);
   private static final String DEFAULT_CITY = "zagreb";
 
   @Autowired
@@ -55,7 +55,7 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
     if (Objects.isNull(fromCityName)) {
       return items;
     }
-    List<CityDescription> cities = cityDescriptionDao.getCityDescriptions(language, PROMOTION_ITEMS);
+    List<CityDescription> cities = cityDescriptionDao.findByIdLanguageAndIdIdIn(language, PROMOTION_ITEMS);
     HashMap<Integer, String> urls = getCitiesUrl(cities);
     for (CityDescription city : cities) {
       item = new PromotionItem();
@@ -88,10 +88,7 @@ public class PromotionInfoServiceImpl implements PromotionInfoService {
     for (CityDescription city : cities) {
       ids.add(city.getId().getId());
     }
-    var defaultCities = cityDescriptionDao.getCityDescriptions(
-      LocaleUtility.getUrlDefaultLanguage(),
-      ids.toArray(Integer[]::new)
-    );
+    var defaultCities = cityDescriptionDao.findByIdLanguageAndIdIdIn(LocaleUtility.getUrlDefaultLanguage(), ids);
     for (CityDescription city : defaultCities) {
       result.put(city.getId().getId(), city.getTitle());
     }

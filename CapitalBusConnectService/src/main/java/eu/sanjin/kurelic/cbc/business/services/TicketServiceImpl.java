@@ -61,8 +61,8 @@ public class TicketServiceImpl implements TicketService {
     ticket.setNumberOfChildren(travelHistory.getNumberOfChildren());
     ticket.setTime(travelHistory.getTripHistory().getBusSchedule().getFromTime());
     // Fill cities names and trip direction
-    var city1 = cityDescriptionDao.getCityDescription(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity1().getId(), language);
-    var city2 = cityDescriptionDao.getCityDescription(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity2().getId(), language);
+    var city1 = cityDescriptionDao.findByIdIdAndIdLanguage(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity1().getId(), language);
+    var city2 = cityDescriptionDao.findByIdIdAndIdLanguage(travelHistory.getTripHistory().getBusSchedule().getBusLine().getCity2().getId(), language);
     // Wrong language
     if (Objects.isNull(city1) || Objects.isNull(city2)) {
       return null;
