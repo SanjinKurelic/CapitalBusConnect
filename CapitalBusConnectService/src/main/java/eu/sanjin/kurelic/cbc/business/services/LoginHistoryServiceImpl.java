@@ -98,7 +98,7 @@ public class LoginHistoryServiceImpl implements LoginHistoryService {
   @Override
   @Transactional
   public Long getAllLoginHistoryCount() {
-    return loginHistory.getAllLoginHistoryCount();
+    return loginHistory.count();
   }
 
   @Override

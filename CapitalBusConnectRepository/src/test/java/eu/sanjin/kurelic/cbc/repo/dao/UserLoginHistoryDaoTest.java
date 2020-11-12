@@ -134,9 +134,4 @@ class UserLoginHistoryDaoTest {
   void getUserLoginHistoryCountWrongUser() {
     Assertions.assertNotNull(dao.getUserLoginHistoryCount(TestConstant.USERNAME_INVALID));
   }
-
-  @Test
-  void getAllLoginHistoryCount() {
-    Assertions.assertNotNull(dao.getAllLoginHistoryCount());
-  }
 }
