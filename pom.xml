@@ -28,8 +28,9 @@
         <cbc.version.jsp>2.3.3</cbc.version.jsp>
         <cbc.version.spring>5.1.3.RELEASE</cbc.version.spring>
         <cbc.version.springdata>2.1.5.RELEASE</cbc.version.springdata>
+        <cbc.version.quartz>2.3.2</cbc.version.quartz>
         <cbc.version.validation>2.0.1.Final</cbc.version.validation>
-        <cbc.version.jackson>2.10.0.pr1</cbc.version.jackson>
+        <cbc.version.jackson>2.10.5</cbc.version.jackson>
         <cbc.version.aop>1.9.2</cbc.version.aop>
         <cbc.version.annotation>1.3.2</cbc.version.annotation>
         <cbc.version.bean>1.9.4</cbc.version.bean>
@@ -99,8 +100,13 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${cbc.version.spring}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${cbc.version.spring}</version>
+        </dependency>
 
-        <!-- Jackson, spring data and validation -->
+        <!-- Jackson, spring data, validation and quartz -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -121,11 +127,15 @@
             <artifactId>validation-api</artifactId>
             <version>${cbc.version.validation}</version>
         </dependency>
-
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${cbc.version.validator}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${cbc.version.quartz}</version>
         </dependency>
 
         <!-- AOP and annotations -->
