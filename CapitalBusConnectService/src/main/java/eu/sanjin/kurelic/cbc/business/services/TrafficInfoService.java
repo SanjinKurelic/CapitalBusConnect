@@ -6,6 +6,8 @@ import java.util.Locale;
 
 public interface TrafficInfoService {
 
-    TrafficInfoItems getTrafficItems(Locale locale, int limit);
+  TrafficInfoItems getTrafficItems(Locale locale, int limit);
+
+  void saveTrafficItems(TrafficInfoItems trafficInfoItems);
 
 }

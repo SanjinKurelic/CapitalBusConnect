@@ -11,39 +11,49 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class TrafficInfoServiceImpl implements TrafficInfoService {
 
-    private final TrafficDescriptionDao trafficDao;
+  private final Logger log = Logger.getLogger(TrafficInfoServiceImpl.class.getName());
+  private final TrafficDescriptionDao trafficDao;
 
-    @Autowired
-    public TrafficInfoServiceImpl(TrafficDescriptionDao trafficDao) {
-        this.trafficDao = trafficDao;
-    }
+  @Autowired
+  public TrafficInfoServiceImpl(TrafficDescriptionDao trafficDao) {
+    this.trafficDao = trafficDao;
+  }
 
-    @Override
-    @Transactional
-    public TrafficInfoItems getTrafficItems(Locale locale, int limit) {
-        TrafficInfoItems items = new TrafficInfoItems();
-        TrafficInfoItem item;
-        // Check
-        if (Objects.isNull(locale) || limit < 1) {
-            return items;
-        }
-        // Logic
-        String language = LocaleUtility.getLanguage(locale);
-        List<TrafficDescription> descriptions = trafficDao.getTrafficDescriptions(LocalDate.now(), language, limit);
-        for (TrafficDescription description : descriptions) {
-            item = new TrafficInfoItem();
-            item.setTextMessage(description.getDescription());
-            item.setWarningType(TrafficWarningType.valueOf(description.getTraffic().getTrafficType().getName()));
-            item.setDate(description.getTraffic().getDate());
-            items.add(item);
-        }
-        return items;
+  @Override
+  @Transactional
+  public TrafficInfoItems getTrafficItems(Locale locale, int limit) {
+    TrafficInfoItems items = new TrafficInfoItems();
+    TrafficInfoItem item;
+    // Check
+    if (Objects.isNull(locale) || limit < 1) {
+      return items;
     }
+    // Logic
+    String language = LocaleUtility.getLanguage(locale);
+    List<TrafficDescription> descriptions = trafficDao.getTrafficDescriptions(LocalDate.now(), language, limit);
+    for (TrafficDescription description : descriptions) {
+      item = new TrafficInfoItem();
+      item.setTextMessage(description.getDescription());
+      item.setWarningType(TrafficWarningType.valueOf(description.getTraffic().getTrafficType().getName()));
+      item.setDate(description.getTraffic().getDate());
+      items.add(item);
+    }
+    return items;
+  }
+
+  @Override
+  public void saveTrafficItems(TrafficInfoItems trafficInfoItems) {
+    trafficInfoItems.forEach(trafficInfoItem ->
+      log.info("Saving traffic info item (" + LocalDateTime.now().toString() + "): \"" + trafficInfoItem.getTextMessage() + "\"")
+    );
+  }
 }
