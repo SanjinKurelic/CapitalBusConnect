@@ -17,7 +17,7 @@ public class CityDescriptionSpecifications {
 
   public static Specification<BusSchedule> getCityDescriptionForDifferentLanguage () {
     return (Specification<BusSchedule>) (root, criteriaQuery, criteriaBuilder) -> {
-
+      return null;
     };
   }
 

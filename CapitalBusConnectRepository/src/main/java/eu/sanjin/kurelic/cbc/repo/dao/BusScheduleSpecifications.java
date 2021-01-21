@@ -14,7 +14,7 @@ import javax.persistence.criteria.Predicate;
 public class BusScheduleSpecifications {
 
   public static Specification<BusSchedule> getBusLineSchedules(Integer fromCityId, Integer toCityId) {
-    return (Specification<BusSchedule>) (root, criteriaQuery, criteriaBuilder) -> {
+    return (root, criteriaQuery, criteriaBuilder) -> {
       Predicate abTrip = criteriaBuilder.equal(root.get(BusSchedule_.tripType).get(TripType_.name), TripTypeValue.A_TO_B.name());
       Predicate baTrip = criteriaBuilder.equal(root.get(BusSchedule_.tripType).get(TripType_.name), TripTypeValue.B_TO_A.name());
       Predicate roundTrip = criteriaBuilder.equal(root.get(BusSchedule_.tripType).get(TripType_.name), TripTypeValue.ROUND_TRIP.name());
